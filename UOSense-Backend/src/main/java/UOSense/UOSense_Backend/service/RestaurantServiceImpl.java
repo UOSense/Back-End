@@ -10,16 +10,13 @@ import UOSense.UOSense_Backend.repository.RestaurantRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class RestaurantServiceImpl implements RestaurantService{
     private final RestaurantRepository restaurantRepository;
-    private final BusinessDayRepository businessDayRepository;
     private final RestaurantImageRepository restaurantImageRepository;
 
     @Override
