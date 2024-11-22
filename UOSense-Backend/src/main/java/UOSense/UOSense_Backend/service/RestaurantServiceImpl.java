@@ -25,7 +25,7 @@ public class RestaurantServiceImpl implements RestaurantService{
         List<Menu> menuBoard = menuRepository.findAllByRestaurantId((restaurantId));
 
         if (menuBoard.isEmpty())
-            throw new IllegalArgumentException("해당 식당에 존재하지 않는 메뉴입니다.");
+            throw new IllegalArgumentException("해당 식당에 메뉴가 존재하지 않습니다.");
 
         return menuBoard.stream()
                 .map(MenuResponse::from)
@@ -35,7 +35,7 @@ public class RestaurantServiceImpl implements RestaurantService{
     @Override
     public void saveMenuWith(NewMenuRequest menu, String imageUrl) {
         Restaurant restaurant = restaurantRepository.findById(menu.getRestaurantId())
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 식당입니다."));;
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 식당입니다."));
 
         menuRepository.save(menu.toEntity(restaurant,imageUrl));
     }
