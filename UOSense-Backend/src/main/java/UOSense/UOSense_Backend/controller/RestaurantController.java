@@ -2,6 +2,9 @@ package UOSense.UOSense_Backend.controller;
 
 import UOSense.UOSense_Backend.dto.MenuResponse;
 import UOSense.UOSense_Backend.service.RestaurantService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,6 +26,12 @@ public class RestaurantController {
     private final RestaurantService restaurantService;
 
     @GetMapping("/{restaurantId}/menu")
+    @Operation(summary = "특정 식당 메뉴 조회", description = "메뉴를 조회합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "메뉴를 성공적으로 불러왔습니다."),
+            @ApiResponse(responseCode = "404", description = "메뉴를 찾을 수 없습니다."),
+            @ApiResponse(responseCode = "500", description = "잘못된 요청입니다.")
+    })
     public ResponseEntity<List<MenuResponse>> showMenu(@PathVariable int restaurantId) {
         try {
             List<MenuResponse> result = restaurantService.findMenuBy(restaurantId);
