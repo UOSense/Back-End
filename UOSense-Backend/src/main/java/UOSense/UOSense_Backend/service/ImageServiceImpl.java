@@ -36,4 +36,17 @@ public class ImageServiceImpl implements ImageService{
         // 업로드된 파일의 S3 URL 반환
         return s3Client.getUrl(bucketName, fileName).toString();
     }
+
+    /**
+     파일 유효성을 검사합니다.
+     */
+    private void validateFile(MultipartFile file) {
+        if (file == null || file.isEmpty()) {
+            throw new IllegalArgumentException("파일이 비어있습니다.");
+        }
+        if (file.getSize() > 10 * 1024 * 1024) { // 10MB 제한
+            throw new IllegalArgumentException("파일 크기가 너무 큽니다.");
+        }
+    }
+
 }
