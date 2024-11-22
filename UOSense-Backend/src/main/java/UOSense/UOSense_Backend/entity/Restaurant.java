@@ -38,10 +38,16 @@ public class Restaurant {
 
     @Enumerated(EnumType.STRING)
     private Category category;
-    private enum Category { Korean, Chinese, Japanese, Western, Other};
+    public enum Category { Korean, Chinese, Japanese, Western, Other}
 
     @Column(name = "sub_description")
     private String subDescription;
 
     private String description;
+
+    @Column(name = "review_count", columnDefinition = "INT DEFAULT 0")
+    private int reviewCount;
+
+    @Column(name = "bookmark_count", columnDefinition = "INT DEFAULT 0")
+    private int bookmarkCount;
 }
