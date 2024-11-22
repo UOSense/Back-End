@@ -31,4 +31,12 @@ public class RestaurantServiceImpl implements RestaurantService{
                 .map(MenuResponse::from)
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public void saveMenuWith(NewMenuRequest menu, String imageUrl) {
+        Restaurant restaurant = restaurantRepository.findById(menu.getRestaurantId())
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 식당입니다."));;
+
+        menuRepository.save(menu.toEntity(restaurant,imageUrl));
+    }
 }
