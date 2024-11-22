@@ -11,6 +11,14 @@ public class NewMenuRequest {
     private String description;
     private MultipartFile image;
 
+    public MultipartFile getImage() {
+        return image;
+    }
+
+    public int getRestaurantId() {
+        return restaurantId;
+    }
+
     public Menu toEntity(Restaurant restaurant, String url) {
         return Menu.builder()
                 .restaurant(restaurant)
