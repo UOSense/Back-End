@@ -49,4 +49,12 @@ public class ImageServiceImpl implements ImageService{
         }
     }
 
+    /**
+     고유 파일명을 생성합니다.
+     */
+    private String generateFileName(MultipartFile file, String folderName) {
+        String originName = file.getOriginalFilename();
+        String uuid = UUID.randomUUID().toString();
+        return folderName + "/"+uuid + "_" + originName;
+    }
 }
