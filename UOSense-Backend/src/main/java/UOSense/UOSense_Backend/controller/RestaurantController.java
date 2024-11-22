@@ -32,8 +32,8 @@ public class RestaurantController {
             @ApiResponse(responseCode = "400", description = "잘못된 요청입니다."),
             @ApiResponse(responseCode = "404", description = "식당 리스트를 찾을 수 없습니다.")
     })
-    public ResponseEntity<List<RestaurantListResponse>> getRestaurants(@RequestParam(required = false) DoorType doorType,
-                                                                       @RequestParam(required = false) Restaurant.Category category) {
+    public ResponseEntity<List<RestaurantListResponse>> getRestaurantList(@RequestParam(required = false) DoorType doorType,
+                                                                          @RequestParam(required = false) Restaurant.Category category) {
         List<RestaurantListResponse> restaurantList;
         boolean doorTypeFlag, categoryFlag;
 
