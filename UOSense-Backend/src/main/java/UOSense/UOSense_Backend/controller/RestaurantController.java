@@ -1,7 +1,8 @@
 package UOSense.UOSense_Backend.controller;
 
-import UOSense.UOSense_Backend.dto.MenuRequest;
 import UOSense.UOSense_Backend.dto.MenuResponse;
+import UOSense.UOSense_Backend.dto.NewMenuRequest;
+import UOSense.UOSense_Backend.service.ImageService;
 import UOSense.UOSense_Backend.service.MenuService;
 import UOSense.UOSense_Backend.service.RestaurantService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -11,9 +12,9 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Collections;
 import java.util.List;
@@ -25,6 +26,7 @@ import java.util.List;
 public class RestaurantController {
     private final RestaurantService restaurantService;
     private final MenuService menuService;
+    private final ImageService imageService;
 
     @GetMapping("/{restaurantId}/menu")
     @Operation(summary = "특정 식당 메뉴 조회", description = "메뉴를 조회합니다.")
@@ -49,8 +51,15 @@ public class RestaurantController {
             @ApiResponse(responseCode = "400", description = "잘못된 요청입니다."),
             @ApiResponse(responseCode = "500", description = "잘못된 요청입니다.")
     })
-    public ResponseEntity<Void> uploadMenu(@RequestPart("file") MultipartFile file,
-                                           @RequestPart("data") MenuRequest data) {
+    public ResponseEntity<String> uploadMenu(@RequestPart List<NewMenuRequest> menus) {
+        try {
+            for ( NewMenuRequest menu : menus) {
+                String imageUrl = imageService.saveNGetUrl(menu.getImage(), "menu");
+                restaurantService.saveMenuWith(menu, imageUrl);
+            }
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
         return ResponseEntity.ok().build();
     }
 
