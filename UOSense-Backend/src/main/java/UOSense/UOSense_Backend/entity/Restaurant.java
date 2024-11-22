@@ -8,8 +8,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
-
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
