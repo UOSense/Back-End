@@ -1,5 +1,6 @@
 package UOSense.UOSense_Backend.controller;
 
+import UOSense.UOSense_Backend.dto.MenuRequest;
 import UOSense.UOSense_Backend.dto.MenuResponse;
 import UOSense.UOSense_Backend.service.MenuService;
 import UOSense.UOSense_Backend.service.RestaurantService;
@@ -12,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Collections;
 import java.util.List;
@@ -38,6 +40,18 @@ public class RestaurantController {
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(Collections.emptyList(), HttpStatus.NOT_FOUND);
         }
+    }
+
+    @PostMapping("/uploadMenu")
+    @Operation(summary = "특정 식당 메뉴 등록", description = "메뉴를 등록합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "메뉴를 성공적으로 업로드하였습니다."),
+            @ApiResponse(responseCode = "400", description = "잘못된 요청입니다."),
+            @ApiResponse(responseCode = "500", description = "잘못된 요청입니다.")
+    })
+    public ResponseEntity<Void> uploadMenu(@RequestPart("file") MultipartFile file,
+                                           @RequestPart("data") MenuRequest data) {
+        return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/delete/{id}")
