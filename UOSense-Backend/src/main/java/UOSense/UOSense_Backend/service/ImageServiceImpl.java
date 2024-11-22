@@ -57,4 +57,14 @@ public class ImageServiceImpl implements ImageService{
         String uuid = UUID.randomUUID().toString();
         return folderName + "/"+uuid + "_" + originName;
     }
+
+    /**
+     파일 메타데이터를 설정하고 반환합니다.
+     */
+    private ObjectMetadata getMetaDataOf(MultipartFile file) {
+        ObjectMetadata metadata = new ObjectMetadata();
+        metadata.setContentLength(file.getSize());
+        metadata.setContentType(file.getContentType());
+        return metadata;
+    }
 }
