@@ -1,6 +1,7 @@
 package UOSense.UOSense_Backend.controller;
 
 import UOSense.UOSense_Backend.dto.MenuResponse;
+import UOSense.UOSense_Backend.service.MenuService;
 import UOSense.UOSense_Backend.service.RestaurantService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -10,10 +11,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
 import java.util.List;
@@ -24,6 +22,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class RestaurantController {
     private final RestaurantService restaurantService;
+    private final MenuService menuService;
 
     @GetMapping("/{restaurantId}/menu")
     @Operation(summary = "특정 식당 메뉴 조회", description = "메뉴를 조회합니다.")
@@ -38,6 +37,18 @@ public class RestaurantController {
             return new ResponseEntity<>(result, HttpStatus.OK);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(Collections.emptyList(), HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Void> deleteMenu(@PathVariable int id) {
+        try {
+            menuService.delete(id);
+            return ResponseEntity.ok().build();
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
         }
     }
 }
