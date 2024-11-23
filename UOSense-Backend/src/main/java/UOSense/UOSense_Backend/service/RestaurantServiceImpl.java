@@ -2,9 +2,8 @@ package UOSense.UOSense_Backend.service;
 
 import UOSense.UOSense_Backend.common.DoorType;
 import UOSense.UOSense_Backend.dto.RestaurantListResponse;
-import UOSense.UOSense_Backend.dto.RestaurantResponse;
+import UOSense.UOSense_Backend.dto.RestaurantInfo;
 import UOSense.UOSense_Backend.entity.Restaurant;
-import UOSense.UOSense_Backend.repository.BusinessDayRepository;
 import UOSense.UOSense_Backend.repository.RestaurantImageRepository;
 import UOSense.UOSense_Backend.repository.RestaurantRepository;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -25,7 +25,9 @@ public class RestaurantServiceImpl implements RestaurantService{
         if (restaurants.isEmpty()) throw new NoSuchElementException("식당 리스트가 존재하지 않습니다.");
         List<RestaurantListResponse> responseList = restaurants.stream()
                 .map(restaurant -> {
-                    String imageUrl = restaurantImageRepository.findFirstImageUrlByRestaurantOrderByIdAsc(restaurant);
+                    Optional<String> imageResponse = restaurantImageRepository.findFirstImageUrl(restaurant.getId());
+                    String imageUrl = null;
+                    if (imageResponse.isPresent()) imageUrl = imageResponse.get();
                     return RestaurantListResponse.from(restaurant, imageUrl);
                 })
                 .toList();
@@ -38,7 +40,9 @@ public class RestaurantServiceImpl implements RestaurantService{
         if (restaurants.isEmpty()) throw new NoSuchElementException("해당 식당 리스트가 존재하지 않습니다.");
         List<RestaurantListResponse> responseList = restaurants.stream()
                 .map(restaurant -> {
-                    String imageUrl = restaurantImageRepository.findFirstImageUrlByRestaurantOrderByIdAsc(restaurant);
+                    Optional<String> imageResponse = restaurantImageRepository.findFirstImageUrl(restaurant.getId());
+                    String imageUrl = null;
+                    if (imageResponse.isPresent()) imageUrl = imageResponse.get();
                     return RestaurantListResponse.from(restaurant, imageUrl);
                 })
                 .toList();
@@ -51,7 +55,9 @@ public class RestaurantServiceImpl implements RestaurantService{
         if (restaurants.isEmpty()) throw new NoSuchElementException("해당 식당 리스트가 존재하지 않습니다.");
         List<RestaurantListResponse> responseList = restaurants.stream()
                 .map(restaurant -> {
-                    String imageUrl = restaurantImageRepository.findFirstImageUrlByRestaurantOrderByIdAsc(restaurant);
+                    Optional<String> imageResponse = restaurantImageRepository.findFirstImageUrl(restaurant.getId());
+                    String imageUrl = null;
+                    if (imageResponse.isPresent()) imageUrl = imageResponse.get();
                     return RestaurantListResponse.from(restaurant, imageUrl);
                 })
                 .toList();
@@ -64,7 +70,9 @@ public class RestaurantServiceImpl implements RestaurantService{
         if (restaurants.isEmpty()) throw new NoSuchElementException("해당 식당 리스트가 존재하지 않습니다.");
         List<RestaurantListResponse> responseList = restaurants.stream()
                 .map(restaurant -> {
-                    String imageUrl = restaurantImageRepository.findFirstImageUrlByRestaurantOrderByIdAsc(restaurant);
+                    Optional<String> imageResponse = restaurantImageRepository.findFirstImageUrl(restaurant.getId());
+                    String imageUrl = null;
+                    if (imageResponse.isPresent()) imageUrl = imageResponse.get();
                     return RestaurantListResponse.from(restaurant, imageUrl);
                 })
                 .toList();
@@ -72,10 +80,10 @@ public class RestaurantServiceImpl implements RestaurantService{
     }
 
     @Override
-    public RestaurantResponse getRestaurantById(int RestaurantId) {
+    public RestaurantInfo getRestaurantById(int RestaurantId) {
         Restaurant restaurant = restaurantRepository.findById(RestaurantId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 식당이 존재하지 않습니다."));
 
-        return RestaurantResponse.from(restaurant);
+        return RestaurantInfo.from(restaurant);
     }
 }
