@@ -2,7 +2,7 @@ package UOSense.UOSense_Backend.controller;
 
 import UOSense.UOSense_Backend.common.DoorType;
 import UOSense.UOSense_Backend.dto.RestaurantListResponse;
-import UOSense.UOSense_Backend.dto.RestaurantResponse;
+import UOSense.UOSense_Backend.dto.RestaurantInfo;
 import UOSense.UOSense_Backend.entity.Restaurant;
 import UOSense.UOSense_Backend.service.RestaurantService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -87,11 +87,11 @@ public class RestaurantController {
             @ApiResponse(responseCode = "200", description = "식당 리스트를 성공적으로 불러왔습니다."),
             @ApiResponse(responseCode = "404", description = "식당을 찾을 수 없습니다.")
     })
-    public ResponseEntity<RestaurantResponse> getRestaurant(@PathVariable int restaurantId) {
+    public ResponseEntity<RestaurantInfo> getRestaurant(@PathVariable int restaurantId) {
         try {
-            RestaurantResponse restaurantResponse = restaurantService.getRestaurantById(restaurantId);
+            RestaurantInfo restaurantInfo = restaurantService.getRestaurantById(restaurantId);
 
-            return new ResponseEntity<>(restaurantResponse, HttpStatus.OK);
+            return new ResponseEntity<>(restaurantInfo, HttpStatus.OK);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }

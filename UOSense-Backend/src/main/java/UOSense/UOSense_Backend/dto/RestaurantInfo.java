@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-public class RestaurantResponse {
+public class RestaurantInfo {
     private int id;
 
     private String name;
@@ -38,8 +38,8 @@ public class RestaurantResponse {
 
     private int bookmarkCount;
 
-    public static RestaurantResponse from(Restaurant restaurant) {
-        return RestaurantResponse.builder()
+    public static RestaurantInfo from(Restaurant restaurant) {
+        return RestaurantInfo.builder()
                 .id(restaurant.getId())
                 .name(restaurant.getName())
                 .doorType(restaurant.getDoorType())
