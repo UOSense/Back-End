@@ -84,7 +84,7 @@ public class RestaurantController {
     @GetMapping("/{restaurantId}/show")
     @Operation(summary = "특정 식당 정보 조회", description = "식당 정보를 불러옵니다.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "식당 리스트를 성공적으로 불러왔습니다."),
+            @ApiResponse(responseCode = "200", description = "식당 정보를 성공적으로 불러왔습니다."),
             @ApiResponse(responseCode = "404", description = "식당을 찾을 수 없습니다.")
     })
     public ResponseEntity<RestaurantInfo> getRestaurant(@PathVariable int restaurantId) {
