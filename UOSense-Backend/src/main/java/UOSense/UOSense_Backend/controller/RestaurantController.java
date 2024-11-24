@@ -104,6 +104,12 @@ public class RestaurantController {
         }
     }
     @PostMapping(value = "/{restaurantId}/images", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @Operation(summary = "특정 식당 사진 등록", description = "사진을 등록합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "사진을 성공적으로 저장했습니다."),
+            @ApiResponse(responseCode = "410", description = "저장할 사진을 찾지 못해 실패했습니다."),
+            @ApiResponse(responseCode = "500", description = "잘못된 요청입니다.")
+    })
     public ResponseEntity<RestaurantImagesResponse> createImages(
             @PathVariable int restaurantId,
             @RequestPart MultipartFile[] images) {
