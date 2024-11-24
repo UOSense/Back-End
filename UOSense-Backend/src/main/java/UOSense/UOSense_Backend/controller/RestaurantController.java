@@ -2,12 +2,10 @@ package UOSense.UOSense_Backend.controller;
 
 import UOSense.UOSense_Backend.common.Category;
 import UOSense.UOSense_Backend.common.DoorType;
-import UOSense.UOSense_Backend.dto.RestaurantListResponse;
-import UOSense.UOSense_Backend.dto.RestaurantInfo;
-import UOSense.UOSense_Backend.dto.MenuResponse;
-import UOSense.UOSense_Backend.dto.NewMenuRequest;
-import UOSense.UOSense_Backend.service.ImageService;
+import UOSense.UOSense_Backend.dto.*;
+import UOSense.UOSense_Backend.entity.Restaurant;
 import UOSense.UOSense_Backend.service.MenuService;
+import UOSense.UOSense_Backend.service.RestaurantImgService;
 import UOSense.UOSense_Backend.service.RestaurantService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -19,6 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Collections;
 import java.util.List;
@@ -31,7 +30,6 @@ import java.util.NoSuchElementException;
 public class RestaurantController {
     private final RestaurantService restaurantService;
     private final MenuService menuService;
-    private final ImageService imageService;
 
     @GetMapping("/show")
     @Operation(summary = "식당 정보 일괄 조회", description = "식당 리스트를 불러옵니다.")
@@ -131,7 +129,7 @@ public class RestaurantController {
     public ResponseEntity<String> uploadMenu(@RequestPart List<NewMenuRequest> menus) {
         try {
             for ( NewMenuRequest menu : menus) {
-                String imageUrl = imageService.saveNGetUrl(menu.getImage(), "menu");
+                String imageUrl = menuService.saveImage(menu.getImage());
                 restaurantService.saveMenuWith(menu, imageUrl);
             }
         } catch (IllegalArgumentException e) {
