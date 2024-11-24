@@ -103,6 +103,17 @@ public class RestaurantController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
+    @GetMapping("/{restaurantId}/images")
+    public ResponseEntity<RestaurantImagesResponse> showImages(@PathVariable int restaurantId) {
+        try {
+            RestaurantImagesResponse restaurantImages = restaurantImageService.showImageList(restaurantId);
+            return new ResponseEntity<>(restaurantImages, HttpStatus.OK);
+        } catch (NoSuchElementException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
     @PostMapping(value = "/{restaurantId}/images", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(summary = "특정 식당 사진 등록", description = "사진을 등록합니다.")
     @ApiResponses(value = {
