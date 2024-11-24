@@ -149,7 +149,7 @@ public class RestaurantController {
         }
     }
 
-    @PostMapping(value = "/uploadMenu", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(value = "/menu", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(summary = "특정 식당 메뉴 등록", description = "메뉴를 등록합니다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "메뉴를 성공적으로 업로드하였습니다."),
@@ -168,7 +168,7 @@ public class RestaurantController {
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/delete/menu/{id}")
     @Operation(summary = "메뉴 삭제", description = "메뉴를 삭제합니다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "메뉴를 성공적으로 삭제했습니다."),
