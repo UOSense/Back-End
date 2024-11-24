@@ -19,7 +19,7 @@ public class RestaurantListResponse {
 
     private double rating;
 
-    private Restaurant.Category category;
+    private String category;
 
     private int reviewCount;
 
@@ -33,7 +33,7 @@ public class RestaurantListResponse {
                 .name(restaurant.getName())
                 .address(restaurant.getAddress())
                 .rating(restaurant.getRating())
-                .category(restaurant.getCategory())
+                .category(restaurant.getCategory().getValue())
                 .reviewCount(restaurant.getReviewCount())
                 .bookmarkCount(restaurant.getBookmarkCount())
                 .restaurantImage(imageUrl)

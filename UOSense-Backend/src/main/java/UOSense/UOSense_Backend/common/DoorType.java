@@ -1,23 +1,15 @@
 package UOSense.UOSense_Backend.common;
 
-public enum DoorType {
+public enum DoorType implements BaseEnum {
     FRONT("정문"), SIDE("쪽문"), BACK("후문");
-    private final String name;
+    private final String value;
 
     DoorType(String name) {
-        this.name = name;
+        this.value = name;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public static DoorType fromValue(String value) {
-        for (DoorType doorType : values()) {
-            if (doorType.getName().equals(value)) {
-                return doorType;
-            }
-        }
-        throw new IllegalArgumentException("해당 DoorType은 존재하지 않습니다 : " + value);
+    @Override
+    public String getValue() {
+        return value;
     }
 }

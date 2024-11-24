@@ -1,11 +1,11 @@
 package UOSense.UOSense_Backend.controller;
 
+import UOSense.UOSense_Backend.common.Category;
 import UOSense.UOSense_Backend.common.DoorType;
 import UOSense.UOSense_Backend.dto.RestaurantListResponse;
 import UOSense.UOSense_Backend.dto.RestaurantInfo;
 import UOSense.UOSense_Backend.dto.MenuResponse;
 import UOSense.UOSense_Backend.dto.NewMenuRequest;
-import UOSense.UOSense_Backend.entity.Restaurant;
 import UOSense.UOSense_Backend.service.ImageService;
 import UOSense.UOSense_Backend.service.MenuService;
 import UOSense.UOSense_Backend.service.RestaurantService;
@@ -15,7 +15,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -42,7 +41,7 @@ public class RestaurantController {
             @ApiResponse(responseCode = "404", description = "식당 리스트를 찾을 수 없습니다.")
     })
     public ResponseEntity<List<RestaurantListResponse>> getRestaurantList(@RequestParam(required = false) DoorType doorType,
-                                                                          @RequestParam(required = false) Restaurant.Category category) {
+                                                                          @RequestParam(required = false) Category category) {
         List<RestaurantListResponse> restaurantList;
         boolean doorTypeFlag, categoryFlag;
 
@@ -59,8 +58,8 @@ public class RestaurantController {
 
 
         // category가 KOREAN, CHINESE, JAPANESE, WESTERN, OTHER 일 경우, 해당 category에 해당하는 식당 검색
-        if (category == Restaurant.Category.Korean || category == Restaurant.Category.Chinese || category == Restaurant.Category.Japanese
-            || category == Restaurant.Category.Western || category == Restaurant.Category.Other) {
+        if (category == Category.KOREAN || category == Category.CHINESE || category == Category.JAPANESE
+            || category == Category.WESTERN || category == Category.OTHER) {
             categoryFlag = true;
         }
         else if (category == null) {

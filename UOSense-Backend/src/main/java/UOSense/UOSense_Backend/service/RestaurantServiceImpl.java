@@ -1,5 +1,6 @@
 package UOSense.UOSense_Backend.service;
 
+import UOSense.UOSense_Backend.common.Category;
 import UOSense.UOSense_Backend.common.DoorType;
 
 import UOSense.UOSense_Backend.dto.RestaurantListResponse;
@@ -45,7 +46,7 @@ public class RestaurantServiceImpl implements RestaurantService{
     }
 
     @Override
-    public List<RestaurantListResponse> getRestaurantsByFilter(DoorType doorType, Restaurant.Category category) {
+    public List<RestaurantListResponse> getRestaurantsByFilter(DoorType doorType, Category category) {
         List<Restaurant> restaurants = restaurantRepository.findByDoorTypeAndCategory(doorType, category);
         if (restaurants.isEmpty()) throw new NoSuchElementException("해당 식당 리스트가 존재하지 않습니다.");
         List<RestaurantListResponse> responseList = restaurants.stream()
@@ -60,7 +61,7 @@ public class RestaurantServiceImpl implements RestaurantService{
     }
 
     @Override
-    public List<RestaurantListResponse> getRestaurantsByCategory(Restaurant.Category category) {
+    public List<RestaurantListResponse> getRestaurantsByCategory(Category category) {
         List<Restaurant> restaurants = restaurantRepository.findByCategory(category);
         if (restaurants.isEmpty()) throw new NoSuchElementException("해당 식당 리스트가 존재하지 않습니다.");
         List<RestaurantListResponse> responseList = restaurants.stream()
