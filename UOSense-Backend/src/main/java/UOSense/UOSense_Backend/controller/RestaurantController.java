@@ -5,7 +5,7 @@ import UOSense.UOSense_Backend.common.DoorType;
 import UOSense.UOSense_Backend.dto.*;
 import UOSense.UOSense_Backend.entity.Restaurant;
 import UOSense.UOSense_Backend.service.MenuService;
-import UOSense.UOSense_Backend.service.RestaurantImgService;
+import UOSense.UOSense_Backend.service.RestaurantImageService;
 import UOSense.UOSense_Backend.service.RestaurantService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -30,6 +30,7 @@ import java.util.NoSuchElementException;
 public class RestaurantController {
     private final RestaurantService restaurantService;
     private final MenuService menuService;
+    private final RestaurantImageService restaurantImageService;
 
     @GetMapping("/show")
     @Operation(summary = "식당 정보 일괄 조회", description = "식당 리스트를 불러옵니다.")
@@ -95,11 +96,23 @@ public class RestaurantController {
     })
     public ResponseEntity<RestaurantInfo> getRestaurant(@PathVariable int restaurantId) {
         try {
-            RestaurantInfo restaurantInfo = restaurantService.getRestaurantById(restaurantId);
+            RestaurantInfo restaurantInfo = restaurantService.getRestaurantInfoById(restaurantId);
 
             return new ResponseEntity<>(restaurantInfo, HttpStatus.OK);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+    @PostMapping(value = "/{restaurantId}/images", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<RestaurantImagesResponse> createImages(
+            @PathVariable int restaurantId,
+            @RequestPart MultipartFile[] images) {
+        try {
+            Restaurant restaurant = restaurantService.getRestaurantById(restaurantId);
+            RestaurantImagesResponse restaurantImages = restaurantImageService.save(restaurant, images);
+            return new ResponseEntity<>(restaurantImages, HttpStatus.OK);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(HttpStatus.GONE);
         }
     }
 
