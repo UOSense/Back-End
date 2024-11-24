@@ -1,7 +1,6 @@
 package UOSense.UOSense_Backend.entity;
 
-import UOSense.UOSense_Backend.common.DoorType;
-import UOSense.UOSense_Backend.common.DoorTypeConverter;
+import UOSense.UOSense_Backend.common.*;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -34,10 +33,10 @@ public class Restaurant {
 
     private double rating;
 
-    @Enumerated(EnumType.STRING)
-    private Category category;
-    public enum Category { Korean, Chinese, Japanese, Western, Other}
+    @Convert(converter = CategoryConverter.class)
+    public Category category;
 
+    @Convert(converter = SubDescriptionConverter.class)
     @Column(name = "sub_description")
     private String subDescription;
 
