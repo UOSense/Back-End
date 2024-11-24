@@ -4,7 +4,14 @@ import UOSense.UOSense_Backend.dto.RestaurantImagesResponse;
 import UOSense.UOSense_Backend.entity.Restaurant;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.NoSuchElementException;
+
 public interface RestaurantImageService {
+    /**
+     * 해당 식당의 이미지 목록을 반환합니다.
+     * @param restaurantId 식당 ID
+     * @throws NoSuchElementException DB 조회 결과가 빈 경우
+     */
     RestaurantImagesResponse showImageList(int restaurantId);
     /**
      * 이미지 원본 파일은 스토리지에 저장하고 DB에 저장된 URL목록을 반환합니다.
