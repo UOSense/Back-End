@@ -1,5 +1,6 @@
 package UOSense.UOSense_Backend.dto;
 
+import UOSense.UOSense_Backend.common.Category;
 import UOSense.UOSense_Backend.common.DoorType;
 import UOSense.UOSense_Backend.entity.Restaurant;
 import lombok.AllArgsConstructor;
@@ -16,7 +17,7 @@ public class RestaurantInfo {
 
     private String name;
 
-    private DoorType doorType;
+    private String doorType;
 
     private double latitude;
 
@@ -28,7 +29,7 @@ public class RestaurantInfo {
 
     private double rating;
 
-    private Restaurant.Category category;
+    private String category;
 
     private String subDescription;
 
@@ -42,13 +43,13 @@ public class RestaurantInfo {
         return RestaurantInfo.builder()
                 .id(restaurant.getId())
                 .name(restaurant.getName())
-                .doorType(restaurant.getDoorType())
+                .doorType(restaurant.getDoorType().getValue())
                 .latitude(restaurant.getLatitude())
                 .longitude(restaurant.getLongitude())
                 .address(restaurant.getAddress())
                 .phoneNumber(restaurant.getPhoneNumber())
                 .rating(restaurant.getRating())
-                .category(restaurant.getCategory())
+                .category(restaurant.getCategory().getValue())
                 .subDescription(restaurant.getSubDescription())
                 .description(restaurant.getDescription())
                 .reviewCount(restaurant.getReviewCount())
