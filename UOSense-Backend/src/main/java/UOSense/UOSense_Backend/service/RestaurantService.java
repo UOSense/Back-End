@@ -6,6 +6,7 @@ import UOSense.UOSense_Backend.dto.RestaurantInfo;
 import UOSense.UOSense_Backend.dto.RestaurantListResponse;
 import UOSense.UOSense_Backend.dto.MenuResponse;
 import UOSense.UOSense_Backend.dto.NewMenuRequest;
+import UOSense.UOSense_Backend.entity.Restaurant;
 
 import java.util.List;
 
@@ -14,7 +15,8 @@ public interface RestaurantService {
     List<RestaurantListResponse> getRestaurantsByFilter(DoorType doorType, Category category);
     List<RestaurantListResponse> getRestaurantsByCategory(Category category);
     List<RestaurantListResponse> getRestaurantsByDoorType(DoorType doorType);
-    RestaurantInfo getRestaurantById(int RestaurantId);
+    RestaurantInfo getRestaurantInfoById(int restaurantId);
+    Restaurant getRestaurantById(int restaurantId);
     List<MenuResponse> findMenuBy(int restaurantId);
     void saveMenuWith(NewMenuRequest menuRequest, String imageUrl);
 }
