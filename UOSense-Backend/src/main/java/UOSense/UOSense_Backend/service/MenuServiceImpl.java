@@ -14,7 +14,6 @@ public class MenuServiceImpl implements MenuService{
     private final ImageUtils imageUtils;
     final String S3_FOLDER_NAME = "menu";
 
-    /** 스토리지에 이미지 저장 후 URL을 반환합니다. */
     @Override
     public String saveImage(MultipartFile menuImage) {
         try {
