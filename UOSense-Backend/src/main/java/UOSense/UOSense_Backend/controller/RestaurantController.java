@@ -104,6 +104,24 @@ public class RestaurantController {
         }
     }
 
+    @DeleteMapping("/restaurant/{restaurantId}/delete")
+    @Operation(summary = "식당 삭제", description = "식당을 삭제합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "식당을 성공적으로 삭제했습니다."),
+            @ApiResponse(responseCode = "404", description = "삭제할 식당을 찾을 수 없습니다."),
+            @ApiResponse(responseCode = "500", description = "잘못된 요청입니다.")
+    })
+    public ResponseEntity<Void> deleteRestaurant(@PathVariable int restaurantId) {
+        try {
+            restaurantService.delete(restaurantId);
+            return ResponseEntity.ok().build();
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
     @GetMapping("/{restaurantId}/images")
     public ResponseEntity<RestaurantImagesResponse> showImages(@PathVariable int restaurantId) {
         try {
