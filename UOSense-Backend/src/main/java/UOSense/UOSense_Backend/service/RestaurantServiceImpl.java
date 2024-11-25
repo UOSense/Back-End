@@ -118,12 +118,4 @@ public class RestaurantServiceImpl implements RestaurantService{
 
         menuRepository.save(menu.toEntity(restaurant,imageUrl));
     }
-
-    @Override
-    public void delete(int restaurantId) {
-        if (!restaurantRepository.existsById(restaurantId)) {
-            throw new IllegalArgumentException("삭제할 식당이 존재하지 않습니다.");
-        }
-        restaurantRepository.deleteById(restaurantId);
-    }
 }
