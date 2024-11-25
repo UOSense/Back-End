@@ -3,10 +3,7 @@ package UOSense.UOSense_Backend.service;
 import UOSense.UOSense_Backend.common.Category;
 import UOSense.UOSense_Backend.common.DoorType;
 
-import UOSense.UOSense_Backend.dto.RestaurantListResponse;
-import UOSense.UOSense_Backend.dto.RestaurantInfo;
-import UOSense.UOSense_Backend.dto.MenuResponse;
-import UOSense.UOSense_Backend.dto.NewMenuRequest;
+import UOSense.UOSense_Backend.dto.*;
 
 import UOSense.UOSense_Backend.entity.Menu;
 import UOSense.UOSense_Backend.entity.Restaurant;
@@ -91,11 +88,15 @@ public class RestaurantServiceImpl implements RestaurantService{
     }
 
     @Override
-    public RestaurantInfo getRestaurantById(int RestaurantId) {
-        Restaurant restaurant = restaurantRepository.findById(RestaurantId)
-                .orElseThrow(() -> new IllegalArgumentException("해당 식당이 존재하지 않습니다."));
-
+    public RestaurantInfo getRestaurantInfoById(int restaurantId) {
+        Restaurant restaurant = getRestaurantById(restaurantId);
         return RestaurantInfo.from(restaurant);
+    }
+
+    @Override
+    public Restaurant getRestaurantById(int restaurantId) {
+        return restaurantRepository.findById(restaurantId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 식당이 존재하지 않습니다."));
     }
 
     @Override

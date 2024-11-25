@@ -2,12 +2,10 @@ package UOSense.UOSense_Backend.controller;
 
 import UOSense.UOSense_Backend.common.Category;
 import UOSense.UOSense_Backend.common.DoorType;
-import UOSense.UOSense_Backend.dto.RestaurantListResponse;
-import UOSense.UOSense_Backend.dto.RestaurantInfo;
-import UOSense.UOSense_Backend.dto.MenuResponse;
-import UOSense.UOSense_Backend.dto.NewMenuRequest;
-import UOSense.UOSense_Backend.service.ImageService;
+import UOSense.UOSense_Backend.dto.*;
+import UOSense.UOSense_Backend.entity.Restaurant;
 import UOSense.UOSense_Backend.service.MenuService;
+import UOSense.UOSense_Backend.service.RestaurantImageService;
 import UOSense.UOSense_Backend.service.RestaurantService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -19,6 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Collections;
 import java.util.List;
@@ -31,7 +30,7 @@ import java.util.NoSuchElementException;
 public class RestaurantController {
     private final RestaurantService restaurantService;
     private final MenuService menuService;
-    private final ImageService imageService;
+    private final RestaurantImageService restaurantImageService;
 
     @GetMapping("/show")
     @Operation(summary = "식당 정보 일괄 조회", description = "식당 리스트를 불러옵니다.")
@@ -97,11 +96,40 @@ public class RestaurantController {
     })
     public ResponseEntity<RestaurantInfo> getRestaurant(@PathVariable int restaurantId) {
         try {
-            RestaurantInfo restaurantInfo = restaurantService.getRestaurantById(restaurantId);
+            RestaurantInfo restaurantInfo = restaurantService.getRestaurantInfoById(restaurantId);
 
             return new ResponseEntity<>(restaurantInfo, HttpStatus.OK);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping("/{restaurantId}/images")
+    public ResponseEntity<RestaurantImagesResponse> showImages(@PathVariable int restaurantId) {
+        try {
+            RestaurantImagesResponse restaurantImages = restaurantImageService.showImageList(restaurantId);
+            return new ResponseEntity<>(restaurantImages, HttpStatus.OK);
+        } catch (NoSuchElementException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PostMapping(value = "/{restaurantId}/images", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @Operation(summary = "특정 식당 사진 등록", description = "사진을 등록합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "사진을 성공적으로 저장했습니다."),
+            @ApiResponse(responseCode = "410", description = "저장할 사진을 찾지 못해 실패했습니다."),
+            @ApiResponse(responseCode = "500", description = "잘못된 요청입니다.")
+    })
+    public ResponseEntity<RestaurantImagesResponse> createImages(
+            @PathVariable int restaurantId,
+            @RequestPart MultipartFile[] images) {
+        try {
+            Restaurant restaurant = restaurantService.getRestaurantById(restaurantId);
+            RestaurantImagesResponse restaurantImages = restaurantImageService.save(restaurant, images);
+            return new ResponseEntity<>(restaurantImages, HttpStatus.OK);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(HttpStatus.GONE);
         }
     }
 
@@ -121,7 +149,7 @@ public class RestaurantController {
         }
     }
 
-    @PostMapping(value = "/uploadMenu", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(value = "/menu", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(summary = "특정 식당 메뉴 등록", description = "메뉴를 등록합니다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "메뉴를 성공적으로 업로드하였습니다."),
@@ -131,7 +159,7 @@ public class RestaurantController {
     public ResponseEntity<String> uploadMenu(@RequestPart List<NewMenuRequest> menus) {
         try {
             for ( NewMenuRequest menu : menus) {
-                String imageUrl = imageService.saveNGetUrl(menu.getImage(), "menu");
+                String imageUrl = menuService.saveImage(menu.getImage());
                 restaurantService.saveMenuWith(menu, imageUrl);
             }
         } catch (IllegalArgumentException e) {
@@ -140,7 +168,7 @@ public class RestaurantController {
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/delete/menu/{id}")
     @Operation(summary = "메뉴 삭제", description = "메뉴를 삭제합니다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "메뉴를 성공적으로 삭제했습니다."),
