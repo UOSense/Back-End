@@ -123,6 +123,12 @@ public class RestaurantController {
     }
 
     @GetMapping("/{restaurantId}/images")
+    @Operation(summary = "특정 식당 사진 조회", description = "식당 사진을 조회합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "식당 사진을 성공적으로 불러왔습니다."),
+            @ApiResponse(responseCode = "404", description = "식당 사진을 찾을 수 없습니다."),
+            @ApiResponse(responseCode = "500", description = "잘못된 요청입니다.")
+    })
     public ResponseEntity<RestaurantImagesResponse> showImages(@PathVariable int restaurantId) {
         try {
             RestaurantImagesResponse restaurantImages = restaurantImageService.showImageList(restaurantId);
