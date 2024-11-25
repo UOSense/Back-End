@@ -19,4 +19,5 @@ public interface RestaurantService {
     Restaurant getRestaurantById(int restaurantId);
     List<MenuResponse> findMenuBy(int restaurantId);
     void saveMenuWith(NewMenuRequest menuRequest, String imageUrl);
+    void delete(int restaurantId);
 }
