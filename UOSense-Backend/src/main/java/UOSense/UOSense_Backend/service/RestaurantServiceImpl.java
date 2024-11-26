@@ -14,6 +14,7 @@ import UOSense.UOSense_Backend.repository.RestaurantImageRepository;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -21,6 +22,7 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class RestaurantServiceImpl implements RestaurantService{
     private final RestaurantRepository restaurantRepository;
@@ -112,6 +114,7 @@ public class RestaurantServiceImpl implements RestaurantService{
     }
 
     @Override
+    @Transactional
     public void saveMenuWith(NewMenuRequest menu, String imageUrl) {
         Restaurant restaurant = restaurantRepository.findById(menu.getRestaurantId())
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 식당입니다."));
@@ -120,6 +123,75 @@ public class RestaurantServiceImpl implements RestaurantService{
     }
 
     @Override
+    @Transactional
+    public void register(RestaurantRequest restaurantRequest) {
+        double rating = 0.00;
+        int reviewCount = 0;
+        int bookmarkCount = 0;
+
+        Restaurant restaurant = Restaurant.builder()
+                .name(restaurantRequest.getName())
+                .doorType(restaurantRequest.getDoorType())
+                .longitude(restaurantRequest.getLongitude())
+                .latitude(restaurantRequest.getLatitude())
+                .address(restaurantRequest.getAddress())
+                .phoneNumber(restaurantRequest.getPhoneNumber())
+                .rating(rating)
+                .category(restaurantRequest.getCategory())
+                .subDescription(restaurantRequest.getSubDescription())
+                .description(restaurantRequest.getDescription())
+                .reviewCount(reviewCount)
+                .bookmarkCount(bookmarkCount)
+                .build();
+
+        restaurantRepository.save(restaurant);
+
+    }
+
+    @Override
+    @Transactional
+    public void edit(RestaurantRequest restaurantRequest) {
+        double rating = 0.00;
+        /**
+         * rating 계산 code
+         * review 기능 추가 시 추가
+         */
+        int reviewCount = 0;
+        /**
+         * reviewCount 계산 code
+         * review 기능 추가 시 추가
+         */
+        int bookmarkCount = 0;
+        /**
+         * bookmarkCount 계산 code
+         * bookmark 기능 추가 시 추가
+         */
+
+        if(!restaurantRepository.existsById(restaurantRequest.getId())) {
+            throw new IllegalArgumentException("수정할 식당이 존재하지 않습니다.");
+        }
+
+        Restaurant restaurant = Restaurant.builder()
+                .id(restaurantRequest.getId())
+                .name(restaurantRequest.getName())
+                .doorType(restaurantRequest.getDoorType())
+                .longitude(restaurantRequest.getLongitude())
+                .latitude(restaurantRequest.getLatitude())
+                .address(restaurantRequest.getAddress())
+                .phoneNumber(restaurantRequest.getPhoneNumber())
+                .rating(rating)
+                .category(restaurantRequest.getCategory())
+                .subDescription(restaurantRequest.getSubDescription())
+                .description(restaurantRequest.getDescription())
+                .reviewCount(reviewCount)
+                .bookmarkCount(bookmarkCount)
+                .build();
+
+        restaurantRepository.save(restaurant);
+    }
+
+    @Override
+    @Transactional
     public void delete(int restaurantId) {
         if (!restaurantRepository.existsById(restaurantId)) {
             throw new IllegalArgumentException("삭제할 식당이 존재하지 않습니다.");
