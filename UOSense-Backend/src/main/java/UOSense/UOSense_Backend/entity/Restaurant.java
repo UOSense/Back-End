@@ -38,7 +38,7 @@ public class Restaurant {
 
     @Convert(converter = SubDescriptionConverter.class)
     @Column(name = "sub_description")
-    private String subDescription;
+    private SubDescription subDescription;
 
     private String description;
 

@@ -32,6 +32,45 @@ public class RestaurantController {
     private final MenuService menuService;
     private final RestaurantImageService restaurantImageService;
 
+    @PostMapping("/restaurant/new")
+    @Operation(summary = "신규 식당 등록", description = "새로운 식당을 추가합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "새로운 식당을 성공적으로 추가했습니다."),
+            @ApiResponse(responseCode = "400", description = "잘못된 요청입니다.")
+    })
+    public ResponseEntity<Void> createRestaurant(@RequestBody RestaurantRequest restaurantRequest) {
+        if (restaurantRequest.getId() != -1) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        try {
+            restaurantService.register(restaurantRequest);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @PutMapping("/restaurant/{restaurantId}/update")
+    @Operation(summary = "기존 식당 정보 수정", description = "기존 식당 정보를 수정합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "기존 식당 정보를 성공적으로 수정했습니다."),
+            @ApiResponse(responseCode = "400", description = "잘못된 요청입니다."),
+            @ApiResponse(responseCode = "404", description = "식당 정보를 찾을 수 없습니다.")
+    })
+    public ResponseEntity<Void> editRestaurant(@RequestBody RestaurantRequest restaurantRequest) {
+        if (restaurantRequest.getId() == -1) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        try {
+            restaurantService.edit(restaurantRequest);
+            return ResponseEntity.ok().build();
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.notFound().build();
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
     @GetMapping("/show")
     @Operation(summary = "식당 정보 일괄 조회", description = "식당 리스트를 불러옵니다.")
     @ApiResponses(value = {
