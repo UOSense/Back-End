@@ -1,6 +1,7 @@
 package UOSense.UOSense_Backend.entity;
 
 import UOSense.UOSense_Backend.common.*;
+import UOSense.UOSense_Backend.dto.RestaurantRequest;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
