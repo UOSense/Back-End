@@ -2,7 +2,6 @@ package UOSense.UOSense_Backend.dto;
 
 import UOSense.UOSense_Backend.entity.BusinessDay;
 import UOSense.UOSense_Backend.entity.Restaurant;
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
