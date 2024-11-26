@@ -129,20 +129,7 @@ public class RestaurantServiceImpl implements RestaurantService{
         int reviewCount = 0;
         int bookmarkCount = 0;
 
-        Restaurant restaurant = Restaurant.builder()
-                .name(restaurantRequest.getName())
-                .doorType(restaurantRequest.getDoorType())
-                .longitude(restaurantRequest.getLongitude())
-                .latitude(restaurantRequest.getLatitude())
-                .address(restaurantRequest.getAddress())
-                .phoneNumber(restaurantRequest.getPhoneNumber())
-                .rating(rating)
-                .category(restaurantRequest.getCategory())
-                .subDescription(restaurantRequest.getSubDescription())
-                .description(restaurantRequest.getDescription())
-                .reviewCount(reviewCount)
-                .bookmarkCount(bookmarkCount)
-                .build();
+        Restaurant restaurant = RestaurantRequest.toEntity(restaurantRequest, rating, reviewCount, bookmarkCount);
 
         restaurantRepository.save(restaurant);
 
@@ -171,21 +158,7 @@ public class RestaurantServiceImpl implements RestaurantService{
             throw new IllegalArgumentException("수정할 식당이 존재하지 않습니다.");
         }
 
-        Restaurant restaurant = Restaurant.builder()
-                .id(restaurantRequest.getId())
-                .name(restaurantRequest.getName())
-                .doorType(restaurantRequest.getDoorType())
-                .longitude(restaurantRequest.getLongitude())
-                .latitude(restaurantRequest.getLatitude())
-                .address(restaurantRequest.getAddress())
-                .phoneNumber(restaurantRequest.getPhoneNumber())
-                .rating(rating)
-                .category(restaurantRequest.getCategory())
-                .subDescription(restaurantRequest.getSubDescription())
-                .description(restaurantRequest.getDescription())
-                .reviewCount(reviewCount)
-                .bookmarkCount(bookmarkCount)
-                .build();
+        Restaurant restaurant = RestaurantRequest.toEntity(restaurantRequest, rating, reviewCount, bookmarkCount);
 
         restaurantRepository.save(restaurant);
     }
