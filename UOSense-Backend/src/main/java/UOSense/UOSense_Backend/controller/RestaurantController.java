@@ -50,7 +50,7 @@ public class RestaurantController {
         }
     }
 
-    @PatchMapping("/restaurant/{restaurantId}/update")
+    @PutMapping("/restaurant/{restaurantId}/update")
     @Operation(summary = "기존 식당 정보 수정", description = "기존 식당 정보를 수정합니다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "기존 식당 정보를 성공적으로 수정했습니다."),
