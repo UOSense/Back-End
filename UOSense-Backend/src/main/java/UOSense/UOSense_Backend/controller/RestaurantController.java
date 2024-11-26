@@ -192,6 +192,19 @@ public class RestaurantController {
         return ResponseEntity.ok().build();
     }
 
+    @PutMapping("/update/menu")
+    public ResponseEntity<Void> updateMenu(@RequestBody MenuRequest menuRequest) {
+        try {
+            Restaurant restaurant = restaurantService.getRestaurantById(menuRequest.getRestaurantId());
+            menuService.edit(menuRequest, restaurant);
+            return ResponseEntity.ok().build();
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.notFound().build();
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
     @DeleteMapping("/delete/menu/{id}")
     @Operation(summary = "메뉴 삭제", description = "메뉴를 삭제합니다.")
     @ApiResponses(value = {
