@@ -1,6 +1,7 @@
 package UOSense.UOSense_Backend.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,7 +18,7 @@ public class Menu {
     private int id;
 
     @ManyToOne(fetch = FetchType.LAZY)  // Restaurant와 다대일 관계
-    @JoinColumn(name = "restaurant_id")  // 외래키 명시
+    @JoinColumn(name = "restaurant_id", nullable = false)  // 외래키 명시
     private Restaurant restaurant;
 
     private String name;
