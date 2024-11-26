@@ -193,6 +193,13 @@ public class RestaurantController {
     }
 
     @PutMapping("/update/menu")
+    @Operation(summary = "특정 식당 메뉴 수정", description = "메뉴를 수정합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "메뉴를 성공적으로 수정하였습니다."),
+            @ApiResponse(responseCode = "400", description = "잘못된 요청입니다."),
+            @ApiResponse(responseCode = "404", description = "수정할 메뉴와 등록된 식당을 확인할 수 없습니다."),
+            @ApiResponse(responseCode = "500", description = "잘못된 요청입니다.")
+    })
     public ResponseEntity<Void> updateMenu(@RequestBody MenuRequest menuRequest) {
         try {
             Restaurant restaurant = restaurantService.getRestaurantById(menuRequest.getRestaurantId());
