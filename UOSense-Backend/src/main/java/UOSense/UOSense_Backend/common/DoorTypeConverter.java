@@ -4,7 +4,7 @@ import jakarta.persistence.Converter;
 
 @Converter(autoApply = true)
 public class DoorTypeConverter extends EnumBaseConverter<DoorType> {
-    protected DoorTypeConverter() {
+    public DoorTypeConverter() {
         super(DoorType.class);
     }
 }
