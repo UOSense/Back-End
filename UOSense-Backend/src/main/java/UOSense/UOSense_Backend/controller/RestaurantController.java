@@ -203,7 +203,7 @@ public class RestaurantController {
             @ApiResponse(responseCode = "404", description = "메뉴를 찾을 수 없습니다."),
             @ApiResponse(responseCode = "500", description = "잘못된 요청입니다.")
     })
-    public ResponseEntity<List<MenuResponse>> showMenu(@PathVariable int restaurantId) {
+    public ResponseEntity<List<MenuResponse>> showMenuList(@PathVariable int restaurantId) {
         try {
             List<MenuResponse> result = restaurantService.findMenuBy(restaurantId);
             return new ResponseEntity<>(result, HttpStatus.OK);
