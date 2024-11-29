@@ -64,4 +64,21 @@ public class SearchServiceImpl implements SearchService{
                             .collect(Collectors.toList()));
         };
     }
+
+    public List<RestaurantListResponse> convertToListDTO (List<Restaurant> sortedList) {
+        List<Integer> sortedRestaurantIds = sortedList.stream().map(Restaurant::getId).toList();
+        // restaurantId -> imageUrl 매핑 생성
+        Map<Integer, String> imageList = restaurantImageRepository.findAllFirstImageUrl(sortedRestaurantIds)
+                .stream().collect(Collectors.toMap(
+                        image -> image.getRestaurant().getId(), // Key: restaurantId
+                        RestaurantImage::getImageUrl            // Value: imageUrl
+                ));
+        // DTO 변환
+        return sortedList.stream()
+                .map(restaurant -> {
+                    String imageUrl = imageList.getOrDefault(restaurant.getId(), null);
+                    return RestaurantListResponse.from(restaurant, imageUrl);
+                })
+                .toList();
+    }
 }
