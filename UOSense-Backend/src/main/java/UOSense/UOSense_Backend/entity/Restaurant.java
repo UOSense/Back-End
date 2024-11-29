@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Builder
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -45,4 +44,8 @@ public class Restaurant {
 
     @Column(name = "bookmark_count", columnDefinition = "INT DEFAULT 0")
     private int bookmarkCount;
+
+    public void setId(int id) {
+        this.id = id;
+    }
 }

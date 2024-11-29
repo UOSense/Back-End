@@ -6,7 +6,6 @@ import lombok.*;
 import java.time.LocalTime;
 
 @Builder
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -41,4 +40,8 @@ public class BusinessDay {
 
     @Column(name = "is_holiday", nullable = false)
     private boolean isHoliday;
+
+    public void setId(int id) {
+        this.id = id;
+    }
 }
