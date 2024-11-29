@@ -40,4 +40,28 @@ public class SearchServiceImpl implements SearchService{
         List<Restaurant> sortedList = sort(result, sortFilter.DEFAULT);
         return convertToListDTO(sortedList);
     }
+
+    @Override
+    public List<Restaurant> sort(List<Restaurant> result, sortFilter filter) {
+        return  switch (filter) {
+            case DEFAULT, BOOKMARK -> // 선호도 기준: 즐겨찾기 많은 순
+                    result.stream()
+                            .sorted(Comparator.comparing(Restaurant::getBookmarkCount).reversed())
+                            .toList();
+            case DISTANCE ->// 거리 기준: 가까운 순 (원본 그대로 보내고 프론트에서 처리)
+                    result;
+            case RATING ->  // 평점 기준: 리뷰 평점이 높은 순
+                    result.stream()
+                            .sorted(Comparator.comparing(Restaurant::getRating).reversed())
+                            .toList();
+            case REVIEW ->  // 리뷰 수 기준: 리뷰 많은 순
+                    result.stream()
+                            .sorted(Comparator.comparing(Restaurant::getReviewCount).reversed())
+                            .toList();
+            case PRICE ->   // 착한 가격 기준: 평균 가격 낮은 순
+                    restaurantRepository.sortRestaurantsByAvgPrice(result.stream()
+                            .map(Restaurant::getId)
+                            .collect(Collectors.toList()));
+        };
+    }
 }
