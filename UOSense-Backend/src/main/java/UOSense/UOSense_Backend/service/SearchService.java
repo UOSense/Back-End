@@ -9,4 +9,5 @@ import java.util.List;
 public interface SearchService {
     enum sortFilter { DEFAULT, BOOKMARK, DISTANCE, RATING, REVIEW, PRICE }
     List<RestaurantListResponse> search(String keyword, DoorType doorType);
+    List<Restaurant> sort(List<Restaurant> result, sortFilter filter);
 }
