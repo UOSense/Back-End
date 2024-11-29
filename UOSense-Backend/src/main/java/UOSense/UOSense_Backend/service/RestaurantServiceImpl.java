@@ -1,7 +1,6 @@
 package UOSense.UOSense_Backend.service;
 
-import UOSense.UOSense_Backend.common.Category;
-import UOSense.UOSense_Backend.common.DoorType;
+import UOSense.UOSense_Backend.common.*;
 
 import UOSense.UOSense_Backend.dto.*;
 
@@ -16,10 +15,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.NoSuchElementException;
-import java.util.Optional;
+import java.util.*;
+
+import static java.util.stream.Collectors.toList;
 
 @Service
 @Transactional(readOnly = true)
@@ -110,7 +108,7 @@ public class RestaurantServiceImpl implements RestaurantService{
 
         return menuBoard.stream()
                 .map(MenuResponse::from)
-                .collect(Collectors.toList());
+                .collect(toList());
     }
 
     @Override
