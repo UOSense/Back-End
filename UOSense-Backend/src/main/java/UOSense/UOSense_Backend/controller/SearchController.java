@@ -46,4 +46,17 @@ public class SearchController {
             return ResponseEntity.badRequest().build();
         }
     }
+
+    public ResponseEntity<List<RestaurantListResponse>> filterByGate(@RequestParam String keyword,
+                                                               @RequestParam DoorType doorType) {
+        try {
+            List<Restaurant> filteredResult = searchService.filterByDoorType(keyword, doorType);
+            List<RestaurantListResponse> result = searchService.sort(filteredResult, SearchService.sortFilter.DEFAULT);
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
 }
