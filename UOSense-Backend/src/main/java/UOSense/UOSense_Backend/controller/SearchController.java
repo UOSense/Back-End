@@ -27,7 +27,7 @@ public class SearchController {
     private final SearchService searchService;
 
     @GetMapping("")
-    @Operation(summary = "식당 검색", description = "입력어와 출입구문 필터를 바탕으로 식당을 검색합니다.")
+    @Operation(summary = "식당 검색", description = "식당을 검색합니다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "검색 결과를 성공적으로 불러왔습니다."),
             @ApiResponse(responseCode = "400", description = "잘못된 요청입니다."),
@@ -46,7 +46,13 @@ public class SearchController {
             return ResponseEntity.badRequest().build();
         }
     }
-
+    @GetMapping("/filter")
+    @Operation(summary = "검색결과 출입구문 필터링", description = "검색 결과를 출입구문 기준으로 필터링합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "검색 결과를 성공적으로 불러왔습니다."),
+            @ApiResponse(responseCode = "400", description = "잘못된 요청입니다."),
+            @ApiResponse(responseCode = "404", description = "식당을 찾을 수 없습니다.")
+    })
     public ResponseEntity<List<RestaurantListResponse>> filterByGate(@RequestParam String keyword,
                                                                @RequestParam DoorType doorType) {
         try {
