@@ -21,12 +21,12 @@ import java.util.NoSuchElementException;
 
 @Tag(name = "검색")
 @RestController
-@RequestMapping("/api/v1/Search")
+@RequestMapping("/api/v1/search")
 @RequiredArgsConstructor
 public class SearchController {
     private final SearchService searchService;
 
-    @GetMapping("/restaurant")
+    @GetMapping("")
     @Operation(summary = "식당 검색", description = "입력어와 출입구문 필터를 바탕으로 식당을 검색합니다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "검색 결과를 성공적으로 불러왔습니다."),
