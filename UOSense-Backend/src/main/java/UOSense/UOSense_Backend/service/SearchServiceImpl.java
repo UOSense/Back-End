@@ -47,21 +47,8 @@ public class SearchServiceImpl implements SearchService{
     }
 
     @Override
-    public List<Restaurant> filterByDoorType(String keyword, DoorType doorType) {
-        // CacheManager를 통해 Caffeine Cache 가져오기
-        org.springframework.cache.Cache cache = cacheManager.getCache("restaurantCache");
-        if (cache == null) {
-            throw new IllegalStateException("restaurantCache가 설정되지 않았습니다.");
-        }
-
-        // 캐시에서 데이터 조회
-        List<Restaurant> cachedResults = cache.get(keyword, List.class);
-        if (cachedResults == null) {
-            throw new NoSuchElementException("캐시된 데이터가 없습니다.");
-        }
-
-        // DoorType으로 필터링
-        return cachedResults.stream()
+    public List<Restaurant> filterByDoorType(List<Restaurant> result, DoorType doorType) {
+        return result.stream()
                 .filter(restaurant -> restaurant.getDoorType().equals(doorType))
                 .collect(Collectors.toList());
     }
@@ -105,5 +92,20 @@ public class SearchServiceImpl implements SearchService{
                     return RestaurantListResponse.from(restaurant, imageUrl);
                 })
                 .toList();
+    }
+    @Override
+    public List<Restaurant> checkRestaurantCache(String keyword) {
+        // CacheManager를 통해 Caffeine Cache 가져오기
+        org.springframework.cache.Cache cache = cacheManager.getCache("restaurantCache");
+        if (cache == null) {
+            throw new IllegalStateException("restaurantCache가 설정되지 않았습니다.");
+        }
+
+        // 캐시에서 데이터 조회
+        List<Restaurant> cachedResults = cache.get(keyword, List.class);
+        if (cachedResults == null) {
+            throw new NoSuchElementException("캐시된 데이터가 없습니다.");
+        }
+        return cachedResults;
     }
 }
