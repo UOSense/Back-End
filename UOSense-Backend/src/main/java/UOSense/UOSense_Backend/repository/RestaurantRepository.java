@@ -16,7 +16,7 @@ public interface RestaurantRepository extends JpaRepository<Restaurant, Integer>
     List<Restaurant> findByDoorTypeAndCategory(DoorType doorType, Category category);
     List<Restaurant> findByCategory(Category category);
     List<Restaurant> findByDoorType(DoorType doorType);
-    List<Restaurant> findByDoorTypeAndSubDescription(DoorType doorType, SubDescription subDescription);
+    List<Restaurant> findBySubDescription(SubDescription subDescription);
     @Query(value = "SELECT r " +
             "FROM Restaurant r " +
             "JOIN Avg_Price_View v ON r.id = v.restaurant_id " +
