@@ -2,6 +2,7 @@ package UOSense.UOSense_Backend.controller;
 
 import UOSense.UOSense_Backend.common.DoorType;
 import UOSense.UOSense_Backend.dto.RestaurantListResponse;
+import UOSense.UOSense_Backend.entity.Restaurant;
 import UOSense.UOSense_Backend.service.SearchService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -32,11 +33,13 @@ public class SearchController {
             @ApiResponse(responseCode = "400", description = "잘못된 요청입니다."),
             @ApiResponse(responseCode = "404", description = "식당을 찾을 수 없습니다.")
     })
-    public ResponseEntity<List<RestaurantListResponse>> searchRestarantList(@RequestParam String keyword,
-                                                            @RequestParam DoorType doorType) {
+    public ResponseEntity<List<RestaurantListResponse>> search(@RequestParam String keyword,
+                                                                            @RequestParam DoorType closestDoor) {
         try {
-            List<RestaurantListResponse> restaurantListResponse = searchService.search(keyword, doorType);
-            return new ResponseEntity<>(restaurantListResponse, HttpStatus.OK);
+            List<Restaurant> restaurantList = searchService.findByKeyword(keyword); // restaurantList 캐시에 저장
+            List<Restaurant> filteredResult = searchService.filterByDoorType(keyword, closestDoor);
+            List<RestaurantListResponse> result = searchService.sort(filteredResult, SearchService.sortFilter.DEFAULT);
+            return new ResponseEntity<>(result, HttpStatus.OK);
         } catch (NoSuchElementException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         } catch (Exception e) {
