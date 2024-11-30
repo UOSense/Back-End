@@ -7,29 +7,35 @@ import UOSense.UOSense_Backend.entity.RestaurantImage;
 import UOSense.UOSense_Backend.repository.RestaurantImageRepository;
 import UOSense.UOSense_Backend.repository.RestaurantRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
 import java.util.stream.Collectors;
-
+@CacheConfig(cacheNames = "restaurantCache")
 @Service
 @RequiredArgsConstructor
 public class SearchServiceImpl implements SearchService{
     private final RestaurantRepository restaurantRepository;
     private final RestaurantImageRepository restaurantImageRepository;
+    private final CacheManager cacheManager;
+
+    @Cacheable(value = "restaurantCache", key = "#keyword")
     @Override
-    public List<RestaurantListResponse> search(String keyword, DoorType doorType) {
+    public List<Restaurant> findByKeyword(String keyword) {
         List<Restaurant> result;
         // 1. 세부 분류 (e.g. 술집, 카페, 음식점) 내 검색
         if (Arrays.stream(SubDescription.values()).anyMatch(subDescription -> subDescription.getValue().equals(keyword))) {
             EnumBaseConverter<SubDescription> converter = new SubDescriptionConverter();
             SubDescription description = converter.convertToEntityAttribute(keyword);
-            result = restaurantRepository.findByDoorTypeAndSubDescription(doorType,description);
+            result = restaurantRepository.findBySubDescription(description);
         // 2. 음식 종류 (e.g. 한식, 중식) 내 검색
         } else if (Arrays.stream(Category.values()).anyMatch(category -> category.getValue().equals(keyword))) {
             EnumBaseConverter<Category> converter = new CategoryConverter();
             Category category = converter.convertToEntityAttribute(keyword);
-            result = restaurantRepository.findByDoorTypeAndCategory(doorType,category);
+            result = restaurantRepository.findByCategory(category);
         } else {    // 3. 메뉴명, 식당이름 (레벨슈타인 거리 알고리즘 이용)
             result = null;
         }
@@ -37,13 +43,32 @@ public class SearchServiceImpl implements SearchService{
         if (result == null) {
             throw new NoSuchElementException("결과가 존재하지 않습니다.");
         }
-        List<Restaurant> sortedList = sort(result, sortFilter.DEFAULT);
-        return convertToListDTO(sortedList);
+        return result;
     }
 
     @Override
-    public List<Restaurant> sort(List<Restaurant> result, sortFilter filter) {
-        return  switch (filter) {
+    public List<Restaurant> filterByDoorType(String keyword, DoorType doorType) {
+        // CacheManager를 통해 Caffeine Cache 가져오기
+        org.springframework.cache.Cache cache = cacheManager.getCache("restaurantCache");
+        if (cache == null) {
+            throw new IllegalStateException("restaurantCache가 설정되지 않았습니다.");
+        }
+
+        // 캐시에서 데이터 조회
+        List<Restaurant> cachedResults = cache.get(keyword, List.class);
+        if (cachedResults == null) {
+            throw new NoSuchElementException("캐시된 데이터가 없습니다.");
+        }
+
+        // DoorType으로 필터링
+        return cachedResults.stream()
+                .filter(restaurant -> restaurant.getDoorType().equals(doorType))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<RestaurantListResponse> sort(List<Restaurant> result, sortFilter filter) {
+        return convertToListDTO(switch (filter) {
             case DEFAULT, BOOKMARK -> // 선호도 기준: 즐겨찾기 많은 순
                     result.stream()
                             .sorted(Comparator.comparing(Restaurant::getBookmarkCount).reversed())
@@ -62,10 +87,10 @@ public class SearchServiceImpl implements SearchService{
                     restaurantRepository.sortRestaurantsByAvgPrice(result.stream()
                             .map(Restaurant::getId)
                             .collect(Collectors.toList()));
-        };
+        });
     }
 
-    public List<RestaurantListResponse> convertToListDTO (List<Restaurant> sortedList) {
+    private List<RestaurantListResponse> convertToListDTO (List<Restaurant> sortedList) {
         List<Integer> sortedRestaurantIds = sortedList.stream().map(Restaurant::getId).toList();
         // restaurantId -> imageUrl 매핑 생성
         Map<Integer, String> imageList = restaurantImageRepository.findAllFirstImageUrl(sortedRestaurantIds)
