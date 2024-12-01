@@ -18,10 +18,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
-import java.util.NoSuchElementException;
-import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
@@ -36,7 +34,7 @@ public class RestaurantServiceImpl implements RestaurantService{
     public List<RestaurantListResponse> getAllRestaurants() {
         List<Restaurant> restaurants = restaurantRepository.findAll();
         if (restaurants.isEmpty()) throw new NoSuchElementException("식당 리스트가 존재하지 않습니다.");
-        List<RestaurantListResponse> responseList = restaurants.stream()
+        return restaurants.stream()
                 .map(restaurant -> {
                     Optional<String> imageResponse = restaurantImageRepository.findFirstImageUrl(restaurant.getId());
                     String imageUrl = null;
@@ -44,14 +42,13 @@ public class RestaurantServiceImpl implements RestaurantService{
                     return RestaurantListResponse.from(restaurant, imageUrl);
                 })
                 .toList();
-        return responseList;
     }
 
     @Override
     public List<RestaurantListResponse> getRestaurantsByFilter(DoorType doorType, Category category) {
         List<Restaurant> restaurants = restaurantRepository.findByDoorTypeAndCategory(doorType, category);
         if (restaurants.isEmpty()) throw new NoSuchElementException("해당 식당 리스트가 존재하지 않습니다.");
-        List<RestaurantListResponse> responseList = restaurants.stream()
+        return restaurants.stream()
                 .map(restaurant -> {
                     Optional<String> imageResponse = restaurantImageRepository.findFirstImageUrl(restaurant.getId());
                     String imageUrl = null;
@@ -59,14 +56,13 @@ public class RestaurantServiceImpl implements RestaurantService{
                     return RestaurantListResponse.from(restaurant, imageUrl);
                 })
                 .toList();
-        return responseList;
     }
 
     @Override
     public List<RestaurantListResponse> getRestaurantsByCategory(Category category) {
         List<Restaurant> restaurants = restaurantRepository.findByCategory(category);
         if (restaurants.isEmpty()) throw new NoSuchElementException("해당 식당 리스트가 존재하지 않습니다.");
-        List<RestaurantListResponse> responseList = restaurants.stream()
+        return restaurants.stream()
                 .map(restaurant -> {
                     Optional<String> imageResponse = restaurantImageRepository.findFirstImageUrl(restaurant.getId());
                     String imageUrl = null;
@@ -74,14 +70,13 @@ public class RestaurantServiceImpl implements RestaurantService{
                     return RestaurantListResponse.from(restaurant, imageUrl);
                 })
                 .toList();
-        return responseList;
     }
 
     @Override
     public List<RestaurantListResponse> getRestaurantsByDoorType(DoorType doorType) {
         List<Restaurant> restaurants = restaurantRepository.findByDoorType(doorType);
         if (restaurants.isEmpty()) throw new NoSuchElementException("해당 식당 리스트가 존재하지 않습니다.");
-        List<RestaurantListResponse> responseList = restaurants.stream()
+        return restaurants.stream()
                 .map(restaurant -> {
                     Optional<String> imageResponse = restaurantImageRepository.findFirstImageUrl(restaurant.getId());
                     String imageUrl = null;
@@ -89,7 +84,6 @@ public class RestaurantServiceImpl implements RestaurantService{
                     return RestaurantListResponse.from(restaurant, imageUrl);
                 })
                 .toList();
-        return responseList;
     }
 
     @Override
@@ -176,7 +170,7 @@ public class RestaurantServiceImpl implements RestaurantService{
     }
 
     @Override
-    public BusinessDayList findBusinessDayListBy(int restaurantId) {
+    public BusinessDayList findBusinessDayList(int restaurantId) {
         List<BusinessDay> response = businessDayRepository.findAllByRestaurantId(restaurantId);
         if (response.isEmpty()) {
             throw new IllegalArgumentException("식당에 대한 영업 정보가 존재하지 않습니다.");
@@ -189,7 +183,7 @@ public class RestaurantServiceImpl implements RestaurantService{
 
     @Override
     @Transactional
-    public void editBusinessDayWith(BusinessDayList businessDayList) {
+    public void editBusinessDay(BusinessDayList businessDayList) {
         Restaurant restaurant = restaurantRepository.findById(businessDayList.getRestaurantId())
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 식당입니다."));
 
@@ -209,7 +203,7 @@ public class RestaurantServiceImpl implements RestaurantService{
 
     @Override
     @Transactional
-    public void saveBusinessDayWith(BusinessDayList businessDayList) {
+    public void saveBusinessDay(BusinessDayList businessDayList) {
         Restaurant restaurant = restaurantRepository.findById(businessDayList.getRestaurantId())
                 .orElseThrow(() -> new NoSuchElementException("존재하지 않는 식당입니다."));
 
@@ -229,7 +223,7 @@ public class RestaurantServiceImpl implements RestaurantService{
 
     @Override
     @Transactional
-    public void deleteBusinessDayWith(int businessDayId) {
+    public void deleteBusinessDay(int businessDayId) {
         if (!businessDayRepository.existsById(businessDayId)) {
             throw new IllegalArgumentException("삭제할 영업 정보가 존재하지 않습니다.");
         }

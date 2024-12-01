@@ -252,7 +252,7 @@ public class RestaurantController {
     })
     public ResponseEntity<BusinessDayList> getBusinessDayList(@PathVariable int restaurantId) {
         try {
-            BusinessDayList businessDayList = restaurantService.findBusinessDayListBy(restaurantId);
+            BusinessDayList businessDayList = restaurantService.findBusinessDayList(restaurantId);
             return new ResponseEntity<>(businessDayList, HttpStatus.OK);
         } catch(IllegalArgumentException e) {
             return ResponseEntity.notFound().build();
@@ -270,7 +270,7 @@ public class RestaurantController {
     })
     public ResponseEntity<Void> editBusinessDayList(@RequestBody BusinessDayList businessDayList) {
         try {
-            restaurantService.editBusinessDayWith(businessDayList);
+            restaurantService.editBusinessDay(businessDayList);
             return ResponseEntity.ok().build();
         } catch(IllegalArgumentException e) {
             return ResponseEntity.notFound().build();
@@ -288,7 +288,7 @@ public class RestaurantController {
     })
     public ResponseEntity<Void> createBusinessDayList(@RequestBody BusinessDayList businessDayList) {
         try {
-            restaurantService.saveBusinessDayWith(businessDayList);
+            restaurantService.saveBusinessDay(businessDayList);
             return ResponseEntity.ok().build();
         } catch(NoSuchElementException e) {
             return ResponseEntity.notFound().build();
@@ -306,7 +306,7 @@ public class RestaurantController {
     })
     public ResponseEntity<Void> deleteBusinessDay(@PathVariable int businessdayId) {
         try {
-            restaurantService.deleteBusinessDayWith(businessdayId);
+            restaurantService.deleteBusinessDay(businessdayId);
             return ResponseEntity.ok().build();
         } catch(IllegalArgumentException e) {
             return ResponseEntity.notFound().build();

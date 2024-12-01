@@ -19,8 +19,8 @@ public interface RestaurantService {
     void register(RestaurantRequest restaurantRequest);
     void edit(RestaurantRequest restaurantRequest);
     void delete(int restaurantId);
-    BusinessDayList findBusinessDayListBy(int restaurantId);
-    void editBusinessDayWith(BusinessDayList businessDayList);
-    void saveBusinessDayWith(BusinessDayList businessDayList);
-    void deleteBusinessDayWith(int businessDayId);
+    BusinessDayList findBusinessDayList(int restaurantId);
+    void editBusinessDay(BusinessDayList businessDayList);
+    void saveBusinessDay(BusinessDayList businessDayList);
+    void deleteBusinessDay(int businessDayId);
 }
