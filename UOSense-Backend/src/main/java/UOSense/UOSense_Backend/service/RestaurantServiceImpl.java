@@ -1,7 +1,6 @@
 package UOSense.UOSense_Backend.service;
 
-import UOSense.UOSense_Backend.common.Category;
-import UOSense.UOSense_Backend.common.DoorType;
+import UOSense.UOSense_Backend.common.*;
 
 import UOSense.UOSense_Backend.dto.*;
 
@@ -19,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
+import static java.util.stream.Collectors.toList;
 import java.util.stream.Collectors;
 
 @Service
@@ -107,7 +107,7 @@ public class RestaurantServiceImpl implements RestaurantService{
 
         return menuBoard.stream()
                 .map(MenuResponse::from)
-                .collect(Collectors.toList());
+                .collect(toList());
     }
 
     @Override

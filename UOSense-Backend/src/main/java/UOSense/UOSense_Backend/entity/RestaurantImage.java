@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Getter
 @Entity
+@Table(name = "Restaurant_Image")
 public class RestaurantImage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

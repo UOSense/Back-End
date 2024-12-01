@@ -15,6 +15,10 @@ public class RestaurantListResponse {
 
     private String name;
 
+    private double longitude;
+
+    private double latitude;
+
     private String address;
 
     private double rating;

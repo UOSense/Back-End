@@ -4,7 +4,7 @@ import jakarta.persistence.Converter;
 
 @Converter(autoApply = true)
 public class CategoryConverter extends EnumBaseConverter<Category>{
-    protected CategoryConverter() {
+    public CategoryConverter() {
         super(Category.class);
     }
 }
