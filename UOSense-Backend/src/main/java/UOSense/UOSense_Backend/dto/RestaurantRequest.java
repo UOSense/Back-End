@@ -35,40 +35,28 @@ public class RestaurantRequest {
     private String description;
 
     public static Restaurant toEntity(RestaurantRequest restaurantRequest, double rating, int reviewCount, int bookmarkCount) {
+        Restaurant restaurant = Restaurant.builder()
+                .name(restaurantRequest.getName())
+                .doorType(restaurantRequest.getDoorType())
+                .longitude(restaurantRequest.getLongitude())
+                .latitude(restaurantRequest.getLatitude())
+                .address(restaurantRequest.getAddress())
+                .phoneNumber(restaurantRequest.getPhoneNumber())
+                .rating(rating)
+                .category(restaurantRequest.getCategory())
+                .subDescription(restaurantRequest.getSubDescription())
+                .description(restaurantRequest.getDescription())
+                .reviewCount(reviewCount)
+                .bookmarkCount(bookmarkCount)
+                .build();
+
         if (restaurantRequest.getId() == -1) {
-            // createRestaurant
-            return Restaurant.builder()
-                    .name(restaurantRequest.getName())
-                    .doorType(restaurantRequest.getDoorType())
-                    .longitude(restaurantRequest.getLongitude())
-                    .latitude(restaurantRequest.getLatitude())
-                    .address(restaurantRequest.getAddress())
-                    .phoneNumber(restaurantRequest.getPhoneNumber())
-                    .rating(rating)
-                    .category(restaurantRequest.getCategory())
-                    .subDescription(restaurantRequest.getSubDescription())
-                    .description(restaurantRequest.getDescription())
-                    .reviewCount(reviewCount)
-                    .bookmarkCount(bookmarkCount)
-                    .build();
+            // 신규 엔티티이므로 id 필드를 비워둠.
+            return restaurant;
         }
         else {
-            // editRestaurant
-            return Restaurant.builder()
-                    .id(restaurantRequest.getId())
-                    .name(restaurantRequest.getName())
-                    .doorType(restaurantRequest.getDoorType())
-                    .longitude(restaurantRequest.getLongitude())
-                    .latitude(restaurantRequest.getLatitude())
-                    .address(restaurantRequest.getAddress())
-                    .phoneNumber(restaurantRequest.getPhoneNumber())
-                    .rating(rating)
-                    .category(restaurantRequest.getCategory())
-                    .subDescription(restaurantRequest.getSubDescription())
-                    .description(restaurantRequest.getDescription())
-                    .reviewCount(reviewCount)
-                    .bookmarkCount(bookmarkCount)
-                    .build();
+            restaurant.setId(restaurantRequest.getId());
+            return restaurant;
         }
     }
 }

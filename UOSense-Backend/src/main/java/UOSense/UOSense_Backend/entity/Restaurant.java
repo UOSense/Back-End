@@ -2,10 +2,7 @@ package UOSense.UOSense_Backend.entity;
 
 import UOSense.UOSense_Backend.common.*;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Builder
 @AllArgsConstructor
@@ -46,4 +43,8 @@ public class Restaurant {
 
     @Column(name = "bookmark_count", columnDefinition = "INT DEFAULT 0")
     private int bookmarkCount;
+
+    public void setId(int id) {
+        this.id = id;
+    }
 }
