@@ -11,8 +11,6 @@ public class SearchUtils {
 
     /**
      *
-     * @param s1
-     * @param s2
      * 두 문자열 사이의 거리를 측정하는 알고리즘
      */
     public static int damerauLevenshteinDistance(String s1, String s2) {
