@@ -20,6 +20,7 @@ public class BusinessDay {
     private Restaurant restaurant;
 
     @Column(name = "day_of_week", nullable = false)
+    @Enumerated(EnumType.STRING)
     private DayOfWeek dayOfWeek;
     public enum DayOfWeek {Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday}
 
