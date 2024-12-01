@@ -2,8 +2,11 @@ package UOSense.UOSense_Backend.service;
 
 import UOSense.UOSense_Backend.common.*;
 import UOSense.UOSense_Backend.dto.RestaurantListResponse;
+import UOSense.UOSense_Backend.dto.SearchPair;
+import UOSense.UOSense_Backend.entity.Menu;
 import UOSense.UOSense_Backend.entity.Restaurant;
 import UOSense.UOSense_Backend.entity.RestaurantImage;
+import UOSense.UOSense_Backend.repository.MenuRepository;
 import UOSense.UOSense_Backend.repository.RestaurantImageRepository;
 import UOSense.UOSense_Backend.repository.RestaurantRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +23,7 @@ import java.util.stream.Collectors;
 public class SearchServiceImpl implements SearchService{
     private final RestaurantRepository restaurantRepository;
     private final RestaurantImageRepository restaurantImageRepository;
+    private final MenuRepository menuRepository;
     private final CacheManager cacheManager;
 
     @Cacheable(value = "restaurantCache", key = "#keyword")
@@ -37,7 +41,28 @@ public class SearchServiceImpl implements SearchService{
             Category category = converter.convertToEntityAttribute(keyword);
             result = restaurantRepository.findByCategory(category);
         } else {    // 3. 메뉴명, 식당이름 (레벨슈타인 거리 알고리즘 이용)
-            result = null;
+            List<Restaurant> restaurants = restaurantRepository.findAll();
+            List<Menu> menus = menuRepository.findAll();
+            if (restaurants.isEmpty() && menus.isEmpty()) {
+                throw new NoSuchElementException("검색할 정보가 존재하지 않습니다.");
+            }
+
+            List<SearchPair> searchList = new ArrayList<>();
+
+            for (Restaurant restaurant : restaurants) {
+                String name = restaurant.getName();
+                int distance = SearchUtils.damerauLevenshteinDistance(keyword, name);
+                searchList.add(new SearchPair(distance, restaurant));
+            }
+
+            for (Menu menu : menus) {
+                Restaurant restaurant = menu.getRestaurant();
+                String name = menu.getName();
+                int distance = SearchUtils.damerauLevenshteinDistance(keyword, name);
+                searchList.add(new SearchPair(distance, restaurant));
+            }
+
+            result = SearchUtils.select(searchList);
         }
 
         if (result == null) {
