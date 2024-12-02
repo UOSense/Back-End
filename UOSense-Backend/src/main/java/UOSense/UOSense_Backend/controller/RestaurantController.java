@@ -19,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -83,8 +84,7 @@ public class RestaurantController {
         List<RestaurantListResponse> restaurantList;
         boolean doorTypeFlag, categoryFlag;
 
-        // doorType이 FRONT, SIDE, BACK일 경우, 해당 지역에 해당하는 식당 검색
-        if (doorType == DoorType.FRONT || doorType == DoorType.SIDE || doorType == DoorType.BACK) {
+        if (Arrays.asList(DoorType.values()).contains(doorType)) {
             doorTypeFlag = true;
         }
         else if (doorType == null) {
@@ -95,9 +95,7 @@ public class RestaurantController {
         }
 
 
-        // category가 KOREAN, CHINESE, JAPANESE, WESTERN, OTHER 일 경우, 해당 category에 해당하는 식당 검색
-        if (category == Category.KOREAN || category == Category.CHINESE || category == Category.JAPANESE
-            || category == Category.WESTERN || category == Category.OTHER) {
+        if (Arrays.asList(Category.values()).contains(category)) {
             categoryFlag = true;
         }
         else if (category == null) {
