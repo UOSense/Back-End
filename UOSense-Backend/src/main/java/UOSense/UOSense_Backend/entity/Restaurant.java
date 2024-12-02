@@ -6,6 +6,7 @@ import lombok.*;
 
 @Builder
 @AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Entity
 public class Restaurant {
