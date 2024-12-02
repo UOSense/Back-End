@@ -2,8 +2,6 @@ package UOSense.UOSense_Backend.service;
 
 import UOSense.UOSense_Backend.common.*;
 import UOSense.UOSense_Backend.dto.RestaurantListResponse;
-import UOSense.UOSense_Backend.dto.SearchPair;
-import UOSense.UOSense_Backend.entity.Menu;
 import UOSense.UOSense_Backend.entity.Restaurant;
 import UOSense.UOSense_Backend.entity.RestaurantImage;
 import UOSense.UOSense_Backend.repository.MenuRepository;
