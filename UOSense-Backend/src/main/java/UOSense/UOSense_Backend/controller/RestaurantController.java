@@ -203,7 +203,7 @@ public class RestaurantController {
             @ApiResponse(responseCode = "404", description = "메뉴를 찾을 수 없습니다."),
             @ApiResponse(responseCode = "500", description = "잘못된 요청입니다.")
     })
-    public ResponseEntity<List<MenuResponse>> showMenu(@PathVariable int restaurantId) {
+    public ResponseEntity<List<MenuResponse>> showMenuList(@PathVariable int restaurantId) {
         try {
             List<MenuResponse> result = restaurantService.findMenuBy(restaurantId);
             return new ResponseEntity<>(result, HttpStatus.OK);
@@ -264,6 +264,78 @@ public class RestaurantController {
             return ResponseEntity.ok().build();
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @GetMapping("/restaurant/{restaurantId}/businessday")
+    @Operation(summary = "특정 식당 영업 정보 조회", description = "특정 식당의 영업 정보를 조회합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "영업 정보를 성공적으로 조회했습니다."),
+            @ApiResponse(responseCode = "404", description = "식당의 영업 정보를 찾을 수 없습니다."),
+            @ApiResponse(responseCode = "400", description = "잘못된 요청입니다.")
+    })
+    public ResponseEntity<BusinessDayList> getBusinessDayList(@PathVariable int restaurantId) {
+        try {
+            BusinessDayList businessDayList = restaurantService.findBusinessDayList(restaurantId);
+            return new ResponseEntity<>(businessDayList, HttpStatus.OK);
+        } catch(IllegalArgumentException e) {
+            return ResponseEntity.notFound().build();
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @PutMapping("/restaurant/update/businessday")
+    @Operation(summary = "특정 식당 영업 정보 수정", description = "특정 식당의 영업 정보를 수정합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "영업 정보를 성공적으로 수정했습니다."),
+            @ApiResponse(responseCode = "404", description = "식당의 영업 정보를 찾을 수 없습니다."),
+            @ApiResponse(responseCode = "400", description = "잘못된 요청입니다.")
+    })
+    public ResponseEntity<Void> editBusinessDayList(@RequestBody BusinessDayList businessDayList) {
+        try {
+            restaurantService.editBusinessDay(businessDayList);
+            return ResponseEntity.ok().build();
+        } catch(IllegalArgumentException e) {
+            return ResponseEntity.notFound().build();
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @PostMapping("/restaurant/businessday")
+    @Operation(summary = "특정 식당 영업 정보 등록", description = "특정 식당의 영업 정보를 등록합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "영업 정보를 성공적으로 등록했습니다."),
+            @ApiResponse(responseCode = "404", description = "식당 정보를 찾을 수 없습니다."),
+            @ApiResponse(responseCode = "400", description = "잘못된 요청입니다.")
+    })
+    public ResponseEntity<Void> createBusinessDayList(@RequestBody BusinessDayList businessDayList) {
+        try {
+            restaurantService.saveBusinessDay(businessDayList);
+            return ResponseEntity.ok().build();
+        } catch(NoSuchElementException e) {
+            return ResponseEntity.notFound().build();
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @DeleteMapping("/restaurant/delete/businessday/{businessdayId}")
+    @Operation(summary = "영업 정보 삭제", description = "영업 정보를 삭제합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "영업 정보를 성공적으로 삭제했습니다."),
+            @ApiResponse(responseCode = "404", description = "삭제할 영업 정보가 존재하지 않습니다."),
+            @ApiResponse(responseCode = "400", description = "잘못된 요청입니다.")
+    })
+    public ResponseEntity<Void> deleteBusinessDay(@PathVariable int businessdayId) {
+        try {
+            restaurantService.deleteBusinessDay(businessdayId);
+            return ResponseEntity.ok().build();
+        } catch(IllegalArgumentException e) {
+            return ResponseEntity.notFound().build();
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();
         }
