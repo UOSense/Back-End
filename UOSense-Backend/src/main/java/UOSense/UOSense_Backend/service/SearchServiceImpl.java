@@ -4,6 +4,7 @@ import UOSense.UOSense_Backend.common.*;
 import UOSense.UOSense_Backend.dto.RestaurantListResponse;
 import UOSense.UOSense_Backend.entity.Restaurant;
 import UOSense.UOSense_Backend.entity.RestaurantImage;
+import UOSense.UOSense_Backend.repository.MenuRepository;
 import UOSense.UOSense_Backend.repository.RestaurantImageRepository;
 import UOSense.UOSense_Backend.repository.RestaurantRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +21,7 @@ import java.util.stream.Collectors;
 public class SearchServiceImpl implements SearchService{
     private final RestaurantRepository restaurantRepository;
     private final RestaurantImageRepository restaurantImageRepository;
+    private final MenuRepository menuRepository;
     private final CacheManager cacheManager;
 
     @Cacheable(value = "restaurantCache", key = "#keyword")
@@ -37,7 +39,18 @@ public class SearchServiceImpl implements SearchService{
             Category category = converter.convertToEntityAttribute(keyword);
             result = restaurantRepository.findByCategory(category);
         } else {    // 3. 메뉴명, 식당이름 (레벨슈타인 거리 알고리즘 이용)
-            result = null;
+            List<Restaurant> restaurants = restaurantRepository.findByNameContains(keyword);
+            List<Restaurant> menus = menuRepository.findByNameContains(keyword);
+            if (restaurants.isEmpty() && menus.isEmpty()) {
+                throw new NoSuchElementException("검색할 정보가 존재하지 않습니다.");
+            }
+
+            // 중복을 제거하기 위해 Set 사용
+            Set<Restaurant> uniqueSet = new HashSet<>();
+            uniqueSet.addAll(restaurants);
+            uniqueSet.addAll(menus);
+
+            result = new ArrayList<>(uniqueSet);
         }
 
         if (result == null) {
