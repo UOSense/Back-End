@@ -12,6 +12,7 @@ import java.util.Random;
 @RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService{
     final int CODE_LENGTH = 6;
+    private final RedisUtil redisUtil;
     Random random = new Random();
 
     @Override
@@ -34,7 +35,9 @@ public class AuthServiceImpl implements AuthService{
     }
 
     @Override
-    public boolean checkAuthCode(String codeToCheck) {
-        return false;
+    public boolean checkAuthCode(String email, String authCode) {
+        String redisAuthCode = redisUtil.getData(email);
+        if (redisAuthCode == null) throw new NoSuchElementException("해당 이메일로 보낸 인증코드가 존재하지 않습니다");
+        return authCode.equals(redisAuthCode);
     }
 }
