@@ -1,6 +1,5 @@
 package UOSense.UOSense_Backend.repository;
 
-import UOSense.UOSense_Backend.common.BaseEnum;
 import UOSense.UOSense_Backend.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
