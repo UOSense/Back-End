@@ -30,8 +30,8 @@ public class AuthServiceImpl implements AuthService{
     }
 
     @Override
-    public void saveAuthCode(String authCode) {
-
+    public void saveAuthCode(String email, String authCode ) {
+        redisUtil.setDataExpire(email, authCode);
     }
 
     @Override
