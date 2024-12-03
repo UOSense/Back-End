@@ -1,20 +1,22 @@
 package UOSense.UOSense_Backend.service;
 
+import UOSense.UOSense_Backend.common.EmailUtil;
+import UOSense.UOSense_Backend.common.RedisUtil;
 import UOSense.UOSense_Backend.repository.UserRepository;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Arrays;
 
 @Service
 @RequiredArgsConstructor
 @Transactional
 public class MailServiceImpl implements MailService{
-    private final JavaMailSender mailSender;
     private final UserRepository userRepository;
+    private final EmailUtil emailUtil;
 
     @Override
     public boolean checkMailAddress(String mailAddress) {
@@ -32,19 +34,14 @@ public class MailServiceImpl implements MailService{
     }
 
     @Override
-    public MimeMessage createMail(String email, String authCode) throws MessagingException {
-        MimeMessage message = mailSender.createMimeMessage();
-        MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
-        helper.setTo(email);
-        helper.setSubject("[시대생 맛집 지도] 회원가입 인증 번호");
-        helper.setText("<html><body style=\"text-align: center;\"><h2> 인증번호 [ "+authCode+" ]</h2>" +
-                "<b>시대생 맛집 지도 회원가입 화면에서 인증번호를 입력해 주세요.</b></body></html>", true);
-        /*실제로 존재하는 주소. 인증 이메일 주소와 달라도 됨. SMTP 서버 기본 주소 존재 시 없어도 됨*/
-        // helper.setFrom("contact@project.com");  
-        return message;
-    }
-    @Override
-    public void sendMail(MimeMessage message) {
-        mailSender.send(message);
+    public void sendAuthMail(String email, String purpose, String authCode) {
+        try {
+            String body = "<html><body style=\"text-align: center;\"><h2> 인증번호 [ "+ authCode +" ]</h2>" +
+                    "<b>시대생 맛집 지도 "+ purpose +" 화면에서 인증번호를 입력해 주세요.</b></body></html>";
+            MimeMessage newMail = emailUtil.createMail(email,purpose +" 인증 번호", body);
+            emailUtil.sendMail(newMail);
+        } catch (MessagingException e) {
+            throw new IllegalArgumentException("메세지 전송 과정에 문제가 생겼습니다.");
+        }
     }
 }
