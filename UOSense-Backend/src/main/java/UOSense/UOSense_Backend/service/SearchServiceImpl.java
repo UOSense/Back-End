@@ -40,7 +40,7 @@ public class SearchServiceImpl implements SearchService{
             EnumBaseConverter<Category> converter = new CategoryConverter();
             Category category = converter.convertToEntityAttribute(keyword);
             result = restaurantRepository.findByCategory(category);
-        } else {    // 3. 메뉴명, 식당이름 (레벨슈타인 거리 알고리즘 이용)
+        } else {    // 3. 메뉴명, 식당이름
             List<Restaurant> restaurants = restaurantRepository.findAll();
             List<Menu> menus = menuRepository.findAll();
             if (restaurants.isEmpty() && menus.isEmpty()) {
