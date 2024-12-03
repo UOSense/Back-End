@@ -31,6 +31,9 @@ public class EmailConfig {
     @Value("${spring.mail.properties.mail.smtp.starttls.required}")
     private boolean starttlsRequired;
 
+    @Value("${spring.mail.properties.auth-code-expiration-millis}")
+    private int authCodeExpirationMillis;
+
     //@Value("${spring.mail.properties.mail.smtp.connectiontimeout}")
     //private int connectionTimeout;
 
