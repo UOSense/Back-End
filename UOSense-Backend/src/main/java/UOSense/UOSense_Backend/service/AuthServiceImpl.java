@@ -36,7 +36,7 @@ public class AuthServiceImpl implements AuthService{
         try {
             redisUtil.setDataExpire(email, authCode);
         } catch (Exception e) {
-            throw new IllegalArgumentException("인증코드 저장에 실패했습니다.");
+            throw new IllegalArgumentException("인증코드 저장에 실패했습니다. "+e.getMessage());
         }
     }
 
