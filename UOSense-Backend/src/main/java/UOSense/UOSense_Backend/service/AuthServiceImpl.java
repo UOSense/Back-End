@@ -31,13 +31,19 @@ public class AuthServiceImpl implements AuthService{
 
     @Override
     public void saveAuthCode(String email, String authCode ) {
-        redisUtil.setDataExpire(email, authCode);
+        if (email == null || authCode == null)
+            throw new IllegalArgumentException("메일 주소 혹은 인증코드가 비어있습니다.");
+        try {
+            redisUtil.setDataExpire(email, authCode);
+        } catch (Exception e) {
+            throw new IllegalArgumentException("인증코드 저장에 실패했습니다.");
+        }
     }
 
     @Override
     public boolean checkAuthCode(String email, String authCode) {
         String redisAuthCode = redisUtil.getData(email);
-        if (redisAuthCode == null) throw new NoSuchElementException("해당 이메일로 보낸 인증코드가 존재하지 않습니다");
+        if (redisAuthCode == null) throw new NoSuchElementException("해당 메일로 보낸 인증코드가 존재하지 않습니다");
         return authCode.equals(redisAuthCode);
     }
 }
