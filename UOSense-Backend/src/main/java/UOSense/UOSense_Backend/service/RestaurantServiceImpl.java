@@ -112,7 +112,7 @@ public class RestaurantServiceImpl implements RestaurantService{
 
     @Override
     @Transactional
-    public void saveMenuWith(NewMenuRequest menu, String imageUrl) {
+    public void registerMenu(NewMenuRequest menu, String imageUrl) {
         Restaurant restaurant = restaurantRepository.findById(menu.getRestaurantId())
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 식당입니다."));
 
