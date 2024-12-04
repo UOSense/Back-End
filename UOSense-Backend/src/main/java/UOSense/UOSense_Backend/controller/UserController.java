@@ -2,6 +2,7 @@ package UOSense.UOSense_Backend.controller;
 
 import UOSense.UOSense_Backend.dto.NewUserRequest;
 import UOSense.UOSense_Backend.service.UserService;
+import com.sun.jdi.request.DuplicateRequestException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -31,7 +32,7 @@ public class UserController {
         try {
             userService.register(newUserRequest);
             return ResponseEntity.ok().build();
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException | DuplicateRequestException e) {
             return ResponseEntity.badRequest().body(false);
         }
     }
