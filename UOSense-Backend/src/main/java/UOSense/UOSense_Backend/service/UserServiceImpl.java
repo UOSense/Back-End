@@ -24,4 +24,15 @@ public class UserServiceImpl implements UserService {
         // DB에 저장
         userRepository.save(newUserRequest.toEntity(encodedPassword));
     }
+
+    private boolean validatedUserInfo(NewUserRequest newUserRequest) {
+        // 웹메일 검증
+        boolean validatedMail = mailService.checkDuplicatedMail(newUserRequest.getEmail()) &&
+                mailService.checkMailAddress(newUserRequest.getEmail());
+        // 비밀번호 검증
+        boolean validatedPassword = checkPasswordFormat(newUserRequest.getPassword());
+        // 닉네임 검증
+        boolean validatedNickname = checkNickName(newUserRequest.getNickname());
+        return validatedMail || validatedPassword || validatedNickname;
+    }
 }
