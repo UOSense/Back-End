@@ -21,6 +21,7 @@ public class EmailVerificationController {
     private final AuthService authService;
     private final MailService mailService;
 
+    /** 웹메일 중복 확인 클릭 시 */
     @GetMapping("/check-format")
     public ResponseEntity<String> validateWebMail(String mailAddress) {
         try {
@@ -32,6 +33,7 @@ public class EmailVerificationController {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
 
+    /** 인증번호 발송 클릭 시 */
     @PostMapping(value = "/verify", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<String> sendAuthCode(@RequestBody WebmailRequest webmailRequest) {
         try {
@@ -45,6 +47,8 @@ public class EmailVerificationController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("인증 코드 발급에 실패하였습니다. "+e.getMessage());
         }
     }
+
+    /** 인증번호 확인 클릭 시 */
     @PostMapping(value = "/authenticate-code", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<String> validateCode(@RequestBody AuthCodeRequest authCodeRequest) {
         try {
