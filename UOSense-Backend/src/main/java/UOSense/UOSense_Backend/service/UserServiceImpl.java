@@ -35,4 +35,30 @@ public class UserServiceImpl implements UserService {
         boolean validatedNickname = checkNickName(newUserRequest.getNickname());
         return validatedMail || validatedPassword || validatedNickname;
     }
+
+    private boolean checkPasswordFormat(String password) {
+        if (password.length() > 20)
+            throw new IllegalArgumentException("비밀번호 자리수 제한");
+
+        // 각 조건을 확인하기 위한 플래그
+        boolean hasUpperCase = false;
+        boolean hasLowerCase = false;
+        boolean hasNumber = false;
+        boolean hasSpecialChar = false;
+
+        // 문자열의 각 문자를 확인
+        for (char ch : password.toCharArray()) {
+            if (Character.isUpperCase(ch)) {
+                hasUpperCase = true;
+            } else if (Character.isLowerCase(ch)) {
+                hasLowerCase = true;
+            } else if (Character.isDigit(ch)) {
+                hasNumber = true;
+            } else if ("!@#$%^&*()_+-=[]{}|;:,.<>?".indexOf(ch) != -1) {
+                hasSpecialChar = true;
+            }
+            if (hasUpperCase && hasLowerCase && hasNumber && hasSpecialChar) return true;
+        }
+        throw new IllegalArgumentException("비밀번호 형식 제한");
+    }
 }
