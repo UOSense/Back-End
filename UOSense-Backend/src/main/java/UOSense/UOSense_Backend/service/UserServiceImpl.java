@@ -61,4 +61,11 @@ public class UserServiceImpl implements UserService {
         }
         throw new IllegalArgumentException("비밀번호 형식 제한");
     }
+
+
+    private boolean checkNickName(String nickname) {
+        if (userRepository.existsByNickname(nickname))
+            throw new DuplicateRequestException("이미 존재하는 닉네임입니다.");
+        return true;
+    }
 }
