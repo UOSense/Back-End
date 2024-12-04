@@ -11,7 +11,7 @@ import java.time.Duration;
 @RequiredArgsConstructor
 @Component
 public class RedisUtil {
-
+    /** 구분하고 싶을 경우 @Qualifier("stringRedisTemplateDb0") 이런 식으로 달기*/
     private final StringRedisTemplate redisTemplate;
     @Value("${spring.mail.properties.auth-code-expiration-millis}")
     private long DURANTION;
