@@ -25,7 +25,7 @@ public class CustomAuthenticationFilter extends AbstractAuthenticationProcessing
     }
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
-            throws AuthenticationException, IOException, ServletException {
+            throws AuthenticationException, IOException {
 
         // 해당 요청이 POST 인지 확인
         if(!isPost(request)) {
