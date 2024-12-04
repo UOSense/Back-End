@@ -1,5 +1,5 @@
 package UOSense.UOSense_Backend.service;
-import UOSense.UOSense_Backend.common.securityFilter.CustomUserDetails;
+import UOSense.UOSense_Backend.dto.CustomUserDetails;
 import UOSense.UOSense_Backend.entity.User;
 import UOSense.UOSense_Backend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
