@@ -45,7 +45,7 @@ public class EmailVerificationController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("인증 코드 발급에 실패하였습니다. "+e.getMessage());
         }
     }
-    @PostMapping("/authenticate-code")
+    @PostMapping(value = "/authenticate-code", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<String> validateCode(@RequestBody AuthCodeRequest authCodeRequest) {
         try {
             if (authService.checkAuthCode(authCodeRequest.getEmail(),authCodeRequest.getCode()))
