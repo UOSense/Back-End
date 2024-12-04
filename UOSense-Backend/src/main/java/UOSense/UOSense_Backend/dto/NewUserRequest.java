@@ -12,4 +12,13 @@ public class NewUserRequest {
     private String password;
 
     private String nickname;
+
+    public User toEntity(String encodedPw) {
+        return User.builder()
+                .email(this.getEmail())
+                .password(encodedPw)
+                .nickname(this.getNickname())
+                .role(User.Role.USER)
+                .build();
+    }
 }
