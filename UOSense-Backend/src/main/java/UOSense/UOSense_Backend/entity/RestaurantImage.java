@@ -20,5 +20,6 @@ public class RestaurantImage {
     @JoinColumn(name = "restaurant_id")  // 외래키 명시
     private Restaurant restaurant;
 
+    @Column(name = "image_url")
     private String imageUrl;
 }
