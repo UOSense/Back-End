@@ -26,7 +26,6 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class RestaurantServiceImpl implements RestaurantService{
     private final RestaurantRepository restaurantRepository;
-    private final RestaurantImageRepository restaurantImageRepository;
     private final MenuRepository menuRepository;
     private final BusinessDayRepository businessDayRepository;
 
@@ -34,56 +33,28 @@ public class RestaurantServiceImpl implements RestaurantService{
     public List<RestaurantListResponse> getAllRestaurants() {
         List<Restaurant> restaurants = restaurantRepository.findAll();
         if (restaurants.isEmpty()) throw new NoSuchElementException("식당 리스트가 존재하지 않습니다.");
-        return restaurants.stream()
-                .map(restaurant -> {
-                    Optional<String> imageResponse = restaurantImageRepository.findFirstImageUrl(restaurant.getId());
-                    String imageUrl = null;
-                    if (imageResponse.isPresent()) imageUrl = imageResponse.get();
-                    return RestaurantListResponse.from(restaurant, imageUrl);
-                })
-                .toList();
+        return SearchUtils.convertToListDTO(restaurants);
     }
 
     @Override
     public List<RestaurantListResponse> getRestaurantsByFilter(DoorType doorType, Category category) {
         List<Restaurant> restaurants = restaurantRepository.findByDoorTypeAndCategory(doorType, category);
         if (restaurants.isEmpty()) throw new NoSuchElementException("해당 식당 리스트가 존재하지 않습니다.");
-        return restaurants.stream()
-                .map(restaurant -> {
-                    Optional<String> imageResponse = restaurantImageRepository.findFirstImageUrl(restaurant.getId());
-                    String imageUrl = null;
-                    if (imageResponse.isPresent()) imageUrl = imageResponse.get();
-                    return RestaurantListResponse.from(restaurant, imageUrl);
-                })
-                .toList();
+        return SearchUtils.convertToListDTO(restaurants);
     }
 
     @Override
     public List<RestaurantListResponse> getRestaurantsByCategory(Category category) {
         List<Restaurant> restaurants = restaurantRepository.findByCategory(category);
         if (restaurants.isEmpty()) throw new NoSuchElementException("해당 식당 리스트가 존재하지 않습니다.");
-        return restaurants.stream()
-                .map(restaurant -> {
-                    Optional<String> imageResponse = restaurantImageRepository.findFirstImageUrl(restaurant.getId());
-                    String imageUrl = null;
-                    if (imageResponse.isPresent()) imageUrl = imageResponse.get();
-                    return RestaurantListResponse.from(restaurant, imageUrl);
-                })
-                .toList();
+        return SearchUtils.convertToListDTO(restaurants);
     }
 
     @Override
     public List<RestaurantListResponse> getRestaurantsByDoorType(DoorType doorType) {
         List<Restaurant> restaurants = restaurantRepository.findByDoorType(doorType);
         if (restaurants.isEmpty()) throw new NoSuchElementException("해당 식당 리스트가 존재하지 않습니다.");
-        return restaurants.stream()
-                .map(restaurant -> {
-                    Optional<String> imageResponse = restaurantImageRepository.findFirstImageUrl(restaurant.getId());
-                    String imageUrl = null;
-                    if (imageResponse.isPresent()) imageUrl = imageResponse.get();
-                    return RestaurantListResponse.from(restaurant, imageUrl);
-                })
-                .toList();
+        return SearchUtils.convertToListDTO(restaurants);
     }
 
     @Override
