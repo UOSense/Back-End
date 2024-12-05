@@ -35,28 +35,28 @@ public class EmailVerificationController {
 
     /** 인증번호 발송 클릭 시 */
     @PostMapping(value = "/verify", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<String> sendAuthCode(@RequestBody WebmailRequest webmailRequest) {
+    public ResponseEntity<Boolean> sendAuthCode(@RequestBody WebmailRequest webmailRequest) {
         try {
             String email = webmailRequest.getEmail();
             String purpose = webmailRequest.getPurpose();
             String code = authService.createAuthCode();
             mailService.sendAuthMail(email, purpose, code);
             authService.saveAuthCode(email, code);
-            return ResponseEntity.status(HttpStatus.OK).body("인증 코드가 전송되었습니다.");
+            return ResponseEntity.status(HttpStatus.OK).body(true);
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("인증 코드 발급에 실패하였습니다. "+e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(false);
         }
     }
 
     /** 인증번호 확인 클릭 시 */
     @PostMapping(value = "/authenticate-code", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<String> validateCode(@RequestBody AuthCodeRequest authCodeRequest) {
+    public ResponseEntity<Boolean> validateCode(@RequestBody AuthCodeRequest authCodeRequest) {
         try {
             if (authService.checkAuthCode(authCodeRequest.getEmail(),authCodeRequest.getCode()))
-                return ResponseEntity.status(HttpStatus.OK).body("인증에 성공했습니다.");
+                return ResponseEntity.status(HttpStatus.OK).body(true);
         } catch (NoSuchElementException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(false);
         }
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(false);
     }
 }
