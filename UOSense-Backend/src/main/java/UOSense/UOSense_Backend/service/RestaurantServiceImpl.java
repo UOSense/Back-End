@@ -11,7 +11,6 @@ import UOSense.UOSense_Backend.entity.Restaurant;
 import UOSense.UOSense_Backend.repository.BusinessDayRepository;
 import UOSense.UOSense_Backend.repository.MenuRepository;
 import UOSense.UOSense_Backend.repository.RestaurantRepository;
-import UOSense.UOSense_Backend.repository.RestaurantImageRepository;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,7 +18,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 import static java.util.stream.Collectors.toList;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
