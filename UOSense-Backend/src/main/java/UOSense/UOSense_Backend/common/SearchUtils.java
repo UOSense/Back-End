@@ -1,13 +1,26 @@
 package UOSense.UOSense_Backend.common;
 
+import UOSense.UOSense_Backend.dto.RestaurantListResponse;
 import UOSense.UOSense_Backend.dto.SearchPair;
 import UOSense.UOSense_Backend.entity.Restaurant;
+import UOSense.UOSense_Backend.entity.RestaurantImage;
+import UOSense.UOSense_Backend.repository.RestaurantImageRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
+@Component
 public class SearchUtils {
     private static final int MAX_SIZE = 20;
     private static final int MAX_DIS = 20; // 최대 레벤슈타인 거리. 직접 테스트하면서 수정해야 할 거 같아요
+    private static RestaurantImageRepository restaurantImageRepository;
+
+    @Autowired
+    public void setRestaurantImageRepository(RestaurantImageRepository restaurantImageRepository) {
+        SearchUtils.restaurantImageRepository = restaurantImageRepository;
+    }
 
     /**
      *
@@ -75,5 +88,22 @@ public class SearchUtils {
         }
 
         return resultList;
+    }
+
+    public static List<RestaurantListResponse> convertToListDTO (List<Restaurant> sortedList) {
+        List<Integer> sortedRestaurantIds = sortedList.stream().map(Restaurant::getId).toList();
+        // restaurantId -> imageUrl 매핑 생성
+        Map<Integer, String> imageList = restaurantImageRepository.findAllFirstImageUrl(sortedRestaurantIds)
+                .stream().collect(Collectors.toMap(
+                        image -> image.getRestaurant().getId(), // Key: restaurantId
+                        RestaurantImage::getImageUrl            // Value: imageUrl
+                ));
+        // DTO 변환
+        return sortedList.stream()
+                .map(restaurant -> {
+                    String imageUrl = imageList.getOrDefault(restaurant.getId(), null);
+                    return RestaurantListResponse.from(restaurant, imageUrl);
+                })
+                .toList();
     }
 }
