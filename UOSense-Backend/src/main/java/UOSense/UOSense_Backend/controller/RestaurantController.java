@@ -223,7 +223,7 @@ public class RestaurantController {
         try {
             for ( NewMenuRequest menu : menus) {
                 String imageUrl = menuService.saveImage(menu.getImage());
-                restaurantService.saveMenuWith(menu, imageUrl);
+                restaurantService.registerMenu(menu, imageUrl);
             }
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());

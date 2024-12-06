@@ -4,9 +4,11 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Builder
 @AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Entity
 public class User {
@@ -26,6 +28,6 @@ public class User {
 
     @Enumerated(EnumType.STRING)
     private Role role;
-    private enum Role { USER, ADMIN };  // DB도 user -> USER (통일)
+    public enum Role { USER, ADMIN };  // DB도 user -> USER (통일)
 
 }
