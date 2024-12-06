@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name = "즐겨찾기 관리")
 @RestController
-@RequestMapping("/api/v1/BookMark")
+@RequestMapping("/api/v1/bookMark")
 @RequiredArgsConstructor
 public class BookMarkController {
     private final BookMarkService bookMarkService;

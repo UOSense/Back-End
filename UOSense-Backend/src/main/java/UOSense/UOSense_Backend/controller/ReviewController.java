@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name = "리뷰 관리")
 @RestController
-@RequestMapping("/api/v1/Review")
+@RequestMapping("/api/v1/review")
 @RequiredArgsConstructor
 public class ReviewController {
     private final ReviewService reviewService;
