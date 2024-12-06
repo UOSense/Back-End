@@ -23,14 +23,14 @@ public class EmailVerificationController {
 
     /** 웹메일 중복 확인 클릭 시 */
     @GetMapping("/check-format")
-    public ResponseEntity<String> validateWebMail(String mailAddress) {
+    public ResponseEntity<Boolean> validateWebMail(@RequestParam String mailAddress) {
         try {
             if (mailService.checkMailAddress(mailAddress) && mailService.checkDuplicatedMail(mailAddress))
-                return ResponseEntity.status(HttpStatus.OK).build();
+                return ResponseEntity.status(HttpStatus.OK).body(true);
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(false);
     }
 
     /** 인증번호 발송 클릭 시 */
