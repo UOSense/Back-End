@@ -1,5 +1,6 @@
 package UOSense.UOSense_Backend.dto;
 
+import UOSense.UOSense_Backend.common.Role;
 import UOSense.UOSense_Backend.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -18,7 +19,7 @@ public class NewUserRequest {
                 .email(this.getEmail())
                 .password(encodedPw)
                 .nickname(this.getNickname())
-                .role(User.Role.USER)
+                .role(Role.USER)
                 .build();
     }
 }

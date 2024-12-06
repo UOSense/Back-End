@@ -16,6 +16,8 @@ import java.time.LocalDateTime;
 @Getter
 @Entity
 public class Review {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @ManyToOne(fetch = FetchType.LAZY)  // User와 다대일 관계
