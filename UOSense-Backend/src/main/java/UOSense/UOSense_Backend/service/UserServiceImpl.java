@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import com.sun.jdi.request.DuplicateRequestException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,7 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserServiceImpl implements UserService, UserDetailsService {
     private final UserRepository userRepository;
     private final MailService mailService;
-    private PasswordEncoder passwordEncoder;    // Spring Security 추가 필수
+    private final PasswordEncoder passwordEncoder;
     
     @Override
     public UserDetails loadUserByUsername(String email) {
@@ -85,7 +86,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     /** 비밀번호 일치 여부를 확인합니다 */
-    private boolean checkPassword(String rawPassword, String encodedPassword) {
+    @Override
+    public boolean checkPassword(String rawPassword, String encodedPassword) {
         return passwordEncoder.matches(rawPassword, encodedPassword);
     }
 }
