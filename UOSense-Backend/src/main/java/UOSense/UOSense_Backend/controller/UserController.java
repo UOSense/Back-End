@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
     private final UserService userService;
 
-    @PostMapping("/sign-in")
+    @PostMapping("/sign-up")
     @Operation(summary = "회원가입", description = "회원을 등록합니다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "성공적으로 회원을 등록했습니다."),
