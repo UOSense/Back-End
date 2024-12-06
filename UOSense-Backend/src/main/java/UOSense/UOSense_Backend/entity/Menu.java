@@ -1,7 +1,6 @@
 package UOSense.UOSense_Backend.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -27,5 +26,6 @@ public class Menu {
 
     private String description;
 
+    @Column(name = "image_url")
     private String imageUrl;
 }

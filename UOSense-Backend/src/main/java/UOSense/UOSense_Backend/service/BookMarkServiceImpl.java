@@ -1,13 +1,62 @@
 package UOSense.UOSense_Backend.service;
 
+import UOSense.UOSense_Backend.dto.BookMarkResponse;
+import UOSense.UOSense_Backend.entity.BookMark;
+import UOSense.UOSense_Backend.entity.Restaurant;
+import UOSense.UOSense_Backend.entity.User;
 import UOSense.UOSense_Backend.repository.BookMarkRepository;
+import UOSense.UOSense_Backend.repository.RestaurantRepository;
+import UOSense.UOSense_Backend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 @Transactional
 public class BookMarkServiceImpl implements BookMarkService{
     private final BookMarkRepository bookMarkRepository;
+    private final UserRepository userRepository;
+    private final RestaurantRepository restaurantRepository;
+
+    @Override
+    public void register(int userId, int restaurantId) {
+        Optional<User> user = userRepository.findById(userId);
+        if (user.isEmpty()) {
+            throw new IllegalArgumentException("사용자 정보가 없습니다.");
+        }
+        Optional<Restaurant> restaurant = restaurantRepository.findById(restaurantId);
+        if (restaurant.isEmpty()) {
+            throw new IllegalArgumentException("식당 정보가 없습니다.");
+        }
+
+        BookMark bookMark = BookMark.builder()
+                .user(user.get())
+                .restaurant(restaurant.get())
+                .build();
+
+        bookMarkRepository.save(bookMark);
+    }
+
+    @Override
+    public void remove(int bookMarkId) {
+        if (!bookMarkRepository.existsById(bookMarkId)) {
+            throw new IllegalArgumentException("삭제할 즐겨찾기가 존재하지 않습니다.");
+        }
+        bookMarkRepository.deleteById(bookMarkId);
+    }
+
+    @Override
+    public List<BookMarkResponse> find(int userId) {
+        List<BookMark> bookMarkList = bookMarkRepository.findAllByUserId(userId);
+        if (bookMarkList.isEmpty()) {
+            throw new IllegalArgumentException("북마크 정보가 없습니다.");
+        }
+        return bookMarkList.stream()
+                .map(BookMarkResponse::from)
+                .toList();
+    }
 }
