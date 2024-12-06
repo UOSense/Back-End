@@ -1,5 +1,6 @@
 package UOSense.UOSense_Backend.common.securityFilter;
 
+import UOSense.UOSense_Backend.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -7,7 +8,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 public class CustomAuthenticationProvider implements AuthenticationProvider {
 
     private final UserDetailsService userDetailsService;
-    private final PasswordEncoder passwordEncoder;
+    private final UserService userService;
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
@@ -26,7 +26,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 
         UserDetails user = userDetailsService.loadUserByUsername(email);
 
-        if(!passwordEncoder.matches(password, user.getPassword())) {
+        if(!userService.checkPassword(password, user.getPassword())) {
             throw new BadCredentialsException("Invalid Password");
         }
 
