@@ -23,4 +23,7 @@ public interface RestaurantRepository extends JpaRepository<Restaurant, Integer>
             "WHERE r.id IN :restaurantIds " +
             "ORDER BY v.avg_price ASC", nativeQuery = true)
     List<Restaurant> sortRestaurantsByAvgPrice(@Param("restaurantIds") List<Integer> restaurantIds);
+
+    @Query("SELECT r FROM Restaurant r WHERE r.name LIKE %:keyword%")
+    List<Restaurant> findByNameContains(@Param("keyword") String keyword);
 }

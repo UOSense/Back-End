@@ -35,7 +35,7 @@ public class RedisConfig {
         return stringRedisTemplate;
     }
 
-    /** refresh token 저장 용 */
+    /** refresh token 저장용 */
     @Bean
     public RedisConnectionFactory redisConnectionFactoryDb1() {
         RedisStandaloneConfiguration config =

@@ -2,8 +2,6 @@ package UOSense.UOSense_Backend.service;
 
 import UOSense.UOSense_Backend.common.*;
 import UOSense.UOSense_Backend.dto.RestaurantListResponse;
-import UOSense.UOSense_Backend.dto.SearchPair;
-import UOSense.UOSense_Backend.entity.Menu;
 import UOSense.UOSense_Backend.entity.Restaurant;
 import UOSense.UOSense_Backend.entity.RestaurantImage;
 import UOSense.UOSense_Backend.repository.MenuRepository;
@@ -40,29 +38,21 @@ public class SearchServiceImpl implements SearchService{
             EnumBaseConverter<Category> converter = new CategoryConverter();
             Category category = converter.convertToEntityAttribute(keyword);
             result = restaurantRepository.findByCategory(category);
+
         } else {    // 3. 메뉴명, 식당이름
-            List<Restaurant> restaurants = restaurantRepository.findAll();
-            List<Menu> menus = menuRepository.findAll();
+            List<Restaurant> restaurants = restaurantRepository.findByNameContains(keyword);
+            List<Restaurant> menus = menuRepository.findByNameContains(keyword);
+          
             if (restaurants.isEmpty() && menus.isEmpty()) {
                 throw new NoSuchElementException("검색할 정보가 존재하지 않습니다.");
             }
 
-            List<SearchPair> searchList = new ArrayList<>();
+            // 중복을 제거하기 위해 Set 사용
+            Set<Restaurant> uniqueSet = new HashSet<>();
+            uniqueSet.addAll(restaurants);
+            uniqueSet.addAll(menus);
 
-            for (Restaurant restaurant : restaurants) {
-                String name = restaurant.getName();
-                int distance = SearchUtils.damerauLevenshteinDistance(keyword, name);
-                searchList.add(new SearchPair(distance, restaurant));
-            }
-
-            for (Menu menu : menus) {
-                Restaurant restaurant = menu.getRestaurant();
-                String name = menu.getName();
-                int distance = SearchUtils.damerauLevenshteinDistance(keyword, name);
-                searchList.add(new SearchPair(distance, restaurant));
-            }
-
-            result = SearchUtils.select(searchList);
+            result = new ArrayList<>(uniqueSet);
         }
 
         if (result == null) {

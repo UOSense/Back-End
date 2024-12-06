@@ -15,7 +15,7 @@ public interface RestaurantService {
     RestaurantInfo getRestaurantInfoById(int restaurantId);
     Restaurant getRestaurantById(int restaurantId);
     List<MenuResponse> findMenuBy(int restaurantId);
-    void saveMenuWith(NewMenuRequest menuRequest, String imageUrl);
+    void registerMenu(NewMenuRequest menuRequest, String imageUrl);
     void register(RestaurantRequest restaurantRequest);
     void edit(RestaurantRequest restaurantRequest);
     void delete(int restaurantId);

@@ -3,7 +3,6 @@ package UOSense.UOSense_Backend.service;
 import UOSense.UOSense_Backend.common.ImageUtils;
 import UOSense.UOSense_Backend.dto.ImageInfo;
 import UOSense.UOSense_Backend.dto.RestaurantImagesResponse;
-import UOSense.UOSense_Backend.dto.RestaurantListResponse;
 import UOSense.UOSense_Backend.entity.Restaurant;
 import UOSense.UOSense_Backend.entity.RestaurantImage;
 import UOSense.UOSense_Backend.repository.RestaurantImageRepository;
@@ -14,7 +13,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
