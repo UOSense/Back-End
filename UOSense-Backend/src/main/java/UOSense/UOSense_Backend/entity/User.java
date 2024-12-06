@@ -1,5 +1,6 @@
 package UOSense.UOSense_Backend.entity;
 
+import UOSense.UOSense_Backend.common.Role;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,7 +19,7 @@ public class User {
 
     @Column(unique = true)
     private String email;
-    
+
     private String password;
 
     @Column(unique = true)
@@ -28,6 +29,4 @@ public class User {
 
     @Enumerated(EnumType.STRING)
     private Role role;
-    public enum Role { USER, ADMIN };  // DB도 user -> USER (통일)
-
 }

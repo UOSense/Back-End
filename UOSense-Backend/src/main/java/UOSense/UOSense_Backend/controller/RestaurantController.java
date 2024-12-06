@@ -19,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -32,7 +33,7 @@ public class RestaurantController {
     private final MenuService menuService;
     private final RestaurantImageService restaurantImageService;
 
-    @PostMapping("/restaurant/new")
+    @PostMapping("/new")
     @Operation(summary = "신규 식당 등록", description = "새로운 식당을 추가합니다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "새로운 식당을 성공적으로 추가했습니다."),
@@ -50,7 +51,7 @@ public class RestaurantController {
         }
     }
 
-    @PutMapping("/restaurant/{restaurantId}/update")
+    @PutMapping("/{restaurantId}/update")
     @Operation(summary = "기존 식당 정보 수정", description = "기존 식당 정보를 수정합니다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "기존 식당 정보를 성공적으로 수정했습니다."),
@@ -83,8 +84,7 @@ public class RestaurantController {
         List<RestaurantListResponse> restaurantList;
         boolean doorTypeFlag, categoryFlag;
 
-        // doorType이 FRONT, SIDE, BACK일 경우, 해당 지역에 해당하는 식당 검색
-        if (doorType == DoorType.FRONT || doorType == DoorType.SIDE || doorType == DoorType.BACK) {
+        if (Arrays.asList(DoorType.values()).contains(doorType)) {
             doorTypeFlag = true;
         }
         else if (doorType == null) {
@@ -95,9 +95,7 @@ public class RestaurantController {
         }
 
 
-        // category가 KOREAN, CHINESE, JAPANESE, WESTERN, OTHER 일 경우, 해당 category에 해당하는 식당 검색
-        if (category == Category.KOREAN || category == Category.CHINESE || category == Category.JAPANESE
-            || category == Category.WESTERN || category == Category.OTHER) {
+        if (Arrays.asList(Category.values()).contains(category)) {
             categoryFlag = true;
         }
         else if (category == null) {
@@ -143,7 +141,7 @@ public class RestaurantController {
         }
     }
 
-    @DeleteMapping("/restaurant/{restaurantId}/delete")
+    @DeleteMapping("/{restaurantId}/delete")
     @Operation(summary = "식당 삭제", description = "식당을 삭제합니다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "식당을 성공적으로 삭제했습니다."),
@@ -269,7 +267,7 @@ public class RestaurantController {
         }
     }
 
-    @GetMapping("/restaurant/{restaurantId}/businessday")
+    @GetMapping("/{restaurantId}/businessday")
     @Operation(summary = "특정 식당 영업 정보 조회", description = "특정 식당의 영업 정보를 조회합니다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "영업 정보를 성공적으로 조회했습니다."),
@@ -287,7 +285,7 @@ public class RestaurantController {
         }
     }
 
-    @PutMapping("/restaurant/update/businessday")
+    @PutMapping("/update/businessday")
     @Operation(summary = "특정 식당 영업 정보 수정", description = "특정 식당의 영업 정보를 수정합니다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "영업 정보를 성공적으로 수정했습니다."),
@@ -305,7 +303,7 @@ public class RestaurantController {
         }
     }
 
-    @PostMapping("/restaurant/businessday")
+    @PostMapping("/businessday")
     @Operation(summary = "특정 식당 영업 정보 등록", description = "특정 식당의 영업 정보를 등록합니다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "영업 정보를 성공적으로 등록했습니다."),
@@ -323,7 +321,7 @@ public class RestaurantController {
         }
     }
 
-    @DeleteMapping("/restaurant/delete/businessday/{businessdayId}")
+    @DeleteMapping("/delete/businessday/{businessdayId}")
     @Operation(summary = "영업 정보 삭제", description = "영업 정보를 삭제합니다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "영업 정보를 성공적으로 삭제했습니다."),

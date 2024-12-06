@@ -31,6 +31,14 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'  // Redis
     implementation 'org.springframework.boot:spring-boot-starter-cache' // Spring 기본 캐시
     implementation("com.github.ben-manes.caffeine:caffeine:3.1.8") // caffeine 캐시
+    // spring security //
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    testImplementation 'org.springframework.security:spring-security-test'
+    // jwt //
+    implementation group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.12.3'
+    runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.12.3'
+    runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.12.3'
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'  // Redis
 }
 
 tasks.named('test') {

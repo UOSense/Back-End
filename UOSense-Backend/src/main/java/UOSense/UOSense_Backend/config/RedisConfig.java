@@ -34,4 +34,21 @@ public class RedisConfig {
         stringRedisTemplate.setConnectionFactory(redisConnectionFactoryDb0());
         return stringRedisTemplate;
     }
+
+    /** refresh token 저장용 */
+    @Bean
+    public RedisConnectionFactory redisConnectionFactoryDb1() {
+        RedisStandaloneConfiguration config =
+                new RedisStandaloneConfiguration(redisHost, redisPort);
+        config.setDatabase(1);
+
+        return new LettuceConnectionFactory(config);
+    }
+
+    @Bean(name = "redisTemplate")
+    public StringRedisTemplate stringRedisTemplateDb1() {
+        StringRedisTemplate stringRedisTemplate = new StringRedisTemplate();
+        stringRedisTemplate.setConnectionFactory(redisConnectionFactoryDb1());
+        return stringRedisTemplate;
+    }
 }
