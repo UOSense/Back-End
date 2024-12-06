@@ -22,7 +22,7 @@ public class EmailVerificationController {
     private final MailService mailService;
 
     /** 웹메일 중복 확인 클릭 시 */
-    @GetMapping("/check-format")
+    @GetMapping("/checkformat")
     public ResponseEntity<String> validateWebMail(String mailAddress) {
         try {
             if (mailService.checkMailAddress(mailAddress) && mailService.checkDuplicatedMail(mailAddress))
@@ -49,7 +49,7 @@ public class EmailVerificationController {
     }
 
     /** 인증번호 확인 클릭 시 */
-    @PostMapping(value = "/authenticate-code", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(value = "/authenticatecode", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<Boolean> validateCode(@RequestBody AuthCodeRequest authCodeRequest) {
         try {
             if (authService.checkAuthCode(authCodeRequest.getEmail(),authCodeRequest.getCode()))
