@@ -39,12 +39,11 @@ public class Review {
     private LocalDateTime dateTime;
 
     @Column(columnDefinition = "TINYINT(1)",name = "review_event_check")
-    private boolean reviewEventCheck;
+    private boolean isReviewEventChecked;
 
     @Convert(converter = TagConverter.class)
     private Tag tag;
 
     @Column(name = "likes_count")
     private int likeCount;
-
 }
