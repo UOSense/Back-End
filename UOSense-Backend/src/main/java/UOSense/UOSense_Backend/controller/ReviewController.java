@@ -23,12 +23,12 @@ public class ReviewController {
     private final ReviewImageService reviewImageService;
 
     @DeleteMapping("/delete/{reviewId}")
-    @Operation(summary = "메뉴 삭제", description = "메뉴를 삭제합니다.")
+    @Operation(summary = "리뷰 삭제", description = "리뷰를 삭제합니다.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "메뉴를 성공적으로 삭제했습니다."),
+            @ApiResponse(responseCode = "200", description = "리뷰를 성공적으로 삭제했습니다."),
             @ApiResponse(responseCode = "400", description = "잘못된 요청입니다."),
-            @ApiResponse(responseCode = "404", description = "삭제할 메뉴를 찾을 수 없습니다."),
-            @ApiResponse(responseCode = "500", description = "네트워크 연결에 문제가 생겼습니다.")
+            @ApiResponse(responseCode = "404", description = "삭제할 리뷰를 찾을 수 없습니다."),
+            @ApiResponse(responseCode = "500", description = "서버 오류입니다.")
     })
     public ResponseEntity<Void> delete(@PathVariable int reviewId) {
         try {
