@@ -60,12 +60,15 @@ public class ReviewController {
             @ApiResponse(responseCode = "404", description = "리뷰를 찾을 수 없습니다."),
             @ApiResponse(responseCode = "500", description = "서버 오류입니다.")
     })
-    public ResponseEntity<Void> addLike(@RequestParam int reviewId) {
+    public ResponseEntity<Void> addLike(@RequestParam int userId,
+                                        @RequestParam int reviewId) {
         try {
-            reviewService.addLike(reviewId);
+            reviewService.addLike(userId, reviewId);
             return ResponseEntity.ok().build();
         } catch (NoSuchElementException e) {
             return ResponseEntity.notFound().build();
+        } catch (IllegalStateException e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
     }
 }
