@@ -5,5 +5,5 @@ import UOSense.UOSense_Backend.dto.ReviewList;
 public interface ReviewService {
     ReviewList findListByRestaurantId(int restaurantId);
     void delete(int reviewId);
-    void addLike(int reviewId);
+    void addLike(int userId, int reviewId);
 }
