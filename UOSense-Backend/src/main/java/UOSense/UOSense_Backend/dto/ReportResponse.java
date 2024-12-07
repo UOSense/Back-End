@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Getter
 public class ReportResponse {
+
     private int id;
     private int reviewId;
     private String title;
