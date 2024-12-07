@@ -1,8 +1,7 @@
 package UOSense.UOSense_Backend.common.securityFilter;
 
-import UOSense.UOSense_Backend.dto.LoginUser;
+import UOSense.UOSense_Backend.dto.LoginRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.core.Authentication;
@@ -28,32 +27,32 @@ public class CustomAuthenticationFilter extends AbstractAuthenticationProcessing
             throws AuthenticationException, IOException {
 
         // 해당 요청이 POST 인지 확인
-        if(!isPost(request)) {
+        if(!isGet(request)) {
             throw new IllegalStateException("Authentication is not supported");
         }
 
         // POST 이면 body 를 LoginUser( 로그인 정보 DTO ) 에 매핑
-        LoginUser loginUser = objectMapper.readValue(request.getReader(), LoginUser.class);
+        LoginRequest loginRequest = objectMapper.readValue(request.getReader(), LoginRequest.class);
 
         // ID, PASSWORD가 있는지 확인
-        if(!StringUtils.hasLength(loginUser.getEmail())
-                || !StringUtils.hasLength(loginUser.getPassword())) {
+        if(!StringUtils.hasLength(loginRequest.getEmail())
+                || !StringUtils.hasLength(loginRequest.getPassword())) {
             throw new IllegalArgumentException("username or password is empty");
         }
 
         // 처음에는 인증 되지 않은 토큰 생성
         CustomAuthenticationToken token = new CustomAuthenticationToken(
-                loginUser.getEmail(),
-                loginUser.getPassword()
+                loginRequest.getEmail(),
+                loginRequest.getPassword()
         );
 
         // Manager 에게 인증 처리
         return getAuthenticationManager().authenticate(token);
     }
 
-    private boolean isPost(HttpServletRequest request) {
+    private boolean isGet(HttpServletRequest request) {
 
-        return "POST".equals(request.getMethod());
+        return "GET".equals(request.getMethod());
     }
 
 }

@@ -91,11 +91,8 @@ public class RestaurantServiceImpl implements RestaurantService{
     @Override
     @Transactional
     public void register(RestaurantRequest restaurantRequest) {
-        double rating = 0.00;
-        int reviewCount = 0;
-        int bookmarkCount = 0;
 
-        Restaurant restaurant = RestaurantRequest.toEntity(restaurantRequest, rating, reviewCount, bookmarkCount);
+        Restaurant restaurant = RestaurantRequest.toEntity(restaurantRequest);
 
         restaurantRepository.save(restaurant);
 
@@ -104,27 +101,12 @@ public class RestaurantServiceImpl implements RestaurantService{
     @Override
     @Transactional
     public void edit(RestaurantRequest restaurantRequest) {
-        double rating = 0.00;
-        /**
-         * rating 계산 code
-         * review 기능 추가 시 추가
-         */
-        int reviewCount = 0;
-        /**
-         * reviewCount 계산 code
-         * review 기능 추가 시 추가
-         */
-        int bookmarkCount = 0;
-        /**
-         * bookmarkCount 계산 code
-         * bookmark 기능 추가 시 추가
-         */
 
         if(!restaurantRepository.existsById(restaurantRequest.getId())) {
             throw new IllegalArgumentException("수정할 식당이 존재하지 않습니다.");
         }
 
-        Restaurant restaurant = RestaurantRequest.toEntity(restaurantRequest, rating, reviewCount, bookmarkCount);
+        Restaurant restaurant = RestaurantRequest.toEntity(restaurantRequest);
 
         restaurantRepository.save(restaurant);
     }

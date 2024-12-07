@@ -17,6 +17,8 @@ public class MenuServiceImpl implements MenuService{
 
     @Override
     public String saveImage(MultipartFile menuImage) {
+        if (menuImage==null)
+            return "";
         try {
             return imageUtils.uploadImageToS3(menuImage, S3_FOLDER_NAME);
         } catch ( RuntimeException e ) {
