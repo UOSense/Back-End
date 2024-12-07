@@ -4,6 +4,7 @@ import UOSense.UOSense_Backend.dto.ReviewInfo;
 import UOSense.UOSense_Backend.dto.ReviewList;
 import UOSense.UOSense_Backend.entity.Review;
 import UOSense.UOSense_Backend.entity.ReviewLike;
+import UOSense.UOSense_Backend.repository.RestaurantRepository;
 import UOSense.UOSense_Backend.repository.ReviewLikeRepository;
 import UOSense.UOSense_Backend.repository.ReviewRepository;
 import UOSense.UOSense_Backend.repository.UserRepository;
@@ -23,14 +24,15 @@ public class ReviewServiceImpl implements ReviewService{
     private final ReviewRepository reviewRepository;
     private final ReviewLikeRepository reviewLikeRepository;
     private final UserRepository userRepository;
+    private final RestaurantRepository restaurantRepository;
 
     @Override
     @Transactional(readOnly = true)
     public ReviewList findListByRestaurantId(int restaurantId) {
+        if (!restaurantRepository.existsById(restaurantId))
+            throw new IllegalArgumentException("존재하지 않는 식당입니다.");
+
         List<Review> reviews = reviewRepository.findAllByRestaurantId(restaurantId);
-        if (reviews.isEmpty()) {
-            throw new IllegalArgumentException("해당 식당의 리뷰가 존재하지 않습니다.");
-        }
         List<ReviewInfo> reviewInfoList = reviews.stream()
                 .map(ReviewInfo::from)
                 .toList();
