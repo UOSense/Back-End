@@ -17,14 +17,12 @@ import java.time.LocalDateTime;
 @Getter
 public class ReportRequest {
     private int reviewId;
-    private String title;
     private Detail detail;
     private LocalDateTime createdAt;
 
     public static Report toEntity(ReportRequest reportRequest, Review review, User user) {
         return Report.builder()
                 .review(review)
-                .title(reportRequest.title)
                 .user(user)
                 .detail(reportRequest.detail)
                 .createdAt(reportRequest.createdAt)

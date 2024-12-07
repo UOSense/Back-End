@@ -16,7 +16,6 @@ public class ReportResponse {
 
     private int id;
     private int reviewId;
-    private String title;
     private int userId;
     private String detail;
     private LocalDateTime createdAt;
@@ -25,7 +24,6 @@ public class ReportResponse {
         return builder()
                 .id(report.getId())
                 .reviewId(report.getReview().getId())
-                .title(report.getTitle())
                 .userId(report.getUser().getId())
                 .detail(report.getDetail().getValue())
                 .createdAt(report.getCreatedAt())
