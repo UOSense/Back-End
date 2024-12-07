@@ -128,7 +128,7 @@ public class RestaurantController {
     }
 
     @GetMapping("/get")
-    @Operation(summary = "특정 식당 정보 조회", description = "식당 정보를 불러옵니다.")
+    @Operation(summary = "식당 정보 조회", description = "식당 정보를 불러옵니다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "식당 정보를 성공적으로 불러왔습니다."),
             @ApiResponse(responseCode = "404", description = "식당을 찾을 수 없습니다.")
@@ -162,7 +162,7 @@ public class RestaurantController {
     }
 
     @GetMapping("/get/images")
-    @Operation(summary = "특정 식당 사진 조회", description = "식당 사진을 조회합니다.")
+    @Operation(summary = "식당 사진 조회", description = "식당 사진을 조회합니다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "식당 사진을 성공적으로 불러왔습니다."),
             @ApiResponse(responseCode = "404", description = "식당 사진을 찾을 수 없습니다."),
@@ -178,7 +178,7 @@ public class RestaurantController {
     }
 
     @PostMapping(value = "/create/images", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    @Operation(summary = "특정 식당 사진 등록", description = "사진을 등록합니다.")
+    @Operation(summary = "식당 사진 등록", description = "사진을 등록합니다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "사진을 성공적으로 저장했습니다."),
             @ApiResponse(responseCode = "410", description = "저장할 사진을 찾지 못해 실패했습니다."),
@@ -197,7 +197,7 @@ public class RestaurantController {
     }
 
     @GetMapping("/get/menu")
-    @Operation(summary = "특정 식당 메뉴 조회", description = "메뉴를 조회합니다.")
+    @Operation(summary = "식당 메뉴 조회", description = "메뉴를 조회합니다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "메뉴를 성공적으로 불러왔습니다."),
             @ApiResponse(responseCode = "404", description = "메뉴를 찾을 수 없습니다."),
@@ -213,7 +213,7 @@ public class RestaurantController {
     }
 
     @PostMapping(value = "/create/menu", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    @Operation(summary = "특정 식당 메뉴 등록", description = "메뉴를 등록합니다.")
+    @Operation(summary = "식당 메뉴 등록", description = "메뉴를 등록합니다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "메뉴를 성공적으로 업로드하였습니다."),
             @ApiResponse(responseCode = "400", description = "잘못된 요청입니다."),
@@ -236,7 +236,7 @@ public class RestaurantController {
     }
 
     @PutMapping("/update/menu")
-    @Operation(summary = "특정 식당 메뉴 수정", description = "메뉴를 수정합니다.")
+    @Operation(summary = "식당 메뉴 수정", description = "메뉴를 수정합니다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "메뉴를 성공적으로 수정하였습니다."),
             @ApiResponse(responseCode = "400", description = "잘못된 요청입니다."),
@@ -274,7 +274,7 @@ public class RestaurantController {
     }
 
     @GetMapping("/get/businessday")
-    @Operation(summary = "특정 식당 영업 정보 조회", description = "특정 식당의 영업 정보를 조회합니다.")
+    @Operation(summary = "식당 영업 정보 조회", description = "특정 식당의 영업 정보를 조회합니다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "영업 정보를 성공적으로 조회했습니다."),
             @ApiResponse(responseCode = "404", description = "식당의 영업 정보를 찾을 수 없습니다."),
@@ -292,7 +292,7 @@ public class RestaurantController {
     }
 
     @PutMapping("/update/businessday")
-    @Operation(summary = "특정 식당 영업 정보 수정", description = "특정 식당의 영업 정보를 수정합니다.")
+    @Operation(summary = "식당 영업 정보 수정", description = "특정 식당의 영업 정보를 수정합니다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "영업 정보를 성공적으로 수정했습니다."),
             @ApiResponse(responseCode = "404", description = "식당의 영업 정보를 찾을 수 없습니다."),
@@ -310,7 +310,7 @@ public class RestaurantController {
     }
 
     @PostMapping("/create/businessday")
-    @Operation(summary = "특정 식당 영업 정보 등록", description = "특정 식당의 영업 정보를 등록합니다.")
+    @Operation(summary = "식당 영업 정보 등록", description = "특정 식당의 영업 정보를 등록합니다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "영업 정보를 성공적으로 등록했습니다."),
             @ApiResponse(responseCode = "404", description = "식당 정보를 찾을 수 없습니다."),
@@ -334,9 +334,9 @@ public class RestaurantController {
             @ApiResponse(responseCode = "404", description = "삭제할 영업 정보가 존재하지 않습니다."),
             @ApiResponse(responseCode = "400", description = "잘못된 요청입니다.")
     })
-    public ResponseEntity<Void> deleteBusinessDay(@RequestParam int businessdayId) {
+    public ResponseEntity<Void> deleteBusinessDay(@RequestParam int businessDayId) {
         try {
-            restaurantService.deleteBusinessDay(businessdayId);
+            restaurantService.deleteBusinessDay(businessDayId);
             return ResponseEntity.ok().build();
         } catch(IllegalArgumentException e) {
             return ResponseEntity.notFound().build();
