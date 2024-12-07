@@ -3,7 +3,7 @@ package UOSense.UOSense_Backend.service;
 import UOSense.UOSense_Backend.dto.ReviewList;
 import UOSense.UOSense_Backend.dto.ReviewRequest;
 import UOSense.UOSense_Backend.dto.ReviewResponse;
-import UOSense.UOSense_Backend.entity.Review;
+
 import java.util.List;
 
 public interface ReviewService {
@@ -11,6 +11,6 @@ public interface ReviewService {
     void delete(int reviewId);
     void addLike(int userId, int reviewId);
     int register(ReviewRequest reviewRequest, int userId);
-    Review find(int id);
+    ReviewResponse find(int reviewId);
     List<ReviewResponse> findByUserId(int userId);
 }

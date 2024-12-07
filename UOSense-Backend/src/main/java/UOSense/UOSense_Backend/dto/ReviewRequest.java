@@ -1,6 +1,9 @@
 package UOSense.UOSense_Backend.dto;
 
 import UOSense.UOSense_Backend.common.Tag;
+import UOSense.UOSense_Backend.entity.Restaurant;
+import UOSense.UOSense_Backend.entity.Review;
+import UOSense.UOSense_Backend.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -24,4 +27,17 @@ public class ReviewRequest {
     private boolean isReviewEventCheck;
 
     private Tag tag;
+
+    public static Review toEntity(ReviewRequest reviewRequest, User user, Restaurant restaurant) {
+        return Review.builder()
+                .user(user)
+                .restaurant(restaurant)
+                .body(reviewRequest.getBody())
+                .rating(reviewRequest.getRating())
+                .dateTime(reviewRequest.getDateTime())
+                .isReviewEventCheck(reviewRequest.isReviewEventCheck())
+                .tag(reviewRequest.getTag())
+                .likeCount(0)
+                .build();
+    }
 }

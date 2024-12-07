@@ -24,8 +24,6 @@ public class Report {
     @JoinColumn(name = "review_id", nullable = false)  // 외래키 명시
     private Review review;
 
-    private String title;
-
     @ManyToOne(fetch = FetchType.LAZY)  // User와 다대일 관계
     @JoinColumn(name = "user_id", nullable = false)  // 외래키 명시
     private User user;

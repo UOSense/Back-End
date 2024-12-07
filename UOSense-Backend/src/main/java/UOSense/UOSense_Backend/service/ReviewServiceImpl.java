@@ -87,19 +87,19 @@ public class ReviewServiceImpl implements ReviewService{
             throw new IllegalArgumentException("식당 정보가 없습니다.");
         }
 
-        Review review = Review.toEntity(reviewRequest, user.get(), restaurant.get());
+        Review review = ReviewRequest.toEntity(reviewRequest, user.get(), restaurant.get());
 
         review = reviewRepository.save(review);
         return review.getId();
     }
 
     @Override
-    public Review find(int reviewId) {
+    public ReviewResponse find(int reviewId) {
         Optional<Review> review = reviewRepository.findById(reviewId);
         if (review.isEmpty()) {
             throw new IllegalArgumentException("리뷰 정보가 없습니다.");
         }
-        return review.get();
+        return ReviewResponse.from(review.get());
     }
 
     // restaurantId로 리뷰 목록 조회와 헷갈릴 우려가 있어 ByUserId를 추가함

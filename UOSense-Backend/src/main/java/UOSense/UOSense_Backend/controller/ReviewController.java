@@ -4,7 +4,6 @@ import UOSense.UOSense_Backend.dto.ReviewList;
 import UOSense.UOSense_Backend.dto.CustomUserDetails;
 import UOSense.UOSense_Backend.dto.ReviewRequest;
 import UOSense.UOSense_Backend.dto.ReviewResponse;
-import UOSense.UOSense_Backend.entity.Review;
 import UOSense.UOSense_Backend.service.ReviewImageService;
 import UOSense.UOSense_Backend.service.ReviewService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -120,8 +119,7 @@ public class ReviewController {
     public ResponseEntity<Void> createImages(@RequestPart List<MultipartFile> images,
                                              @RequestParam("reviewId") int reviewId) {
         try {
-            Review review = reviewService.find(reviewId);
-            reviewImageService.register(review, images);
+            reviewImageService.register(reviewId, images);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().build();
         } catch (Exception e) {
@@ -147,6 +145,24 @@ public class ReviewController {
             return new ResponseEntity<>(reviewList, HttpStatus.OK);
         } catch(IllegalArgumentException e) {
             return new ResponseEntity<>(Collections.emptyList(), HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping("/get")
+    @Operation(summary = "단일 리뷰 조회", description = "단일 리뷰를 조회합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "성공적으로 리뷰를 조회했습니다."),
+            @ApiResponse(responseCode = "400", description = "리뷰 정보가 없습니다."),
+            @ApiResponse(responseCode = "500", description = "서버 오류입니다.")
+    })
+    public ResponseEntity<ReviewResponse> get(@RequestParam int reviewId) {
+        try {
+            ReviewResponse reviewResponse = reviewService.find(reviewId);
+            List<String> imageUrls = reviewImageService.find(reviewResponse.getId());
+            reviewResponse.setImageUrls(imageUrls);
+            return new ResponseEntity<>(reviewResponse, HttpStatus.OK);
+        } catch(IllegalArgumentException e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 }
