@@ -46,7 +46,7 @@ public class BookMarkController {
     @Operation(summary = "특정 식당 즐겨찾기 삭제", description = "즐겨찾기 목록에 식당을 삭제합니다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "즐겨찾기에 식당을 성공적으로 삭제했습니다."),
-            @ApiResponse(responseCode = "400", description = "잘못된 요청입니다."),
+            @ApiResponse(responseCode = "400", description = "삭제할 즐겨찾기가 존재하지 않습니다."),
             @ApiResponse(responseCode = "500", description = "서버 오류입니다.")
     })
     public ResponseEntity<Void> delete(@RequestParam int bookMarkId) {
@@ -62,7 +62,7 @@ public class BookMarkController {
     @Operation(summary = "다른 사용자 즐겨찾기 조회", description = "다른 사용자의 즐겨찾기 목록을 조회합니다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "성공적으로 즐겨찾기 목록을 조회했습니다."),
-            @ApiResponse(responseCode = "400", description = "잘못된 요청입니다."),
+            @ApiResponse(responseCode = "404", description = "북마크 정보가 없습니다."),
             @ApiResponse(responseCode = "500", description = "서버 오류입니다.")
     })
     public ResponseEntity<List<BookMarkResponse>> getByUserId(@RequestParam int userId) {
@@ -70,7 +70,7 @@ public class BookMarkController {
             List<BookMarkResponse> bookMarkList = bookMarkService.find(userId);
             return new ResponseEntity<>(bookMarkList,HttpStatus.OK);
         } catch(IllegalArgumentException e) {
-            return new ResponseEntity<>(Collections.emptyList(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(Collections.emptyList(), HttpStatus.NOT_FOUND);
         }
     }
 
@@ -78,7 +78,7 @@ public class BookMarkController {
     @Operation(summary = "자신 즐겨찾기 조회", description = "자신의 즐겨찾기 목록을 조회합니다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "성공적으로 즐겨찾기 목록을 조회했습니다."),
-            @ApiResponse(responseCode = "400", description = "잘못된 요청입니다."),
+            @ApiResponse(responseCode = "404", description = "북마크 정보가 없습니다."),
             @ApiResponse(responseCode = "500", description = "서버 오류입니다.")
     })
     public ResponseEntity<?> get(Authentication authentication) {
@@ -89,7 +89,7 @@ public class BookMarkController {
             List<BookMarkResponse> bookMarkList = bookMarkService.find(userId);
             return new ResponseEntity<>(bookMarkList,HttpStatus.OK);
         } catch(IllegalArgumentException e) {
-            return new ResponseEntity<>(Collections.emptyList(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(Collections.emptyList(), HttpStatus.NOT_FOUND);
         }
     }
 }

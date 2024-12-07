@@ -33,10 +33,7 @@ public class BookMarkServiceImpl implements BookMarkService{
             throw new IllegalArgumentException("식당 정보가 없습니다.");
         }
 
-        BookMark bookMark = BookMark.builder()
-                .user(user.get())
-                .restaurant(restaurant.get())
-                .build();
+        BookMark bookMark = BookMark.toEntity(user.get(), restaurant.get());
 
         bookMarkRepository.save(bookMark);
     }

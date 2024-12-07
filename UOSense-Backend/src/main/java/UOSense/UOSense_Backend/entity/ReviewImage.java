@@ -21,5 +21,6 @@ public class ReviewImage {
     @JoinColumn(name = "review_id")  // 외래키 명시
     private Review review;
 
+    @Column(name = "image_url")
     private String imageUrl;
 }
