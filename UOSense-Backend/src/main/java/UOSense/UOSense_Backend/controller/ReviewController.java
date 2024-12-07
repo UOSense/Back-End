@@ -1,6 +1,5 @@
 package UOSense.UOSense_Backend.controller;
 
-import UOSense.UOSense_Backend.dto.ReviewList;
 import UOSense.UOSense_Backend.dto.CustomUserDetails;
 import UOSense.UOSense_Backend.dto.ReviewRequest;
 import UOSense.UOSense_Backend.dto.ReviewResponse;
@@ -78,9 +77,9 @@ public class ReviewController {
             @ApiResponse(responseCode = "404", description = "조회할 식당을 찾을 수 없습니다."),
             @ApiResponse(responseCode = "500", description = "서버 오류입니다.")
     })
-    public ResponseEntity<ReviewList> getListByRestaurantId(@RequestParam int restaurantId) {
+    public ResponseEntity<List<ReviewResponse>> getListByRestaurantId(@RequestParam int restaurantId) {
         try {
-            ReviewList reviewList = reviewService.findListByRestaurantId(restaurantId);
+            List<ReviewResponse> reviewList = reviewService.findListByRestaurantId(restaurantId);
             return new ResponseEntity<>(reviewList, HttpStatus.OK);
         } catch(IllegalArgumentException e) {
             return ResponseEntity.notFound().build();
