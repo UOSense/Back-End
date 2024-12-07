@@ -42,6 +42,13 @@ public class ReviewController {
     }
 
     @GetMapping("/get/list")
+    @Operation(summary = "특정 식당 리뷰 일괄 조회", description = "해당 식당의 리뷰를 모두 조회합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "리뷰를 모두 성공적으로 불러왔습니다."),
+            @ApiResponse(responseCode = "400", description = "잘못된 요청입니다."),
+            @ApiResponse(responseCode = "404", description = "조회할 식당을 찾을 수 없습니다."),
+            @ApiResponse(responseCode = "500", description = "서버 오류입니다.")
+    })
     public ResponseEntity<ReviewList> getListByRestaurantId(@RequestParam int restaurantId) {
         try {
             ReviewList reviewList = reviewService.findListByRestaurantId(restaurantId);
