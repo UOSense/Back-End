@@ -12,6 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.NoSuchElementException;
+
 @Tag(name = "리뷰 관리")
 @RestController
 @RequestMapping("/api/v1/review")
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 public class ReviewController {
     private final ReviewService reviewService;
     private final ReviewImageService reviewImageService;
+
     @DeleteMapping("/delete/{reviewId}")
     @Operation(summary = "메뉴 삭제", description = "메뉴를 삭제합니다.")
     @ApiResponses(value = {
@@ -47,6 +50,22 @@ public class ReviewController {
             return ResponseEntity.notFound().build();
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @PatchMapping("/like")
+    @Operation(summary = "리뷰 좋아요", description = "메뉴의 좋아요 수를 1 증가시킵니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "리뷰 추천 수가 1 증가하였습니다."),
+            @ApiResponse(responseCode = "404", description = "리뷰를 찾을 수 없습니다."),
+            @ApiResponse(responseCode = "500", description = "서버 오류입니다.")
+    })
+    public ResponseEntity<Void> addLike(@RequestParam int reviewId) {
+        try {
+            reviewService.addLike(reviewId);
+            return ResponseEntity.ok().build();
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.notFound().build();
         }
     }
 }
