@@ -61,9 +61,10 @@ public class ReviewController {
     }
 
     @PatchMapping("/like")
-    @Operation(summary = "리뷰 좋아요", description = "메뉴의 좋아요 수를 1 증가시킵니다.")
+    @Operation(summary = "리뷰 좋아요", description = "리뷰의 좋아요 수를 1 증가시킵니다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "리뷰 추천 수가 1 증가하였습니다."),
+            @ApiResponse(responseCode = "403", description = "좋아요는 한 번만 가능합니다."),
             @ApiResponse(responseCode = "404", description = "리뷰를 찾을 수 없습니다."),
             @ApiResponse(responseCode = "500", description = "서버 오류입니다.")
     })
