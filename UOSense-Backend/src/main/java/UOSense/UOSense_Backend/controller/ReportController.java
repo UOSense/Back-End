@@ -24,7 +24,7 @@ import java.util.List;
 public class ReportController {
     private final ReportService reportService;
 
-    @GetMapping("/list")
+    @GetMapping("/get/list")
     @Operation(summary = "관리자 신고 일괄 조회", description = "관리자 권한으로 모든 신고를 조회합니다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "모든 신고 건을 성공적으로 불러왔습니다."),
