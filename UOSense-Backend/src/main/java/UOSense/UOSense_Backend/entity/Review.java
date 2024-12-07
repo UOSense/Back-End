@@ -2,6 +2,7 @@ package UOSense.UOSense_Backend.entity;
 
 import UOSense.UOSense_Backend.common.Tag;
 import UOSense.UOSense_Backend.common.TagConverter;
+import UOSense.UOSense_Backend.dto.ReviewRequest;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -28,8 +29,6 @@ public class Review {
     @JoinColumn(name = "user_id")  // 외래키 명시
     private User user;
 
-    private String title;
-
     @Column(columnDefinition = "TEXT")
     private String body;
 
@@ -39,7 +38,7 @@ public class Review {
     private LocalDateTime dateTime;
 
     @Column(columnDefinition = "TINYINT(1)",name = "review_event_check")
-    private boolean reviewEventCheck;
+    private boolean isReviewEventCheck;
 
     @Convert(converter = TagConverter.class)
     private Tag tag;
@@ -47,4 +46,16 @@ public class Review {
     @Column(name = "likes_count")
     private int likeCount;
 
+    public static Review toEntity(ReviewRequest reviewRequest, User user, Restaurant restaurant) {
+        return Review.builder()
+                .user(user)
+                .restaurant(restaurant)
+                .body(reviewRequest.getBody())
+                .rating(reviewRequest.getRating())
+                .dateTime(reviewRequest.getDateTime())
+                .isReviewEventCheck(reviewRequest.isReviewEventCheck())
+                .tag(reviewRequest.getTag())
+                .likeCount(0)
+                .build();
+    }
 }
