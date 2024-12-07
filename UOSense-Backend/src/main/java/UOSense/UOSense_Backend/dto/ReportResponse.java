@@ -13,7 +13,7 @@ public class ReportResponse {
     private int id;
     private Review review;
     private String title;
-    private User user;
+    private int userId;
     private String detail;
     private LocalDateTime createdAt;
 
@@ -22,7 +22,7 @@ public class ReportResponse {
                 .id(report.getId())
                 .review(report.getReview())
                 .title(report.getTitle())
-                .user(report.getUser())
+                .userId(report.getUser().getId())
                 .detail(report.getDetail().getValue())
                 .createdAt(report.getCreatedAt())
                 .build();
