@@ -32,10 +32,6 @@ public class ReportController {
             @ApiResponse(responseCode = "500", description = "서버 오류입니다.")
     })
     public ResponseEntity<List<ReportResponse>> getList(Authentication authentication) {
-        try {
-            return ResponseEntity.ok(reportService.findList(authentication));
-        } catch (AccessDeniedException e) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-        }
+        return ResponseEntity.ok(reportService.findList(authentication));
     }
 }

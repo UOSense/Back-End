@@ -18,15 +18,6 @@ public class ReportServiceImpl implements ReportService{
 
     @Override
     public List<ReportResponse> findList(Authentication authentication) {
-        CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
-
-        boolean isAdmin = customUserDetails.getAuthorities().stream()
-                .anyMatch(authority -> authority.getAuthority().equals(Role.ADMIN.getValue()));
-
-        if (!isAdmin) {
-            throw new AccessDeniedException("관리자만 접근할 수 있습니다.");
-        }
-
         return reportRepository.findAll().stream()
                 .map(ReportResponse::from)
                 .toList();
