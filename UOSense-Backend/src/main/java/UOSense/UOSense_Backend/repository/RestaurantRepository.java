@@ -1,8 +1,8 @@
 package UOSense.UOSense_Backend.repository;
 
-import UOSense.UOSense_Backend.common.Category;
-import UOSense.UOSense_Backend.common.DoorType;
-import UOSense.UOSense_Backend.common.SubDescription;
+import UOSense.UOSense_Backend.common.enumClass.Category;
+import UOSense.UOSense_Backend.common.enumClass.DoorType;
+import UOSense.UOSense_Backend.common.enumClass.SubDescription;
 import UOSense.UOSense_Backend.entity.Restaurant;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

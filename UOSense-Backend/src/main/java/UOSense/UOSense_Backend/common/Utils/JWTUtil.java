@@ -1,5 +1,6 @@
-package UOSense.UOSense_Backend.common;
+package UOSense.UOSense_Backend.common.Utils;
 
+import UOSense.UOSense_Backend.common.enumClass.Role;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import jakarta.servlet.http.Cookie;

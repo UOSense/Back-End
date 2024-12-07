@@ -1,4 +1,4 @@
-package UOSense.UOSense_Backend.common;
+package UOSense.UOSense_Backend.common.Utils;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.core.StringRedisTemplate;

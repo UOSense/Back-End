@@ -1,6 +1,6 @@
 package UOSense.UOSense_Backend.service;
 
-import UOSense.UOSense_Backend.common.ImageUtils;
+import UOSense.UOSense_Backend.common.Utils.ImageUtils;
 import UOSense.UOSense_Backend.dto.MenuRequest;
 import UOSense.UOSense_Backend.entity.Restaurant;
 import UOSense.UOSense_Backend.repository.MenuRepository;

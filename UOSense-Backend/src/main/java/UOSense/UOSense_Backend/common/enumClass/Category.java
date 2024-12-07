@@ -1,4 +1,4 @@
-package UOSense.UOSense_Backend.common;
+package UOSense.UOSense_Backend.common.enumClass;
 
 public enum Category implements BaseEnum {
     KOREAN("한식"), CHINESE("중식"), JAPANESE("일식"), WESTERN("양식"), OTHER("기타");

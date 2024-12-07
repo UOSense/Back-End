@@ -1,4 +1,4 @@
-package UOSense.UOSense_Backend.common;
+package UOSense.UOSense_Backend.common.enumClass;
 
 public enum Role implements BaseEnum {
     USER, ADMIN;

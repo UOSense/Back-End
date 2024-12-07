@@ -1,6 +1,6 @@
 package UOSense.UOSense_Backend.dto;
 
-import UOSense.UOSense_Backend.common.Role;
+import UOSense.UOSense_Backend.common.enumClass.Role;
 import UOSense.UOSense_Backend.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

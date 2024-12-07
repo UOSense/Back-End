@@ -1,7 +1,7 @@
 package UOSense.UOSense_Backend.config;
 
 import UOSense.UOSense_Backend.common.securityFilter.CustomAuthenticationFilter;
-import UOSense.UOSense_Backend.common.JWTUtil;
+import UOSense.UOSense_Backend.common.Utils.JWTUtil;
 import UOSense.UOSense_Backend.common.exception.CustomAccessDeniedHandler;
 import UOSense.UOSense_Backend.common.exception.CustomLoginAuthenticationEntryPoint;
 import UOSense.UOSense_Backend.common.handler.CustomAuthenticationFailureHandler;

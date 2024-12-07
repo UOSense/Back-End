@@ -1,4 +1,4 @@
-package UOSense.UOSense_Backend.common;
+package UOSense.UOSense_Backend.common.Utils;
 
 import com.amazonaws.SdkClientException;
 import com.amazonaws.services.s3.AmazonS3;

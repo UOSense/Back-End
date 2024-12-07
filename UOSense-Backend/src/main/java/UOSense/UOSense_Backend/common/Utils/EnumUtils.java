@@ -1,4 +1,6 @@
-package UOSense.UOSense_Backend.common;
+package UOSense.UOSense_Backend.common.Utils;
+
+import UOSense.UOSense_Backend.common.enumClass.BaseEnum;
 
 public class EnumUtils {
     /** enum 클래스에서 특정 값을 가진 원소를 찾습니다. */

@@ -1,6 +1,6 @@
 package UOSense.UOSense_Backend.service;
 
-import UOSense.UOSense_Backend.common.DoorType;
+import UOSense.UOSense_Backend.common.enumClass.DoorType;
 import UOSense.UOSense_Backend.dto.RestaurantListResponse;
 import UOSense.UOSense_Backend.entity.Restaurant;
 
