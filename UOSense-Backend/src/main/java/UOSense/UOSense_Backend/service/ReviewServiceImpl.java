@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 @Service
@@ -36,5 +37,13 @@ public class ReviewServiceImpl implements ReviewService{
             throw new IllegalArgumentException("삭제할 리뷰가 존재하지 않습니다.");
         }
         reviewRepository.deleteById(reviewId);
+    }
+
+    @Override
+    public void addLike(int reviewId) {
+        int updatedRows = reviewRepository.increaseLikeCount(reviewId);
+        if (updatedRows == 0) {
+            throw new NoSuchElementException("해당 리뷰가 존재하지 않습니다.");
+        }
     }
 }
