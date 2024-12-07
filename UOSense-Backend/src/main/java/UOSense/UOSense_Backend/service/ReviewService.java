@@ -8,6 +8,6 @@ import java.util.List;
 
 public interface ReviewService {
     int register(ReviewRequest reviewRequest, int userId);
-    Review find(int id);
+    ReviewResponse find(int reviewId);
     List<ReviewResponse> findByUserId(int userId);
 }
