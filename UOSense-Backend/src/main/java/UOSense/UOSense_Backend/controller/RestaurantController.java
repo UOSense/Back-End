@@ -212,7 +212,7 @@ public class RestaurantController {
         }
     }
 
-    @PostMapping(value = "/menu", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(value = "/create/menu", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(summary = "특정 식당 메뉴 등록", description = "메뉴를 등록합니다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "메뉴를 성공적으로 업로드하였습니다."),
