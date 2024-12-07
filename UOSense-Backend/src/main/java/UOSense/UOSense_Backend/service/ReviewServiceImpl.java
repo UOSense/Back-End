@@ -20,6 +20,7 @@ public class ReviewServiceImpl implements ReviewService{
     private final ReviewRepository reviewRepository;
 
     @Override
+    @Transactional(readOnly = true)
     public ReviewList findListByRestaurantId(int restaurantId) {
         List<Review> reviews = reviewRepository.findAllByRestaurantId(restaurantId);
         if (reviews.isEmpty()) {
