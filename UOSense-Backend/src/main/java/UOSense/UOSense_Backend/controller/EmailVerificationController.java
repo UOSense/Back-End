@@ -4,6 +4,9 @@ import UOSense.UOSense_Backend.dto.AuthCodeRequest;
 import UOSense.UOSense_Backend.dto.WebmailRequest;
 import UOSense.UOSense_Backend.service.AuthService;
 import UOSense.UOSense_Backend.service.MailService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -20,21 +23,31 @@ import java.util.NoSuchElementException;
 public class EmailVerificationController {
     private final AuthService authService;
     private final MailService mailService;
-
-    /** 웹메일 중복 확인 클릭 시 */
-    @GetMapping("/checkformat")
-    public ResponseEntity<String> validateWebMail(String mailAddress) {
+/
+    @GetMapping("/check-format")
+    @Operation(summary = "인증번호 전송", description = "웹메일 주소를 검증합니다. (주소 형식, 중복 확인)")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "올바른 웹메일 주소입니다."),
+            @ApiResponse(responseCode = "400", description = "잘못된 요청입니다."),
+            @ApiResponse(responseCode = "500", description = "네트워크 연결에 문제가 있습니다.")
+    })
+    public ResponseEntity<Boolean> validateWebMail(@RequestParam String mailAddress) {
         try {
             if (mailService.checkMailAddress(mailAddress) && mailService.checkDuplicatedMail(mailAddress))
-                return ResponseEntity.status(HttpStatus.OK).build();
+                return ResponseEntity.status(HttpStatus.OK).body(true);
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(false);
     }
 
-    /** 인증번호 발송 클릭 시 */
-    @PostMapping(value = "/verify", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping("/verify")
+    @Operation(summary = "인증번호 전송", description = "웹메일로 인증번호를 전송합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "성공적으로 메일을 전송했습니다."),
+            @ApiResponse(responseCode = "400", description = "잘못된 요청입니다."),
+            @ApiResponse(responseCode = "500", description = "네트워크 연결에 문제가 있습니다.")
+    })
     public ResponseEntity<Boolean> sendAuthCode(@RequestBody WebmailRequest webmailRequest) {
         try {
             String email = webmailRequest.getEmail();
@@ -48,8 +61,13 @@ public class EmailVerificationController {
         }
     }
 
-    /** 인증번호 확인 클릭 시 */
-    @PostMapping(value = "/authenticatecode", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping("/authenticate-code")
+    @Operation(summary = "인증번호 확인", description = "인증번호를 검증합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "올바른 인증코드입니다."),
+            @ApiResponse(responseCode = "400", description = "잘못된 요청입니다."),
+            @ApiResponse(responseCode = "500", description = "네트워크 연결에 문제가 있습니다.")
+    })
     public ResponseEntity<Boolean> validateCode(@RequestBody AuthCodeRequest authCodeRequest) {
         try {
             if (authService.checkAuthCode(authCodeRequest.getEmail(),authCodeRequest.getCode()))

@@ -1,7 +1,5 @@
 package UOSense.UOSense_Backend.common;
 
-import UOSense.UOSense_Backend.common.ImageUtils;
-import com.amazonaws.AmazonServiceException;
 import com.amazonaws.SdkClientException;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.CannedAccessControlList;

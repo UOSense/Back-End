@@ -34,7 +34,7 @@ public class RestaurantRequest {
 
     private String description;
 
-    public static Restaurant toEntity(RestaurantRequest restaurantRequest, double rating, int reviewCount, int bookmarkCount) {
+    public static Restaurant toEntity(RestaurantRequest restaurantRequest) {
         Restaurant restaurant = Restaurant.builder()
                 .name(restaurantRequest.getName())
                 .doorType(restaurantRequest.getDoorType())
@@ -42,12 +42,9 @@ public class RestaurantRequest {
                 .latitude(restaurantRequest.getLatitude())
                 .address(restaurantRequest.getAddress())
                 .phoneNumber(restaurantRequest.getPhoneNumber())
-                .rating(rating)
                 .category(restaurantRequest.getCategory())
                 .subDescription(restaurantRequest.getSubDescription())
                 .description(restaurantRequest.getDescription())
-                .reviewCount(reviewCount)
-                .bookmarkCount(bookmarkCount)
                 .build();
 
         if (restaurantRequest.getId() == -1) {

@@ -81,8 +81,8 @@ public class SecurityConfig {
                         .requestMatchers("/reissue").permitAll()
                         .requestMatchers("/signin").permitAll()
                         .requestMatchers("/signout").permitAll()
-                        .requestMatchers("/fcm/emergency").hasAuthority("ADMIN")
-                        .anyRequest().authenticated());
+                        .requestMatchers("/api/v1/report/get/list").permitAll()
+                        .anyRequest().permitAll());
 
         //세션 설정 : STATELESS
         http

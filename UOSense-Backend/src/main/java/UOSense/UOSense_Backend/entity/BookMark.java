@@ -24,4 +24,11 @@ public class BookMark {
     @ManyToOne(fetch = FetchType.LAZY)  // User와 다대일 관계
     @JoinColumn(name = "restaurant_id")  // 외래키 명시
     private Restaurant restaurant;
+
+    public static BookMark toEntity(User user, Restaurant restaurant) {
+        return BookMark.builder()
+                .user(user)
+                .restaurant(restaurant)
+                .build();
+    }
 }

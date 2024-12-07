@@ -28,8 +28,6 @@ public class Review {
     @JoinColumn(name = "user_id")  // 외래키 명시
     private User user;
 
-    private String title;
-
     @Column(columnDefinition = "TEXT")
     private String body;
 
@@ -46,5 +44,4 @@ public class Review {
 
     @Column(name = "likes_count")
     private int likeCount;
-
 }

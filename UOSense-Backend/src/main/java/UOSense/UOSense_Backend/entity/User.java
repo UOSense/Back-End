@@ -25,6 +25,7 @@ public class User {
     @Column(unique = true)
     private String nickname;
 
+    @Column(name = "image_url")
     private String imageUrl;
 
     @Enumerated(EnumType.STRING)
