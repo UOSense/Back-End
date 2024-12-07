@@ -2,7 +2,6 @@ package UOSense.UOSense_Backend.entity;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -10,7 +9,6 @@ import lombok.NoArgsConstructor;
 @Table(uniqueConstraints = {
         @UniqueConstraint(columnNames = {"user_id", "review_id"})
 })
-@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class ReviewLike {
@@ -25,4 +23,9 @@ public class ReviewLike {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "review_id")
     private Review review;
+
+    public ReviewLike(User user, Review review) {
+        this.user = user;
+        this.review = review;
+    }
 }
