@@ -1,7 +1,5 @@
 package UOSense.UOSense_Backend.service;
 
-
-import UOSense.UOSense_Backend.entity.Review;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;

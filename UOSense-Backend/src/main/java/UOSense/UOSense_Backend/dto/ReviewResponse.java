@@ -1,6 +1,5 @@
 package UOSense.UOSense_Backend.dto;
 
-import UOSense.UOSense_Backend.common.Tag;
 import UOSense.UOSense_Backend.entity.Review;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -3,7 +3,6 @@ package UOSense.UOSense_Backend.controller;
 import UOSense.UOSense_Backend.dto.CustomUserDetails;
 import UOSense.UOSense_Backend.dto.ReviewRequest;
 import UOSense.UOSense_Backend.dto.ReviewResponse;
-import UOSense.UOSense_Backend.entity.Review;
 import UOSense.UOSense_Backend.service.ReviewImageService;
 import UOSense.UOSense_Backend.service.ReviewService;
 import io.swagger.v3.oas.annotations.Operation;

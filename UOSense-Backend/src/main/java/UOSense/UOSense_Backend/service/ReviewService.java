@@ -2,7 +2,6 @@ package UOSense.UOSense_Backend.service;
 
 import UOSense.UOSense_Backend.dto.ReviewRequest;
 import UOSense.UOSense_Backend.dto.ReviewResponse;
-import UOSense.UOSense_Backend.entity.Review;
 
 import java.util.List;
 

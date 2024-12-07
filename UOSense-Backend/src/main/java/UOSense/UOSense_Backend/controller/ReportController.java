@@ -11,7 +11,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,11 +31,11 @@ public class ReportController {
             @ApiResponse(responseCode = "500", description = "서버 오류입니다.")
     })
     public ResponseEntity<Void> create(@RequestBody ReportRequest reportRequest, Authentication authentication) {
-        //CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
-        //int userId = userDetails.getUser().getId();
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+        int userId = userDetails.getUser().getId();
 
         try {
-            reportService.register(reportRequest, 1);
+            reportService.register(reportRequest, userId);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         } catch (Exception e) {

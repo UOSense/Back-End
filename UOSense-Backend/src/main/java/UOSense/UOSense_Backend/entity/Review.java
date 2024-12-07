@@ -2,7 +2,6 @@ package UOSense.UOSense_Backend.entity;
 
 import UOSense.UOSense_Backend.common.Tag;
 import UOSense.UOSense_Backend.common.TagConverter;
-import UOSense.UOSense_Backend.dto.ReviewRequest;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
