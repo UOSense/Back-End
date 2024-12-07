@@ -45,17 +45,4 @@ public class Review {
 
     @Column(name = "likes_count")
     private int likeCount;
-
-    public static Review toEntity(ReviewRequest reviewRequest, User user, Restaurant restaurant) {
-        return Review.builder()
-                .user(user)
-                .restaurant(restaurant)
-                .body(reviewRequest.getBody())
-                .rating(reviewRequest.getRating())
-                .dateTime(reviewRequest.getDateTime())
-                .isReviewEventCheck(reviewRequest.isReviewEventCheck())
-                .tag(reviewRequest.getTag())
-                .likeCount(0)
-                .build();
-    }
 }

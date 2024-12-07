@@ -29,7 +29,7 @@ public class ReviewResponse {
 
     private boolean isReviewEventCheck;
 
-    private Tag tag;
+    private String tag;
 
     private int likeCount;
 
@@ -48,7 +48,7 @@ public class ReviewResponse {
                 .rating(review.getRating())
                 .dateTime(review.getDateTime())
                 .isReviewEventCheck(review.isReviewEventCheck())
-                .tag(review.getTag())
+                .tag(review.getTag().getValue())
                 .likeCount(review.getLikeCount())
                 .build();
     }
