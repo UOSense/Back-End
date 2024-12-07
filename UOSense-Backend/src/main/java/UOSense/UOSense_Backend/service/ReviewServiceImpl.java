@@ -1,7 +1,5 @@
 package UOSense.UOSense_Backend.service;
 
-import UOSense.UOSense_Backend.dto.ReviewInfo;
-import UOSense.UOSense_Backend.dto.ReviewList;
 import UOSense.UOSense_Backend.dto.ReviewRequest;
 import UOSense.UOSense_Backend.dto.ReviewResponse;
 import UOSense.UOSense_Backend.entity.ReviewLike;
@@ -34,15 +32,14 @@ public class ReviewServiceImpl implements ReviewService{
 
     @Override
     @Transactional(readOnly = true)
-    public ReviewList findListByRestaurantId(int restaurantId) {
+    public List<ReviewResponse> findListByRestaurantId(int restaurantId) {
         if (!restaurantRepository.existsById(restaurantId))
             throw new IllegalArgumentException("존재하지 않는 식당입니다.");
 
-        List<Review> reviews = reviewRepository.findAllByRestaurantId(restaurantId);
-        List<ReviewInfo> reviewInfoList = reviews.stream()
-                .map(ReviewInfo::from)
+        List<Review> reviewList = reviewRepository.findAllByRestaurantId(restaurantId);
+        return reviewList.stream()
+                .map(ReviewResponse::from)
                 .toList();
-        return new ReviewList(restaurantId,reviewInfoList);
     }
 
     @Override
