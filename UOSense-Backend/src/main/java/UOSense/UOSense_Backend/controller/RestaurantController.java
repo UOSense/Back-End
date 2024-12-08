@@ -183,7 +183,8 @@ public class RestaurantController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "사진을 성공적으로 저장했습니다."),
             @ApiResponse(responseCode = "410", description = "저장할 사진을 찾지 못해 실패했습니다."),
-            @ApiResponse(responseCode = "500", description = "잘못된 요청입니다.")
+            @ApiResponse(responseCode = "417", description = "저장할 사진을 찾지 못해 실패했습니다."),
+            @ApiResponse(responseCode = "500", description = "서버 오류입니다.")
     })
     public ResponseEntity<RestaurantImagesResponse> createImages(
             @RequestParam int restaurantId,
@@ -194,6 +195,8 @@ public class RestaurantController {
             return new ResponseEntity<>(restaurantImages, HttpStatus.OK);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(HttpStatus.GONE);
+        } catch (RuntimeException e) {
+            return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
         }
     }
 
