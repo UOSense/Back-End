@@ -109,7 +109,7 @@ public class RestaurantServiceImpl implements RestaurantService{
 
         Restaurant restaurant = RestaurantRequest.toEntity(restaurantRequest);
 
-        restaurantRepository.save(restaurant);
+        restaurantRepository.saveAndFlush(restaurant);
     }
 
     @Override
@@ -122,7 +122,7 @@ public class RestaurantServiceImpl implements RestaurantService{
     }
 
     @Override
-    public BusinessDayList findBusinessDayList(int restaurantId) {
+    public BusinessDayList findBusinessDay(int restaurantId) {
         List<BusinessDay> response = businessDayRepository.findAllByRestaurantId(restaurantId);
         if (response.isEmpty()) {
             throw new IllegalArgumentException("식당에 대한 영업 정보가 존재하지 않습니다.");
@@ -141,6 +141,11 @@ public class RestaurantServiceImpl implements RestaurantService{
 
         List<BusinessDayInfo> InfoList = businessDayList.getBusinessDayInfoList();
         for(BusinessDayInfo businessDayInfo : InfoList) {
+            // breakTime이 없을 경우
+            if (!businessDayInfo.isBreakTime()) {
+                businessDayInfo.setBreakTime(null, null);
+            }
+
             // id가 없을 경우
             if (!businessDayRepository.existsById(businessDayInfo.getId())) {
                 throw new IllegalArgumentException("수정할 영업 정보를 찾을 수 없습니다.");
@@ -148,7 +153,7 @@ public class RestaurantServiceImpl implements RestaurantService{
             // id가 존재할 경우
             else {
                 BusinessDay businessDay = BusinessDayInfo.toEntity(businessDayInfo, restaurant);
-                businessDayRepository.save(businessDay);
+                businessDayRepository.saveAndFlush(businessDay);
             }
         }
     }
@@ -161,6 +166,11 @@ public class RestaurantServiceImpl implements RestaurantService{
 
         List<BusinessDayInfo> InfoList = businessDayList.getBusinessDayInfoList();
         for(BusinessDayInfo businessDayInfo : InfoList) {
+            // breakTime이 없을 경우
+            if (!businessDayInfo.isBreakTime()) {
+                businessDayInfo.setBreakTime(null, null);
+            }
+
             // id가 존재할 경우
             if (businessDayRepository.existsById(businessDayInfo.getId())) {
                 throw new IllegalArgumentException("영업 정보가 존재하는 Id입니다. 등록 대신 수정을 해주세요.");

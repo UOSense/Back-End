@@ -15,7 +15,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
+@Transactional(readOnly = true)
 public class ReviewImageServiceImpl implements ReviewImageService{
     private final ReviewImageRepository reviewImageRepository;
     private final ReviewRepository reviewRepository;
@@ -23,6 +23,7 @@ public class ReviewImageServiceImpl implements ReviewImageService{
     final String S3_FOLDER_NAME = "review";
 
     @Override
+    @Transactional
     public void register(int reviewId, List<MultipartFile> images) {
         Optional<Review> review = reviewRepository.findById(reviewId);
         if (review.isEmpty()) {

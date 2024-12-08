@@ -32,14 +32,15 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
     
     @Override
-    public void register(NewUserRequest newUserRequest) {
+    @Transactional
+    public User register(NewUserRequest newUserRequest) {
         // 요청 정보 검증
         if (!validatedUserInfo(newUserRequest))
             throw new IllegalArgumentException("유효하지 않은 사용자 정보입니다.");
         // 비밀번호 암호화
         String encodedPassword = passwordEncoder.encode(newUserRequest.getPassword());
         // DB에 저장
-        userRepository.save(newUserRequest.toEntity(encodedPassword));
+        return userRepository.save(newUserRequest.toEntity(encodedPassword));
     }
 
     private boolean validatedUserInfo(NewUserRequest newUserRequest) {
@@ -54,8 +55,10 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     private boolean checkPasswordFormat(String password) {
-        if (password.length() < 8 || password.length() > 20)
+      
+        if (password.length() < 8 || password.length() > 20) {
             throw new IllegalArgumentException("비밀번호 자리수 제한");
+        }
 
         // 각 조건을 확인하기 위한 플래그
         boolean hasUpperCase = false;
@@ -81,8 +84,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public boolean checkNickName(String nickname) {
-        if (userRepository.existsByNickname(nickname))
+        if (userRepository.existsByNickname(nickname)) {
             throw new DuplicateRequestException("이미 존재하는 닉네임입니다.");
+        }
         return true;
     }
 

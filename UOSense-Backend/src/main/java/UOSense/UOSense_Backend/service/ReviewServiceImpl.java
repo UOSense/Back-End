@@ -91,6 +91,7 @@ public class ReviewServiceImpl implements ReviewService{
     }
 
     @Override
+    @Transactional(readOnly = true)
     public ReviewResponse find(int reviewId) {
         Optional<Review> review = reviewRepository.findById(reviewId);
         if (review.isEmpty()) {
@@ -101,6 +102,7 @@ public class ReviewServiceImpl implements ReviewService{
 
     // restaurantId로 리뷰 목록 조회와 헷갈릴 우려가 있어 ByUserId를 추가함
     @Override
+    @Transactional(readOnly = true)
     public List<ReviewResponse> findByUserId(int userId) {
         List<Review> reviewList = reviewRepository.findAllByUserId(userId);
         if (reviewList.isEmpty()) {

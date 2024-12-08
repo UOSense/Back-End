@@ -7,10 +7,12 @@ import UOSense.UOSense_Backend.entity.Restaurant;
 import UOSense.UOSense_Backend.repository.MenuRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class MenuServiceImpl implements MenuService{
     private final MenuRepository menuRepository;
     private final ImageUtils imageUtils;
@@ -27,6 +29,7 @@ public class MenuServiceImpl implements MenuService{
         }
     }
 
+    @Transactional
     @Override
     public void edit(MenuRequest menuRequest, MultipartFile image, Restaurant restaurant) {
         Menu menu = menuRepository.findById(menuRequest.getId())
@@ -41,6 +44,7 @@ public class MenuServiceImpl implements MenuService{
     }
 
     @Override
+    @Transactional
     public void delete(int menuId) {
         if (!menuRepository.existsById(menuId)) {
             // 댓글이 존재하지 않을 경우 예외를 던짐

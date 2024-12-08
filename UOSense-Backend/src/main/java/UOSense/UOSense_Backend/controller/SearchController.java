@@ -31,11 +31,19 @@ public class SearchController {
             @ApiResponse(responseCode = "404", description = "식당을 찾을 수 없습니다.")
     })
     public ResponseEntity<List<RestaurantListResponse>> search(@RequestParam String keyword,
-                                                               @RequestParam DoorType closestDoor) {
+                                                               @RequestParam(required = false) DoorType doorType) {
         try {
-            List<Restaurant> restaurantList = searchService.findByKeyword(keyword); // restaurantList 캐시에 저장
-            List<Restaurant> filteredResult = searchService.filterByDoorType(restaurantList, closestDoor);
-            List<RestaurantListResponse> result = searchService.sort(filteredResult, SearchService.sortFilter.DEFAULT);
+            List<Restaurant> restaurantList;
+            if (searchService.isInCache(keyword)) {
+                restaurantList = searchService.checkRestaurantCache(keyword);
+            }
+            else {
+                restaurantList = searchService.findByKeyword(keyword); // restaurantList 캐시에 저장
+            }
+            if (doorType != null) {
+                restaurantList = searchService.filterByDoorType(restaurantList, doorType);
+            }
+            List<RestaurantListResponse> result = searchService.sort(restaurantList, SearchService.sortFilter.DEFAULT);
             return new ResponseEntity<>(result, HttpStatus.OK);
         } catch (NoSuchElementException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
@@ -43,29 +51,7 @@ public class SearchController {
             return ResponseEntity.badRequest().build();
         }
     }
-    /**
-     * 호출 위치: 메인 지도 화면, 식당 목록 화면
-     */
-    @GetMapping("/filter")
-    @Operation(summary = "검색결과 출입구문 필터링", description = "검색 결과를 출입구문 기준으로 필터링합니다.")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "검색 결과를 성공적으로 불러왔습니다."),
-            @ApiResponse(responseCode = "400", description = "잘못된 요청입니다."),
-            @ApiResponse(responseCode = "404", description = "식당을 찾을 수 없습니다.")
-    })
-    public ResponseEntity<List<RestaurantListResponse>> filterByGate(@RequestParam String keyword,
-                                                                     @RequestParam DoorType doorType) {
-        try {
-            List<Restaurant> cachedResult = searchService.checkRestaurantCache(keyword);
-            List<Restaurant> filteredResult = searchService.filterByDoorType(cachedResult, doorType);
-            List<RestaurantListResponse> result = searchService.sort(filteredResult, SearchService.sortFilter.DEFAULT);
-            return new ResponseEntity<>(result, HttpStatus.OK);
-        } catch (NoSuchElementException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
-        }
-    }
+
     /**
      * 호출 위치: 식당 목록 화면
      */

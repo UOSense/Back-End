@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
 public class MailServiceImpl implements MailService{
     private final UserRepository userRepository;
     private final EmailUtil emailUtil;
@@ -23,6 +22,7 @@ public class MailServiceImpl implements MailService{
     }
 
     @Override
+    @Transactional(readOnly = true)
     public boolean checkDuplicatedMail(String mailAddress) {
         if (userRepository.existsByEmail(mailAddress)) {
             throw new IllegalArgumentException("이미 가입된 메일 주소입니다.");
