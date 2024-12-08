@@ -1,6 +1,11 @@
 package UOSense.UOSense_Backend.service;
 
-import UOSense.UOSense_Backend.common.*;
+import UOSense.UOSense_Backend.common.converter.CategoryConverter;
+import UOSense.UOSense_Backend.common.converter.EnumBaseConverter;
+import UOSense.UOSense_Backend.common.converter.SubDescriptionConverter;
+import UOSense.UOSense_Backend.common.enumClass.Category;
+import UOSense.UOSense_Backend.common.enumClass.DoorType;
+import UOSense.UOSense_Backend.common.enumClass.SubDescription;
 import UOSense.UOSense_Backend.dto.RestaurantListResponse;
 import UOSense.UOSense_Backend.entity.Restaurant;
 import UOSense.UOSense_Backend.entity.RestaurantImage;

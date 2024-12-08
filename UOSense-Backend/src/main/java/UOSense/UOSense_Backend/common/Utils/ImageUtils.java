@@ -1,4 +1,4 @@
-package UOSense.UOSense_Backend.common;
+package UOSense.UOSense_Backend.common.Utils;
 
 import org.springframework.web.multipart.MultipartFile;
 

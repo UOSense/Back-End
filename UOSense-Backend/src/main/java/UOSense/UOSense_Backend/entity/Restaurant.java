@@ -1,6 +1,11 @@
 package UOSense.UOSense_Backend.entity;
 
-import UOSense.UOSense_Backend.common.*;
+import UOSense.UOSense_Backend.common.converter.CategoryConverter;
+import UOSense.UOSense_Backend.common.converter.DoorTypeConverter;
+import UOSense.UOSense_Backend.common.converter.SubDescriptionConverter;
+import UOSense.UOSense_Backend.common.enumClass.Category;
+import UOSense.UOSense_Backend.common.enumClass.DoorType;
+import UOSense.UOSense_Backend.common.enumClass.SubDescription;
 import jakarta.persistence.*;
 import lombok.*;
 

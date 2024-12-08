@@ -1,7 +1,7 @@
 package UOSense.UOSense_Backend.entity;
 
-import UOSense.UOSense_Backend.common.Tag;
-import UOSense.UOSense_Backend.common.TagConverter;
+import UOSense.UOSense_Backend.common.enumClass.Tag;
+import UOSense.UOSense_Backend.common.converter.TagConverter;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

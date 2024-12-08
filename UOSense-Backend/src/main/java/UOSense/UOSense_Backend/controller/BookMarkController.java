@@ -81,7 +81,7 @@ public class BookMarkController {
             @ApiResponse(responseCode = "404", description = "북마크 정보가 없습니다."),
             @ApiResponse(responseCode = "500", description = "서버 오류입니다.")
     })
-    public ResponseEntity<?> get(Authentication authentication) {
+    public ResponseEntity<List<BookMarkResponse>> get(Authentication authentication) {
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
         int userId = userDetails.getUser().getId();
 

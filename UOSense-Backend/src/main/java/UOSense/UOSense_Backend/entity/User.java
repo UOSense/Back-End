@@ -1,6 +1,6 @@
 package UOSense.UOSense_Backend.entity;
 
-import UOSense.UOSense_Backend.common.Role;
+import UOSense.UOSense_Backend.common.enumClass.Role;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

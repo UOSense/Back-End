@@ -1,5 +1,7 @@
-package UOSense.UOSense_Backend.common;
+package UOSense.UOSense_Backend.common.converter;
 
+import UOSense.UOSense_Backend.common.Utils.EnumUtils;
+import UOSense.UOSense_Backend.common.enumClass.BaseEnum;
 import jakarta.persistence.AttributeConverter;
 
 public abstract class EnumBaseConverter<E extends Enum<E> & BaseEnum> implements AttributeConverter<E, String> {

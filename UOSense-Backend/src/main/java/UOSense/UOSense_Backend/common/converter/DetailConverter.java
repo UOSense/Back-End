@@ -1,6 +1,5 @@
 package UOSense.UOSense_Backend.common.converter;
 
-import UOSense.UOSense_Backend.common.EnumBaseConverter;
 import UOSense.UOSense_Backend.common.enumClass.Detail;
 import jakarta.persistence.Converter;
 

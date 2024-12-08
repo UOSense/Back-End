@@ -1,15 +1,12 @@
 package UOSense.UOSense_Backend.service;
 
-import UOSense.UOSense_Backend.common.EmailUtil;
-import UOSense.UOSense_Backend.common.RedisUtil;
+import UOSense.UOSense_Backend.common.Utils.EmailUtil;
 import UOSense.UOSense_Backend.repository.UserRepository;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Arrays;
 
 @Service
 @RequiredArgsConstructor

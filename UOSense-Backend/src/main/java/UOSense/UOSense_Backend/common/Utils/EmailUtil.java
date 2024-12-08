@@ -1,4 +1,4 @@
-package UOSense.UOSense_Backend.common;
+package UOSense.UOSense_Backend.common.Utils;
 
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;

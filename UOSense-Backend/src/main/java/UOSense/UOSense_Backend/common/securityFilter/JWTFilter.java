@@ -1,6 +1,6 @@
 package UOSense.UOSense_Backend.common.securityFilter;
 
-import UOSense.UOSense_Backend.common.JWTUtil;
+import UOSense.UOSense_Backend.common.Utils.JWTUtil;
 import UOSense.UOSense_Backend.dto.CustomUserDetails;
 import UOSense.UOSense_Backend.entity.User;
 import com.fasterxml.jackson.databind.ObjectMapper;

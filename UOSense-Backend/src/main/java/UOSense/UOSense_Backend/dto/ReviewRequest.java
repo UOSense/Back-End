@@ -1,6 +1,6 @@
 package UOSense.UOSense_Backend.dto;
 
-import UOSense.UOSense_Backend.common.Tag;
+import UOSense.UOSense_Backend.common.enumClass.Tag;
 import UOSense.UOSense_Backend.entity.Restaurant;
 import UOSense.UOSense_Backend.entity.Review;
 import UOSense.UOSense_Backend.entity.User;

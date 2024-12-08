@@ -1,10 +1,9 @@
 package UOSense.UOSense_Backend.service;
 
-import UOSense.UOSense_Backend.common.RedisUtil;
+import UOSense.UOSense_Backend.common.Utils.RedisUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
 import java.util.NoSuchElementException;
 import java.util.Random;
 

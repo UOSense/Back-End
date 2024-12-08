@@ -7,7 +7,7 @@ import org.apache.coyote.BadRequestException;
 import java.util.HashMap;
 import java.util.Map;
 
-import UOSense.UOSense_Backend.common.JWTUtil;
+import UOSense.UOSense_Backend.common.Utils.JWTUtil;
 import UOSense.UOSense_Backend.dto.NewUserRequest;
 import UOSense.UOSense_Backend.service.UserService;
 import com.sun.jdi.request.DuplicateRequestException;

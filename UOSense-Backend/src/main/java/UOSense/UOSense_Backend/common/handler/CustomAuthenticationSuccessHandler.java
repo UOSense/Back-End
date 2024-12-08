@@ -1,9 +1,9 @@
 package UOSense.UOSense_Backend.common.handler;
 
-import UOSense.UOSense_Backend.common.RedisUtilForToken;
-import UOSense.UOSense_Backend.common.Role;
+import UOSense.UOSense_Backend.common.Utils.RedisUtilForToken;
+import UOSense.UOSense_Backend.common.enumClass.Role;
 import UOSense.UOSense_Backend.dto.CustomUserDetails;
-import UOSense.UOSense_Backend.common.JWTUtil;
+import UOSense.UOSense_Backend.common.Utils.JWTUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
