@@ -18,15 +18,19 @@ public class MenuRequest {
     private String name;
     private int price;
     private String description;
-    private MultipartFile image;
 
-    public Menu toEntity(MenuRequest menuRequest, Restaurant restaurant) {
-        return Menu.builder()
-                .id(menuRequest.getId())
+    public Menu toEntity(Restaurant restaurant, String url) {
+        Menu.MenuBuilder builder = Menu.builder()
+                .id(this.id)
                 .restaurant(restaurant)
                 .name(this.name)
                 .price(this.price)
-                .description(this.getDescription())
-                .build();
+                .description(this.description);
+
+        if (!url.isEmpty()) {
+            builder.imageUrl(url);
+        }
+
+        return builder.build();
     }
 }

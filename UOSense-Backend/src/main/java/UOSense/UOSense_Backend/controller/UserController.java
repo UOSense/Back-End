@@ -120,4 +120,20 @@ public class UserController {
 
         return ResponseEntity.ok().body(true);
     }
+
+    @PostMapping("/check-nickname")
+    @Operation(summary = "닉네임 중복 검사", description = "닉네임 중복 여부를 판별합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "사용 가능한 닉네임입니다."),
+            @ApiResponse(responseCode = "400", description = "중복되는 닉네임입니다."),
+            @ApiResponse(responseCode = "500", description = "서버 오류입니다.")
+    })
+    public ResponseEntity<Boolean> validateNickName (@RequestParam String nickname) {
+        try {
+            boolean isValidated = userService.checkNickName(nickname);
+            return ResponseEntity.ok().body(isValidated);
+        } catch (DuplicateRequestException e) {
+            return ResponseEntity.badRequest().body(false);
+        }
+    }
 }

@@ -6,6 +6,7 @@ import UOSense.UOSense_Backend.dto.RestaurantImagesResponse;
 import UOSense.UOSense_Backend.entity.Restaurant;
 import UOSense.UOSense_Backend.entity.RestaurantImage;
 import UOSense.UOSense_Backend.repository.RestaurantImageRepository;
+import com.amazonaws.SdkClientException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,7 +18,7 @@ import java.util.NoSuchElementException;
 
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
+@Transactional
 public class RestaurantImageServiceImpl implements RestaurantImageService {
     private final RestaurantImageRepository restaurantImageRepository;
     private final ImageUtils imageUtils;
@@ -35,7 +36,6 @@ public class RestaurantImageServiceImpl implements RestaurantImageService {
     }
 
     @Override
-    @Transactional
     public RestaurantImagesResponse save(Restaurant restaurant, MultipartFile[] images) {
         List<ImageInfo> imageList = new ArrayList<>();
 
@@ -51,6 +51,16 @@ public class RestaurantImageServiceImpl implements RestaurantImageService {
         }
         return new RestaurantImagesResponse(restaurant.getId(), imageList);
     }
+
+    @Override
+    public void delete(int id) {
+        RestaurantImage restaurantImage = restaurantImageRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("삭제할 사진이 존재하지 않습니다."));
+
+        imageUtils.deleteImageInS3(restaurantImage.getImageUrl());
+        restaurantImageRepository.deleteById(restaurantImage.getId());
+    }
+
     public ImageInfo getMetaData(RestaurantImage image) {
         return new ImageInfo(image.getId(),image.getImageUrl());
     }
