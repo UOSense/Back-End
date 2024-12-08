@@ -18,4 +18,8 @@ public interface RestaurantImageService {
      * @throws IllegalArgumentException 저장할 엔티티가 빈 경우
      */
     RestaurantImagesResponse save(Restaurant restaurant, MultipartFile[] images);
+    /**
+     * 해당 식당 사진을 삭제합니다.
+     */
+    void delete(int id);
 }
