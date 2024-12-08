@@ -8,6 +8,7 @@ import UOSense.UOSense_Backend.service.MenuService;
 import UOSense.UOSense_Backend.service.RestaurantImageService;
 import UOSense.UOSense_Backend.service.RestaurantService;
 
+import com.amazonaws.SdkClientException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -193,6 +194,24 @@ public class RestaurantController {
             return new ResponseEntity<>(restaurantImages, HttpStatus.OK);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(HttpStatus.GONE);
+        }
+    }
+
+    @DeleteMapping("/delete/images")
+    @Operation(summary = "식당 사진 삭제", description = "사진을 삭제합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "사진을 성공적으로 삭제했습니다."),
+            @ApiResponse(responseCode = "404", description = "삭제할 사진을 찾을 수 없습니다."),
+            @ApiResponse(responseCode = "417", description = "AWS S3에서 삭제에 실패했습니다.")
+    })
+    public ResponseEntity<Void> deleteImage(@RequestParam int imageId) {
+        try {
+            restaurantImageService.delete(imageId);
+            return ResponseEntity.ok().build();
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.notFound().build();
+        } catch (SdkClientException e) {
+            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).build();
         }
     }
 
