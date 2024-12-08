@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@Transactional(readOnly = true)
+@Transactional
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService, UserDetailsService {
     private final UserRepository userRepository;
@@ -54,7 +54,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     private boolean checkPasswordFormat(String password) {
-        if (password.length() >= 8 && password.length() <= 20)
+        if (password.length() < 8 || password.length() > 20)
             throw new IllegalArgumentException("비밀번호 자리수 제한");
 
         // 각 조건을 확인하기 위한 플래그
