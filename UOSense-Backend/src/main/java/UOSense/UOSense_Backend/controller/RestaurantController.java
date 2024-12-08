@@ -182,6 +182,7 @@ public class RestaurantController {
     @Operation(summary = "식당 사진 등록", description = "사진을 등록합니다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "사진을 성공적으로 저장했습니다."),
+            @ApiResponse(responseCode = "400", description = "잘못된 요청입니다."),
             @ApiResponse(responseCode = "410", description = "저장할 사진을 찾지 못해 실패했습니다."),
             @ApiResponse(responseCode = "417", description = "저장할 사진을 찾지 못해 실패했습니다."),
             @ApiResponse(responseCode = "500", description = "서버 오류입니다.")
