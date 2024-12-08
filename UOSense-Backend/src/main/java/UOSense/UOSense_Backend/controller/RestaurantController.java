@@ -30,7 +30,6 @@ import java.util.NoSuchElementException;
 @RestController
 @RequestMapping("/api/v1/restaurant")
 @RequiredArgsConstructor
-@Slf4j
 public class RestaurantController {
     private final RestaurantService restaurantService;
     private final MenuService menuService;
@@ -252,7 +251,6 @@ public class RestaurantController {
             String imageUrl = menuService.saveImage(image);
             restaurantService.registerMenu(dto, imageUrl);
         } catch (IllegalArgumentException e) {
-            log.info(e.getMessage());
             return ResponseEntity.badRequest().body(e.getMessage());
         }
         return ResponseEntity.ok().build();
