@@ -35,7 +35,6 @@ public class BusinessDayInfo {
         this.stopBreakTime = stopBreakTime;
     }
 
-
     public static BusinessDayInfo from(BusinessDay businessDay) {
         return BusinessDayInfo.builder()
                 .id(businessDay.getId())

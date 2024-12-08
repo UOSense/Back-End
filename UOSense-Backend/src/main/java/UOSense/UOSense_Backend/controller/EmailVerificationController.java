@@ -24,7 +24,7 @@ public class EmailVerificationController {
     private final MailService mailService;
 
     @GetMapping("/check-format")
-    @Operation(summary = "인증번호 전송", description = "웹메일 주소를 검증합니다. (주소 형식, 중복 확인)")
+    @Operation(summary = "웹메일 주소 검증", description = "웹메일 주소를 검증합니다. (주소 형식, 중복 확인)")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "올바른 웹메일 주소입니다."),
             @ApiResponse(responseCode = "400", description = "잘못된 요청입니다."),
