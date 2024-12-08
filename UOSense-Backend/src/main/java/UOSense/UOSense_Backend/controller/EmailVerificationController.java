@@ -23,7 +23,7 @@ import java.util.NoSuchElementException;
 public class EmailVerificationController {
     private final AuthService authService;
     private final MailService mailService;
-/
+
     @GetMapping("/check-format")
     @Operation(summary = "인증번호 전송", description = "웹메일 주소를 검증합니다. (주소 형식, 중복 확인)")
     @ApiResponses(value = {
