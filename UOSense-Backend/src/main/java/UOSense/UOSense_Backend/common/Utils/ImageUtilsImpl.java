@@ -41,8 +41,9 @@ public class ImageUtilsImpl implements ImageUtils {
 
     @Override
     public void deleteImageInS3(String fileName) {
+        String key = fileName.substring(61);
         try {
-            DeleteObjectRequest deleteObjectRequest = new DeleteObjectRequest(bucketName, fileName);
+            DeleteObjectRequest deleteObjectRequest = new DeleteObjectRequest(bucketName, key);
             s3Client.deleteObject(deleteObjectRequest);
         } catch (SdkClientException e) {
             throw new RuntimeException("스토리지에서 파일 삭제에 실패했습니다.");
