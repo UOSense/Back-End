@@ -8,12 +8,12 @@ import UOSense.UOSense_Backend.service.MenuService;
 import UOSense.UOSense_Backend.service.RestaurantImageService;
 import UOSense.UOSense_Backend.service.RestaurantService;
 
+import com.amazonaws.SdkClientException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -29,7 +29,6 @@ import java.util.NoSuchElementException;
 @RestController
 @RequestMapping("/api/v1/restaurant")
 @RequiredArgsConstructor
-@Slf4j
 public class RestaurantController {
     private final RestaurantService restaurantService;
     private final MenuService menuService;
@@ -181,8 +180,10 @@ public class RestaurantController {
     @Operation(summary = "식당 사진 등록", description = "사진을 등록합니다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "사진을 성공적으로 저장했습니다."),
+            @ApiResponse(responseCode = "400", description = "잘못된 요청입니다."),
             @ApiResponse(responseCode = "410", description = "저장할 사진을 찾지 못해 실패했습니다."),
-            @ApiResponse(responseCode = "500", description = "잘못된 요청입니다.")
+            @ApiResponse(responseCode = "417", description = "저장할 사진을 찾지 못해 실패했습니다."),
+            @ApiResponse(responseCode = "500", description = "서버 오류입니다.")
     })
     public ResponseEntity<RestaurantImagesResponse> createImages(
             @RequestParam int restaurantId,
@@ -193,6 +194,26 @@ public class RestaurantController {
             return new ResponseEntity<>(restaurantImages, HttpStatus.OK);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(HttpStatus.GONE);
+        } catch (RuntimeException e) {
+            return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
+        }
+    }
+
+    @DeleteMapping("/delete/images")
+    @Operation(summary = "식당 사진 삭제", description = "사진을 삭제합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "사진을 성공적으로 삭제했습니다."),
+            @ApiResponse(responseCode = "404", description = "삭제할 사진을 찾을 수 없습니다."),
+            @ApiResponse(responseCode = "417", description = "AWS S3에서 삭제에 실패했습니다.")
+    })
+    public ResponseEntity<Void> deleteImage(@RequestParam int imageId) {
+        try {
+            restaurantImageService.delete(imageId);
+            return ResponseEntity.ok().build();
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.notFound().build();
+        } catch (SdkClientException e) {
+            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).build();
         }
     }
 
@@ -229,7 +250,6 @@ public class RestaurantController {
             String imageUrl = menuService.saveImage(image);
             restaurantService.registerMenu(dto, imageUrl);
         } catch (IllegalArgumentException e) {
-            log.info(e.getMessage());
             return ResponseEntity.badRequest().body(e.getMessage());
         }
         return ResponseEntity.ok().build();
@@ -243,10 +263,16 @@ public class RestaurantController {
             @ApiResponse(responseCode = "404", description = "수정할 메뉴와 등록된 식당을 확인할 수 없습니다."),
             @ApiResponse(responseCode = "500", description = "잘못된 요청입니다.")
     })
-    public ResponseEntity<Void> updateMenu(@RequestBody MenuRequest menuRequest) {
+    public ResponseEntity<Void> updateMenu(@RequestParam("id") int id,
+                                           @RequestParam("restaurantId") int restaurantId,
+                                           @RequestParam("name") String name,
+                                           @RequestParam("price") int price,
+                                           @RequestParam("description") String description,
+                                           @RequestPart(value = "image", required = false) MultipartFile image) {
         try {
-            Restaurant restaurant = restaurantService.getRestaurantById(menuRequest.getRestaurantId());
-            menuService.edit(menuRequest, restaurant);
+            Restaurant restaurant = restaurantService.getRestaurantById(restaurantId);
+            MenuRequest menuRequest = new MenuRequest(id,restaurantId,name,price,description);
+            menuService.edit(menuRequest, image, restaurant);
             return ResponseEntity.ok().build();
         } catch (IllegalArgumentException e) {
             return ResponseEntity.notFound().build();
@@ -282,7 +308,7 @@ public class RestaurantController {
     })
     public ResponseEntity<BusinessDayList> getBusinessDayList(@RequestParam int restaurantId) {
         try {
-            BusinessDayList businessDayList = restaurantService.findBusinessDayList(restaurantId);
+            BusinessDayList businessDayList = restaurantService.findBusinessDay(restaurantId);
             return new ResponseEntity<>(businessDayList, HttpStatus.OK);
         } catch(IllegalArgumentException e) {
             return ResponseEntity.notFound().build();

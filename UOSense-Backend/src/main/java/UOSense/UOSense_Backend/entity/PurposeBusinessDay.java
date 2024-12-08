@@ -1,7 +1,10 @@
 package UOSense.UOSense_Backend.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalTime;
 
@@ -10,17 +13,15 @@ import java.time.LocalTime;
 @AllArgsConstructor
 @Getter
 @Entity
-@Table(uniqueConstraints = {
-        @UniqueConstraint(columnNames = {"restaurant_id", "day_of_week"})
-})
-public class BusinessDay {
+@Table(name = "Purpose_BusinessDay")
+public class PurposeBusinessDay {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @ManyToOne(fetch = FetchType.LAZY)  // Restaurant와 다대일 관계
-    @JoinColumn(name = "restaurant_id")  // 외래키 명시
-    private Restaurant restaurant;
+    @JoinColumn(name = "restaurant_id", nullable = false)  // 외래키 명시
+    private PurposeRestaurant purposeRestaurant;
 
     @Column(name = "day_of_week", nullable = false)
     @Enumerated(EnumType.STRING)
@@ -28,7 +29,7 @@ public class BusinessDay {
     public enum DayOfWeek {Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday}
 
     @Column(name = "have_break_time", nullable = false)
-    private boolean breakTime;
+    private boolean haveBreakTime;
 
     @Column(name = "start_break_time")
     private LocalTime startBreakTime;
@@ -43,9 +44,9 @@ public class BusinessDay {
     private LocalTime closingTime;
 
     @Column(name = "is_holiday", nullable = false)
-    private boolean holiday;
+    private boolean isHoliday;
 
-    public void setId(int id) {
-        this.id = id;
-    }
+    @ManyToOne(fetch = FetchType.LAZY)  // User와 다대일 관계
+    @JoinColumn(name = "user_id", nullable = false)  // 외래키 명시
+    private User user;
 }

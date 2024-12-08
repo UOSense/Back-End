@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(uniqueConstraints = {
+@Table(name = "Review_Like", uniqueConstraints = {
         @UniqueConstraint(columnNames = {"user_id", "review_id"})
 })
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

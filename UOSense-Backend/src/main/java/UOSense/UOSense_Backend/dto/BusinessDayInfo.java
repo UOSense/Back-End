@@ -18,43 +18,51 @@ public class BusinessDayInfo {
 
     private BusinessDay.DayOfWeek dayOfWeek;
 
-    private boolean haveBreakTime;
+    private boolean breakTime;
 
-    private LocalTime startBreakTime;
+    private String startBreakTime;
 
-    private LocalTime stopBreakTime;
+    private String stopBreakTime;
 
-    private LocalTime openingTime;
+    private String openingTime;
 
-    private LocalTime closingTime;
+    private String closingTime;
 
-    private boolean isHoliday;
+    private boolean holiday;
+
+    public void setBreakTime(String startBreakTime, String stopBreakTime) {
+        this.startBreakTime = startBreakTime;
+        this.stopBreakTime = stopBreakTime;
+    }
 
     public static BusinessDayInfo from(BusinessDay businessDay) {
         return BusinessDayInfo.builder()
                 .id(businessDay.getId())
                 .dayOfWeek(businessDay.getDayOfWeek())
-                .haveBreakTime(businessDay.isHaveBreakTime())
-                .startBreakTime(businessDay.getStartBreakTime())
-                .stopBreakTime(businessDay.getStopBreakTime())
-                .openingTime(businessDay.getOpeningTime())
-                .closingTime(businessDay.getClosingTime())
-                .isHoliday(businessDay.isHoliday())
+                .breakTime(businessDay.isBreakTime())
+                .startBreakTime(String.valueOf(businessDay.getStartBreakTime()))
+                .stopBreakTime(String.valueOf(businessDay.getStopBreakTime()))
+                .openingTime(String.valueOf(businessDay.getOpeningTime()))
+                .closingTime(String.valueOf(businessDay.getClosingTime()))
+                .holiday(businessDay.isHoliday())
                 .build();
     }
 
     public static BusinessDay toEntity(BusinessDayInfo businessDayInfo, Restaurant restaurant) {
+        LocalTime startBreakTime = (businessDayInfo.getStartBreakTime() != null) ? LocalTime.parse(businessDayInfo.getStartBreakTime()) : null;
+        LocalTime stopBreakTime = (businessDayInfo.getStopBreakTime() != null) ? LocalTime.parse(businessDayInfo.getStopBreakTime()) : null;
+        LocalTime openingTime = (businessDayInfo.getOpeningTime() != null) ? LocalTime.parse(businessDayInfo.getOpeningTime()) : null;
+        LocalTime closingTime = (businessDayInfo.getClosingTime() != null) ? LocalTime.parse(businessDayInfo.getClosingTime()) : null;
         BusinessDay businessDay = BusinessDay.builder()
                 .restaurant(restaurant)
                 .dayOfWeek(businessDayInfo.getDayOfWeek())
-                .haveBreakTime(businessDayInfo.isHaveBreakTime())
-                .startBreakTime(businessDayInfo.getStartBreakTime())
-                .stopBreakTime(businessDayInfo.getStopBreakTime())
-                .openingTime(businessDayInfo.getOpeningTime())
-                .closingTime(businessDayInfo.getClosingTime())
-                .isHoliday(businessDayInfo.isHoliday())
+                .breakTime(businessDayInfo.isBreakTime())
+                .startBreakTime(startBreakTime)
+                .stopBreakTime(stopBreakTime)
+                .openingTime(openingTime)
+                .closingTime(closingTime)
+                .holiday(businessDayInfo.isHoliday())
                 .build();
-
         if (businessDayInfo.getId() == -1) {
             // 신규 엔티티이므로 id 필드를 비워둠.
             return businessDay;
