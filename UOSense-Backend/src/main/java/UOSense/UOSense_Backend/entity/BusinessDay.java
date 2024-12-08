@@ -10,6 +10,9 @@ import java.time.LocalTime;
 @AllArgsConstructor
 @Getter
 @Entity
+@Table(uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"restaurant_id", "day_of_week"})
+})
 public class BusinessDay {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,7 +28,7 @@ public class BusinessDay {
     public enum DayOfWeek {Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday}
 
     @Column(name = "have_break_time", nullable = false)
-    private boolean haveBreakTime;
+    private boolean breakTime;
 
     @Column(name = "start_break_time")
     private LocalTime startBreakTime;
@@ -40,7 +43,7 @@ public class BusinessDay {
     private LocalTime closingTime;
 
     @Column(name = "is_holiday", nullable = false)
-    private boolean isHoliday;
+    private boolean holiday;
 
     public void setId(int id) {
         this.id = id;
