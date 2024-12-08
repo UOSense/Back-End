@@ -109,7 +109,7 @@ public class RestaurantServiceImpl implements RestaurantService{
 
         Restaurant restaurant = RestaurantRequest.toEntity(restaurantRequest);
 
-        restaurantRepository.save(restaurant);
+        restaurantRepository.saveAndFlush(restaurant);
     }
 
     @Override
@@ -148,7 +148,7 @@ public class RestaurantServiceImpl implements RestaurantService{
             // id가 존재할 경우
             else {
                 BusinessDay businessDay = BusinessDayInfo.toEntity(businessDayInfo, restaurant);
-                businessDayRepository.save(businessDay);
+                businessDayRepository.saveAndFlush(businessDay);
             }
         }
     }

@@ -34,7 +34,7 @@ public class MenuServiceImpl implements MenuService{
         if (!menuRepository.existsById(menuRequest.getId())) {
             throw new IllegalArgumentException("수정할 메뉴가 존재하지 않습니다.");
         }
-         menuRepository.save(menuRequest.toEntity(menuRequest,restaurant));
+         menuRepository.saveAndFlush(menuRequest.toEntity(menuRequest,restaurant));
     }
 
     @Override

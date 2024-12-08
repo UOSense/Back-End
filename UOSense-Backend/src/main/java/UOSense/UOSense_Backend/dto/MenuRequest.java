@@ -22,6 +22,7 @@ public class MenuRequest {
 
     public Menu toEntity(MenuRequest menuRequest, Restaurant restaurant) {
         return Menu.builder()
+                .id(menuRequest.getId())
                 .restaurant(restaurant)
                 .name(this.name)
                 .price(this.price)
