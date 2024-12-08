@@ -17,12 +17,14 @@ import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 import java.util.stream.Collectors;
 @CacheConfig(cacheNames = "restaurantCache")
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class SearchServiceImpl implements SearchService{
     private final RestaurantRepository restaurantRepository;
     private final RestaurantImageRepository restaurantImageRepository;

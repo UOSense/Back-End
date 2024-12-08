@@ -32,6 +32,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
     
     @Override
+    @Transactional
     public void register(NewUserRequest newUserRequest) {
         // 요청 정보 검증
         if (!validatedUserInfo(newUserRequest))

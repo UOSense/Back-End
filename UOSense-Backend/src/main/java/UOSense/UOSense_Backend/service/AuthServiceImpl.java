@@ -3,6 +3,7 @@ package UOSense.UOSense_Backend.service;
 import UOSense.UOSense_Backend.common.Utils.RedisUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.NoSuchElementException;
 import java.util.Random;
@@ -29,6 +30,7 @@ public class AuthServiceImpl implements AuthService{
     }
 
     @Override
+    @Transactional
     public void saveAuthCode(String email, String authCode ) {
         if (email == null || authCode == null)
             throw new IllegalArgumentException("메일 주소 혹은 인증코드가 비어있습니다.");
@@ -40,6 +42,7 @@ public class AuthServiceImpl implements AuthService{
     }
 
     @Override
+    @Transactional(readOnly = true)
     public boolean checkAuthCode(String email, String authCode) {
         String redisAuthCode = redisUtil.getData(email);
         if (redisAuthCode == null) throw new NoSuchElementException("해당 메일로 보낸 인증코드가 존재하지 않습니다");

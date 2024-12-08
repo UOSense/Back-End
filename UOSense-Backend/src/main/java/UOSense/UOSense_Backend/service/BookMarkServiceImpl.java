@@ -16,13 +16,14 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
+@Transactional(readOnly = true)
 public class BookMarkServiceImpl implements BookMarkService{
     private final BookMarkRepository bookMarkRepository;
     private final UserRepository userRepository;
     private final RestaurantRepository restaurantRepository;
 
     @Override
+    @Transactional
     public void register(int userId, int restaurantId) {
         Optional<User> user = userRepository.findById(userId);
         if (user.isEmpty()) {
@@ -39,6 +40,7 @@ public class BookMarkServiceImpl implements BookMarkService{
     }
 
     @Override
+    @Transactional
     public void remove(int bookMarkId) {
         if (!bookMarkRepository.existsById(bookMarkId)) {
             throw new IllegalArgumentException("삭제할 즐겨찾기가 존재하지 않습니다.");
