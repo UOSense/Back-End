@@ -20,13 +20,13 @@ public class BusinessDayInfo {
 
     private boolean haveBreakTime;
 
-    private LocalTime startBreakTime;
+    private String  startBreakTime;
 
-    private LocalTime stopBreakTime;
+    private String  stopBreakTime;
 
-    private LocalTime openingTime;
+    private String openingTime;
 
-    private LocalTime closingTime;
+    private String closingTime;
 
     private boolean isHoliday;
 
@@ -35,10 +35,10 @@ public class BusinessDayInfo {
                 .id(businessDay.getId())
                 .dayOfWeek(businessDay.getDayOfWeek())
                 .haveBreakTime(businessDay.isHaveBreakTime())
-                .startBreakTime(businessDay.getStartBreakTime())
-                .stopBreakTime(businessDay.getStopBreakTime())
-                .openingTime(businessDay.getOpeningTime())
-                .closingTime(businessDay.getClosingTime())
+                .startBreakTime(businessDay.getStartBreakTime().toString())
+                .stopBreakTime(businessDay.getStopBreakTime().toString())
+                .openingTime(businessDay.getOpeningTime().toString())
+                .closingTime(businessDay.getClosingTime().toString())
                 .isHoliday(businessDay.isHoliday())
                 .build();
     }
@@ -48,10 +48,10 @@ public class BusinessDayInfo {
                 .restaurant(restaurant)
                 .dayOfWeek(businessDayInfo.getDayOfWeek())
                 .haveBreakTime(businessDayInfo.isHaveBreakTime())
-                .startBreakTime(businessDayInfo.getStartBreakTime())
-                .stopBreakTime(businessDayInfo.getStopBreakTime())
-                .openingTime(businessDayInfo.getOpeningTime())
-                .closingTime(businessDayInfo.getClosingTime())
+                .startBreakTime(LocalTime.parse(businessDayInfo.getStartBreakTime()))
+                .stopBreakTime(LocalTime.parse(businessDayInfo.getStopBreakTime()))
+                .openingTime(LocalTime.parse(businessDayInfo.getOpeningTime()))
+                .closingTime(LocalTime.parse(businessDayInfo.getClosingTime()))
                 .isHoliday(businessDayInfo.isHoliday())
                 .build();
 
