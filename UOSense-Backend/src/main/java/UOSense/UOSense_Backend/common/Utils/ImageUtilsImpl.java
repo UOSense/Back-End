@@ -3,6 +3,7 @@ package UOSense.UOSense_Backend.common.Utils;
 import com.amazonaws.SdkClientException;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
+import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import lombok.RequiredArgsConstructor;
@@ -36,6 +37,16 @@ public class ImageUtilsImpl implements ImageUtils {
         }
         // 업로드된 파일의 S3 URL 반환
         return s3Client.getUrl(bucketName, fileName).toString();
+    }
+
+    @Override
+    public void deleteImageInS3(String fileName) {
+        try {
+            DeleteObjectRequest deleteObjectRequest = new DeleteObjectRequest(bucketName, fileName);
+            s3Client.deleteObject(deleteObjectRequest);
+        } catch (SdkClientException e) {
+            throw new RuntimeException("스토리지에서 파일 삭제에 실패했습니다.");
+        }
     }
 
     /**
