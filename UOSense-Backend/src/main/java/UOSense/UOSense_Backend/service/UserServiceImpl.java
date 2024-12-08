@@ -55,8 +55,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     private boolean checkPasswordFormat(String password) {
-        if (password.length() >= 8 && password.length() <= 20)
+        if (password.length() < 8 || password.length() > 20) {
             throw new IllegalArgumentException("비밀번호 자리수 제한");
+        }
 
         // 각 조건을 확인하기 위한 플래그
         boolean hasUpperCase = false;
@@ -81,8 +82,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     private boolean checkNickName(String nickname) {
-        if (userRepository.existsByNickname(nickname))
+        if (userRepository.existsByNickname(nickname)) {
             throw new DuplicateRequestException("이미 존재하는 닉네임입니다.");
+        }
         return true;
     }
 

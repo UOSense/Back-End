@@ -81,10 +81,10 @@ public class UserController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "성공적으로 회원을 등록했습니다."),
             @ApiResponse(responseCode = "400", description = "잘못된 요청입니다."),
-            @ApiResponse(responseCode = "500", description = "잘못된 요청입니다.")
+            @ApiResponse(responseCode = "500", description = "서버 오류입니다.")
     })
     /** 프론트에서 비밀번호와 비밀번호 확인 일치할 때만 요청 보냈다고 가정 */
-    public ResponseEntity<Boolean> create (NewUserRequest newUserRequest) {
+    public ResponseEntity<Boolean> signUp(@RequestBody NewUserRequest newUserRequest) {
         try {
             userService.register(newUserRequest);
             return ResponseEntity.ok().build();
