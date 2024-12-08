@@ -1,14 +1,13 @@
 package UOSense.UOSense_Backend.entity;
 
-import UOSense.UOSense_Backend.common.DoorType;
-import UOSense.UOSense_Backend.common.DoorTypeConverter;
+import UOSense.UOSense_Backend.common.converter.CategoryConverter;
+import UOSense.UOSense_Backend.common.converter.DoorTypeConverter;
+import UOSense.UOSense_Backend.common.converter.SubDescriptionConverter;
+import UOSense.UOSense_Backend.common.enumClass.Category;
+import UOSense.UOSense_Backend.common.enumClass.DoorType;
+import UOSense.UOSense_Backend.common.enumClass.SubDescription;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-
-import java.util.Date;
+import lombok.*;
 
 @Builder
 @NoArgsConstructor
@@ -36,12 +35,22 @@ public class Restaurant {
 
     private double rating;
 
-    @Enumerated(EnumType.STRING)
-    private Category category;
-    private enum Category { Korean, Chinese, Japanese, Western, Other};
+    @Convert(converter = CategoryConverter.class)
+    public Category category;
 
+    @Convert(converter = SubDescriptionConverter.class)
     @Column(name = "sub_description")
-    private String subDescription;
+    private SubDescription subDescription;
 
     private String description;
+
+    @Column(name = "review_count", columnDefinition = "INT DEFAULT 0")
+    private int reviewCount;
+
+    @Column(name = "bookmark_count", columnDefinition = "INT DEFAULT 0")
+    private int bookmarkCount;
+
+    public void setId(int id) {
+        this.id = id;
+    }
 }

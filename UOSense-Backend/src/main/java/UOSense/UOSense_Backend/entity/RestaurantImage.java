@@ -5,11 +5,12 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Entity
+@Table(name = "Restaurant_Image")
 public class RestaurantImage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,5 +20,6 @@ public class RestaurantImage {
     @JoinColumn(name = "restaurant_id")  // 외래키 명시
     private Restaurant restaurant;
 
+    @Column(name = "image_url")
     private String imageUrl;
 }
