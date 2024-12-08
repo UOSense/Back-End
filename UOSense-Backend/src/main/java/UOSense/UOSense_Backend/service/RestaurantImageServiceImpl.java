@@ -8,6 +8,7 @@ import UOSense.UOSense_Backend.entity.RestaurantImage;
 import UOSense.UOSense_Backend.repository.RestaurantImageRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
@@ -16,6 +17,7 @@ import java.util.NoSuchElementException;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class RestaurantImageServiceImpl implements RestaurantImageService {
     private final RestaurantImageRepository restaurantImageRepository;
     private final ImageUtils imageUtils;
@@ -33,6 +35,7 @@ public class RestaurantImageServiceImpl implements RestaurantImageService {
     }
 
     @Override
+    @Transactional
     public RestaurantImagesResponse save(Restaurant restaurant, MultipartFile[] images) {
         List<ImageInfo> imageList = new ArrayList<>();
 

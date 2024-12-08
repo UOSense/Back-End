@@ -1,14 +1,11 @@
 package UOSense.UOSense_Backend.dto;
 
 import UOSense.UOSense_Backend.entity.Menu;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 @Getter
 public class MenuResponse {
     private int menuId;

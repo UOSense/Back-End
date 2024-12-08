@@ -13,7 +13,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -29,7 +28,6 @@ import java.util.NoSuchElementException;
 @RestController
 @RequestMapping("/api/v1/restaurant")
 @RequiredArgsConstructor
-@Slf4j
 public class RestaurantController {
     private final RestaurantService restaurantService;
     private final MenuService menuService;
@@ -229,7 +227,6 @@ public class RestaurantController {
             String imageUrl = menuService.saveImage(image);
             restaurantService.registerMenu(dto, imageUrl);
         } catch (IllegalArgumentException e) {
-            log.info(e.getMessage());
             return ResponseEntity.badRequest().body(e.getMessage());
         }
         return ResponseEntity.ok().build();
@@ -282,7 +279,7 @@ public class RestaurantController {
     })
     public ResponseEntity<BusinessDayList> getBusinessDayList(@RequestParam int restaurantId) {
         try {
-            BusinessDayList businessDayList = restaurantService.findBusinessDayList(restaurantId);
+            BusinessDayList businessDayList = restaurantService.findBusinessDay(restaurantId);
             return new ResponseEntity<>(businessDayList, HttpStatus.OK);
         } catch(IllegalArgumentException e) {
             return ResponseEntity.notFound().build();

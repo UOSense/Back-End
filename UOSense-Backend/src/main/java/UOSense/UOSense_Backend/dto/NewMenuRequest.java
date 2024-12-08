@@ -3,11 +3,12 @@ package UOSense.UOSense_Backend.dto;
 import UOSense.UOSense_Backend.entity.Menu;
 import UOSense.UOSense_Backend.entity.Restaurant;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
-import org.springframework.web.multipart.MultipartFile;
+import lombok.NoArgsConstructor;
 
-import java.util.Objects;
-
+@Builder
+@NoArgsConstructor
 @AllArgsConstructor
 @Getter
 public class NewMenuRequest {

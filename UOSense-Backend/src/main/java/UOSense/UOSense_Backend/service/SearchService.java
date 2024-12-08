@@ -21,4 +21,5 @@ public interface SearchService {
      * 캐시에서 해당 키워드로 검색된 식당목록을 가져옵니다.
      */
     List<Restaurant> checkRestaurantCache(String keyword);
+    boolean isInCache(String keyword);
 }

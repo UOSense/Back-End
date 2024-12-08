@@ -80,6 +80,10 @@ public class ReviewController {
     public ResponseEntity<List<ReviewResponse>> getListByRestaurantId(@RequestParam int restaurantId) {
         try {
             List<ReviewResponse> reviewList = reviewService.findListByRestaurantId(restaurantId);
+            for (ReviewResponse reviewResponse : reviewList) {
+                List<String> imageUrls = reviewImageService.find(reviewResponse.getId());
+                reviewResponse.setImageUrls(imageUrls);
+            }
             return new ResponseEntity<>(reviewList, HttpStatus.OK);
         } catch(IllegalArgumentException e) {
             return ResponseEntity.notFound().build();
@@ -96,8 +100,10 @@ public class ReviewController {
             @ApiResponse(responseCode = "404", description = "리뷰를 찾을 수 없습니다."),
             @ApiResponse(responseCode = "500", description = "서버 오류입니다.")
     })
-    public ResponseEntity<Void> addLike(@RequestParam int userId,
-                                        @RequestParam int reviewId) {
+    public ResponseEntity<Void> addLike(@RequestParam int reviewId, Authentication authentication) {
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+        int userId = userDetails.getUser().getId();
+
         try {
             reviewService.addLike(userId, reviewId);
             return ResponseEntity.ok().build();

@@ -17,12 +17,14 @@ import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 import java.util.stream.Collectors;
 @CacheConfig(cacheNames = "restaurantCache")
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class SearchServiceImpl implements SearchService{
     private final RestaurantRepository restaurantRepository;
     private final RestaurantImageRepository restaurantImageRepository;
@@ -127,5 +129,19 @@ public class SearchServiceImpl implements SearchService{
             throw new NoSuchElementException("캐시된 데이터가 없습니다.");
         }
         return cachedResults;
+    }
+
+    @Override
+    public boolean isInCache(String keyword) {
+        org.springframework.cache.Cache cache = cacheManager.getCache("restaurantCache");
+        if (cache == null) {
+            return false;
+        }
+
+        List<Restaurant> cachedResults = cache.get(keyword, List.class);
+        if (cachedResults == null) {
+            return false;
+        }
+        return !cachedResults.isEmpty();
     }
 }

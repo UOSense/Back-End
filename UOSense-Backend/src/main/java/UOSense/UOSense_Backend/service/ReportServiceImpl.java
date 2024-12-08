@@ -10,18 +10,21 @@ import UOSense.UOSense_Backend.repository.ReviewRepository;
 import UOSense.UOSense_Backend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class ReportServiceImpl implements ReportService{
     private final ReportRepository reportRepository;
     private final UserRepository userRepository;
     private final ReviewRepository reviewRepository;
 
     @Override
+    @Transactional
     public void register(ReportRequest reportRequest, int userId) {
         Optional<User> user = userRepository.findById(userId);
         if (user.isEmpty()) {
