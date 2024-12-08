@@ -18,13 +18,13 @@ public class PurposeRestaurantImage {
     private int id;
 
     @ManyToOne(fetch = FetchType.LAZY)  // Restaurant와 다대일 관계
-    @JoinColumn(name = "restaurant_id")  // 외래키 명시
+    @JoinColumn(name = "restaurant_id", nullable = false)  // 외래키 명시
     private PurposeRestaurant purposeRestaurant;
 
     @Column(name = "image_url")
     private String imageUrl;
 
     @ManyToOne(fetch = FetchType.LAZY)  // User와 다대일 관계
-    @JoinColumn(name = "user_id")  // 외래키 명시
+    @JoinColumn(name = "user_id", nullable = false)  // 외래키 명시
     private User user;
 }

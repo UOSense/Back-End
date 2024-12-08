@@ -31,6 +31,6 @@ public class PurposeRestaurant {
     private SubDescription subDescription;
 
     @ManyToOne(fetch = FetchType.LAZY)  // User와 다대일 관계
-    @JoinColumn(name = "user_id")  // 외래키 명시
+    @JoinColumn(name = "user_id", nullable = false)  // 외래키 명시
     private User user;
 }
