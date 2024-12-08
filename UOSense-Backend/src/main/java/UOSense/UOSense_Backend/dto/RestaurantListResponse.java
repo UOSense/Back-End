@@ -19,6 +19,8 @@ public class RestaurantListResponse {
 
     private double latitude;
 
+    private String doorType;
+
     private String address;
 
     private double rating;
@@ -36,6 +38,7 @@ public class RestaurantListResponse {
                 .id(restaurant.getId())
                 .name(restaurant.getName())
                 .address(restaurant.getAddress())
+                .doorType(restaurant.getDoorType().getValue())
                 .rating(restaurant.getRating())
                 .category(restaurant.getCategory().getValue())
                 .reviewCount(restaurant.getReviewCount())
