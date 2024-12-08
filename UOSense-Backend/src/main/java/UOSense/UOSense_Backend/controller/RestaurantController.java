@@ -264,10 +264,16 @@ public class RestaurantController {
             @ApiResponse(responseCode = "404", description = "수정할 메뉴와 등록된 식당을 확인할 수 없습니다."),
             @ApiResponse(responseCode = "500", description = "잘못된 요청입니다.")
     })
-    public ResponseEntity<Void> updateMenu(@RequestBody MenuRequest menuRequest) {
+    public ResponseEntity<Void> updateMenu(@RequestParam("id") int id,
+                                           @RequestParam("restaurantId") int restaurantId,
+                                           @RequestParam("name") String name,
+                                           @RequestParam("price") int price,
+                                           @RequestParam("description") String description,
+                                           @RequestPart(value = "image", required = false) MultipartFile image) {
         try {
-            Restaurant restaurant = restaurantService.getRestaurantById(menuRequest.getRestaurantId());
-            menuService.edit(menuRequest, restaurant);
+            Restaurant restaurant = restaurantService.getRestaurantById(restaurantId);
+            MenuRequest menuRequest = new MenuRequest(id,restaurantId,name,price,description);
+            menuService.edit(menuRequest, image, restaurant);
             return ResponseEntity.ok().build();
         } catch (IllegalArgumentException e) {
             return ResponseEntity.notFound().build();
