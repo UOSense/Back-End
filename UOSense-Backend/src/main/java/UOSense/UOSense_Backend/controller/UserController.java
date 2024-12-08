@@ -5,7 +5,6 @@ import UOSense.UOSense_Backend.common.enumClass.Role;
 import UOSense.UOSense_Backend.entity.User;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.coyote.BadRequestException;
 
 import java.time.Duration;
