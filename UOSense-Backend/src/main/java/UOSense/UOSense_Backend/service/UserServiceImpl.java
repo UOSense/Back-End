@@ -33,14 +33,14 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     
     @Override
     @Transactional
-    public void register(NewUserRequest newUserRequest) {
+    public User register(NewUserRequest newUserRequest) {
         // 요청 정보 검증
         if (!validatedUserInfo(newUserRequest))
             throw new IllegalArgumentException("유효하지 않은 사용자 정보입니다.");
         // 비밀번호 암호화
         String encodedPassword = passwordEncoder.encode(newUserRequest.getPassword());
         // DB에 저장
-        userRepository.save(newUserRequest.toEntity(encodedPassword));
+        return userRepository.save(newUserRequest.toEntity(encodedPassword));
     }
 
     private boolean validatedUserInfo(NewUserRequest newUserRequest) {
