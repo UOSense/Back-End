@@ -130,4 +130,18 @@ public class SearchServiceImpl implements SearchService{
         }
         return cachedResults;
     }
+
+    @Override
+    public boolean isInCache(String keyword) {
+        org.springframework.cache.Cache cache = cacheManager.getCache("restaurantCache");
+        if (cache == null) {
+            return false;
+        }
+
+        List<Restaurant> cachedResults = cache.get(keyword, List.class);
+        if (cachedResults == null) {
+            return false;
+        }
+        return !cachedResults.isEmpty();
+    }
 }
