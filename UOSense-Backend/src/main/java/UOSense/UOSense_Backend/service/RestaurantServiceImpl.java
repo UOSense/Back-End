@@ -12,6 +12,8 @@ import UOSense.UOSense_Backend.repository.MenuRepository;
 import UOSense.UOSense_Backend.repository.RestaurantRepository;
 
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,6 +24,7 @@ import static java.util.stream.Collectors.toList;
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class RestaurantServiceImpl implements RestaurantService{
+    private static final Logger log = LoggerFactory.getLogger(RestaurantServiceImpl.class);
     private final RestaurantRepository restaurantRepository;
     private final MenuRepository menuRepository;
     private final BusinessDayRepository businessDayRepository;
@@ -128,11 +131,11 @@ public class RestaurantServiceImpl implements RestaurantService{
         for(BusinessDayInfo businessDayInfo : InfoList) {
             // breakTime이 없을 경우
             if (!businessDayInfo.isBreakTime()) {
-                businessDayInfo.setBreakTime(null);
+                businessDayInfo.setBreakTime();
             }
 
             if (businessDayInfo.isHoliday()) {
-                businessDayInfo.setTime(null);
+                businessDayInfo.setTime();
             }
 
             // id가 없을 경우
@@ -155,13 +158,14 @@ public class RestaurantServiceImpl implements RestaurantService{
 
         List<BusinessDayInfo> InfoList = businessDayList.getBusinessDayInfoList();
         for(BusinessDayInfo businessDayInfo : InfoList) {
+            log.error(String.valueOf(businessDayInfo.isBreakTime()));
             // breakTime이 없을 경우
             if (!businessDayInfo.isBreakTime()) {
-                businessDayInfo.setBreakTime(null);
+                businessDayInfo.setBreakTime();
             }
 
             if (businessDayInfo.isHoliday()) {
-                businessDayInfo.setTime(null);
+                businessDayInfo.setTime();
             }
 
             // id가 존재할 경우
