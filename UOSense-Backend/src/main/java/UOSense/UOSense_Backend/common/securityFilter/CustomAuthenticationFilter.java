@@ -52,7 +52,7 @@ public class CustomAuthenticationFilter extends AbstractAuthenticationProcessing
 
     private boolean isPost(HttpServletRequest request) {
 
-        return "GET".equals(request.getMethod());
+        return "POST".equals(request.getMethod());
     }
 
 }
