@@ -243,7 +243,7 @@ public class RestaurantController {
     public ResponseEntity<String> createMenu(@RequestParam("restaurantId") int restaurantId,
                                              @RequestParam("name") String name,
                                              @RequestParam("price") int price,
-                                             @RequestParam("description") String description,
+                                             @RequestParam(value = "description", required = false) String description,
                                              @RequestPart(value = "image", required = false) MultipartFile image) {
         try {
             NewMenuRequest dto = new NewMenuRequest(restaurantId, name, price, description);
