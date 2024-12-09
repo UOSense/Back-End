@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -81,9 +82,9 @@ public class SecurityConfig {
                         .requestMatchers("/swagger", "/swagger-ui.html", "/swagger-ui/**", "/api-docs", "/api-docs/**", "/v3/api-docs/**")
                         .permitAll()
                         .requestMatchers("/api/v1/restaurant/get/**").permitAll()
-                        .requestMatchers("/api/v1/restaurant/create/**").hasAuthority("ADMIN")
-                        .requestMatchers("/api/v1/restaurant/update/**").hasAuthority("ADMIN")
-                        .requestMatchers("/api/v1/restaurant/delete/**").hasAuthority("ADMIN")
+                        .requestMatchers("/api/v1/restaurant/create/**").permitAll()
+                        .requestMatchers("/api/v1/restaurant/update/**").permitAll()
+                        .requestMatchers("/api/v1/restaurant/delete/**").permitAll()
                         .requestMatchers("/api/v1/review/get").permitAll()
                         .requestMatchers("/api/v1/review/get/list").permitAll()
                         .requestMatchers("/api/v1/review/get/user").permitAll()
