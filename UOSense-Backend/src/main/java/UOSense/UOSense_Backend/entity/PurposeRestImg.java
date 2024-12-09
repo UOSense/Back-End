@@ -12,14 +12,14 @@ import lombok.NoArgsConstructor;
 @Getter
 @Entity
 @Table(name = "Purpose_Restaurant_Image")
-public class PurposeRestaurantImage {
+public class PurposeRestImg {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @ManyToOne(fetch = FetchType.LAZY)  // Restaurant와 다대일 관계
     @JoinColumn(name = "restaurant_id", nullable = false)  // 외래키 명시
-    private PurposeRestaurant purposeRestaurant;
+    private PurposeRest purposeRest;
 
     @Column(name = "image_url")
     private String imageUrl;

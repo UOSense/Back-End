@@ -14,14 +14,14 @@ import java.time.LocalTime;
 @Getter
 @Entity
 @Table(name = "Purpose_BusinessDay")
-public class PurposeBusinessDay {
+public class PurposeDay {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @ManyToOne(fetch = FetchType.LAZY)  // Restaurant와 다대일 관계
     @JoinColumn(name = "restaurant_id", nullable = false)  // 외래키 명시
-    private PurposeRestaurant purposeRestaurant;
+    private PurposeRest purposeRest;
 
     @Column(name = "day_of_week", nullable = false)
     @Enumerated(EnumType.STRING)

@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @Entity
 @Table(name = "Purpose_Restaurant")
-public class PurposeRestaurant {
+public class PurposeRest {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
