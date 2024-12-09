@@ -20,6 +20,10 @@ public class ReviewResponse {
 
     private int userId;
 
+    private String nickname;
+
+    private String userImage;
+
     private String body;
 
     private double rating;
@@ -43,6 +47,8 @@ public class ReviewResponse {
                 .id(review.getId())
                 .restaurantId(review.getRestaurant().getId())
                 .userId(review.getUser().getId())
+                .nickname(review.getUser().getNickname())
+                .userImage(review.getUser().getImageUrl())
                 .body(review.getBody())
                 .rating(review.getRating())
                 .dateTime(review.getDateTime())
