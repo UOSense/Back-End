@@ -128,7 +128,11 @@ public class RestaurantServiceImpl implements RestaurantService{
         for(BusinessDayInfo businessDayInfo : InfoList) {
             // breakTime이 없을 경우
             if (!businessDayInfo.isBreakTime()) {
-                businessDayInfo.setBreakTime(null, null);
+                businessDayInfo.setBreakTime(null);
+            }
+
+            if (!businessDayInfo.isHoliday()) {
+                businessDayInfo.setTime(null);
             }
 
             // id가 없을 경우
@@ -153,7 +157,11 @@ public class RestaurantServiceImpl implements RestaurantService{
         for(BusinessDayInfo businessDayInfo : InfoList) {
             // breakTime이 없을 경우
             if (!businessDayInfo.isBreakTime()) {
-                businessDayInfo.setBreakTime(null, null);
+                businessDayInfo.setBreakTime(null);
+            }
+
+            if (!businessDayInfo.isHoliday()) {
+                businessDayInfo.setTime(null);
             }
 
             // id가 존재할 경우
