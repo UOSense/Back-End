@@ -27,7 +27,7 @@ public class CustomAuthenticationFilter extends AbstractAuthenticationProcessing
             throws AuthenticationException, IOException {
 
         // 해당 요청이 POST 인지 확인
-        if(!isGet(request)) {
+        if(!isPost(request)) {
             throw new IllegalStateException("Authentication is not supported");
         }
 
@@ -50,7 +50,7 @@ public class CustomAuthenticationFilter extends AbstractAuthenticationProcessing
         return getAuthenticationManager().authenticate(token);
     }
 
-    private boolean isGet(HttpServletRequest request) {
+    private boolean isPost(HttpServletRequest request) {
 
         return "GET".equals(request.getMethod());
     }
