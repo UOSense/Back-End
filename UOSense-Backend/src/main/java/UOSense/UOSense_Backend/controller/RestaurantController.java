@@ -14,6 +14,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +32,7 @@ import java.util.NoSuchElementException;
 @RequestMapping("/api/v1/restaurant")
 @RequiredArgsConstructor
 public class RestaurantController {
+    private static final Logger log = LoggerFactory.getLogger(RestaurantController.class);
     private final RestaurantService restaurantService;
     private final MenuService menuService;
     private final RestaurantImageService restaurantImageService;
@@ -82,6 +85,7 @@ public class RestaurantController {
     })
     public ResponseEntity<List<RestaurantListResponse>> getRestaurantList(@RequestParam(required = false) DoorType doorType,
                                                                           @RequestParam SearchService.sortFilter filter) {
+        log.info("식당 정보 일괄 조회");
         List<RestaurantListResponse> restaurantList;
         boolean doorTypeFlag;
 
