@@ -1,7 +1,5 @@
 package UOSense.UOSense_Backend.service;
 
-import UOSense.UOSense_Backend.common.Utils.SearchUtils;
-import UOSense.UOSense_Backend.common.enumClass.Category;
 import UOSense.UOSense_Backend.common.enumClass.DoorType;
 import UOSense.UOSense_Backend.dto.*;
 
