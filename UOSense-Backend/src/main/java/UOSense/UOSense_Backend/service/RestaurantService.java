@@ -8,10 +8,8 @@ import UOSense.UOSense_Backend.entity.Restaurant;
 import java.util.List;
 
 public interface RestaurantService {
-    List<RestaurantListResponse> getAllRestaurants();
-    List<RestaurantListResponse> getRestaurantsByFilter(DoorType doorType, Category category);
-    List<RestaurantListResponse> getRestaurantsByCategory(Category category);
-    List<RestaurantListResponse> getRestaurantsByDoorType(DoorType doorType);
+    List<RestaurantListResponse> getAllRestaurants(SearchService.sortFilter filter);
+    List<RestaurantListResponse> getRestaurantsByDoorType(DoorType doorType, SearchService.sortFilter filter);
     RestaurantInfo getRestaurantInfoById(int restaurantId);
     Restaurant getRestaurantById(int restaurantId);
     List<MenuResponse> findMenuBy(int restaurantId);

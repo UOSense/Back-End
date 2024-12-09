@@ -27,33 +27,20 @@ public class RestaurantServiceImpl implements RestaurantService{
     private final RestaurantRepository restaurantRepository;
     private final MenuRepository menuRepository;
     private final BusinessDayRepository businessDayRepository;
+    private final SearchService searchService;
 
     @Override
-    public List<RestaurantListResponse> getAllRestaurants() {
+    public List<RestaurantListResponse> getAllRestaurants(SearchService.sortFilter filter) {
         List<Restaurant> restaurants = restaurantRepository.findAll();
         if (restaurants.isEmpty()) throw new NoSuchElementException("식당 리스트가 존재하지 않습니다.");
-        return SearchUtils.convertToListDTO(restaurants);
+        return searchService.sort(restaurants, filter);
     }
 
     @Override
-    public List<RestaurantListResponse> getRestaurantsByFilter(DoorType doorType, Category category) {
-        List<Restaurant> restaurants = restaurantRepository.findByDoorTypeAndCategory(doorType, category);
-        if (restaurants.isEmpty()) throw new NoSuchElementException("해당 식당 리스트가 존재하지 않습니다.");
-        return SearchUtils.convertToListDTO(restaurants);
-    }
-
-    @Override
-    public List<RestaurantListResponse> getRestaurantsByCategory(Category category) {
-        List<Restaurant> restaurants = restaurantRepository.findByCategory(category);
-        if (restaurants.isEmpty()) throw new NoSuchElementException("해당 식당 리스트가 존재하지 않습니다.");
-        return SearchUtils.convertToListDTO(restaurants);
-    }
-
-    @Override
-    public List<RestaurantListResponse> getRestaurantsByDoorType(DoorType doorType) {
+    public List<RestaurantListResponse> getRestaurantsByDoorType(DoorType doorType, SearchService.sortFilter filter) {
         List<Restaurant> restaurants = restaurantRepository.findByDoorType(doorType);
-        if (restaurants.isEmpty()) throw new NoSuchElementException("해당 식당 리스트가 존재하지 않습니다.");
-        return SearchUtils.convertToListDTO(restaurants);
+        if (restaurants.isEmpty()) throw new NoSuchElementException("식당 리스트가 존재하지 않습니다.");
+        return searchService.sort(restaurants, filter);
     }
 
     @Override
