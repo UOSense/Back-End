@@ -95,4 +95,13 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public boolean checkPassword(String rawPassword, String encodedPassword) {
         return passwordEncoder.matches(rawPassword, encodedPassword);
     }
+
+    @Override
+    public int findId(String email) {
+        User user = userRepository.findByEmail(email);
+        if (user == null) {
+            throw new UsernameNotFoundException("Invalid authentication!");
+        }
+        return user.getId();
+    }
 }

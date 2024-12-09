@@ -7,4 +7,5 @@ public interface UserService {
     boolean checkNickName(String nickname);
     User register(NewUserRequest newUserRequest);
     boolean checkPassword(String rawPassword, String encodedPassword);
+    int findId(String email);
 }

@@ -52,8 +52,8 @@ public class CustomAuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         String role = auth.getAuthority();
 
         // accessToken과 refreshToken 생성
-        String accessToken = jwtUtil.createJwt("access", username, Role.valueOf(role), accessDuration);
-        String refreshToken = jwtUtil.createJwt("refresh", username, Role.valueOf(role), refreshDuration);
+        String accessToken = jwtUtil.createJwt("access", username, role, accessDuration);
+        String refreshToken = jwtUtil.createJwt("refresh", username, role, refreshDuration);
 
         // redis에 insert (key = username / value = refreshToken)
         redisUtilForToken.setToken(username, refreshToken, Duration.ofMillis(refreshDuration));

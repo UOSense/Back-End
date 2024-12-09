@@ -5,12 +5,15 @@ import UOSense.UOSense_Backend.dto.ReviewRequest;
 import UOSense.UOSense_Backend.dto.ReviewResponse;
 import UOSense.UOSense_Backend.service.ReviewImageService;
 import UOSense.UOSense_Backend.service.ReviewService;
+import UOSense.UOSense_Backend.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -27,8 +30,10 @@ import java.util.List;
 @RequestMapping("/api/v1/review")
 @RequiredArgsConstructor
 public class ReviewController {
+    private static final Logger log = LoggerFactory.getLogger(ReviewController.class);
     private final ReviewService reviewService;
     private final ReviewImageService reviewImageService;
+    private final UserService userService;
 
     @DeleteMapping("/delete")
     @Operation(summary = "리뷰 삭제", description = "리뷰를 삭제합니다.")
@@ -58,9 +63,10 @@ public class ReviewController {
     })
     public ResponseEntity<Integer> create(@RequestBody ReviewRequest reviewRequest, Authentication authentication) {
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
-        int userId = userDetails.getUser().getId();
+        String email = userDetails.getUsername();
 
         try {
+            int userId = userService.findId(email);
             int reviewId = reviewService.register(reviewRequest, userId);
             return new ResponseEntity<>(reviewId, HttpStatus.OK);
         } catch (IllegalArgumentException e) {
@@ -102,9 +108,10 @@ public class ReviewController {
     })
     public ResponseEntity<Void> addLike(@RequestParam int reviewId, Authentication authentication) {
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
-        int userId = userDetails.getUser().getId();
+        String email = userDetails.getUsername();
 
         try {
+            int userId = userService.findId(email);
             reviewService.addLike(userId, reviewId);
             return ResponseEntity.ok().build();
         } catch (NoSuchElementException e) {

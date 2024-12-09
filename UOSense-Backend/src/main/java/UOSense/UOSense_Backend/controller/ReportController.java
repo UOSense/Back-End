@@ -4,6 +4,7 @@ import UOSense.UOSense_Backend.dto.CustomUserDetails;
 import UOSense.UOSense_Backend.dto.ReportRequest;
 import UOSense.UOSense_Backend.dto.ReportResponse;
 import UOSense.UOSense_Backend.service.ReportService;
+import UOSense.UOSense_Backend.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -22,6 +23,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ReportController {
     private final ReportService reportService;
+    private final UserService userService;
 
     @PostMapping("/create/review")
     @Operation(summary = "리뷰 신고", description = "리뷰를 신고합니다.")
@@ -32,9 +34,10 @@ public class ReportController {
     })
     public ResponseEntity<Void> create(@RequestBody ReportRequest reportRequest, Authentication authentication) {
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
-        int userId = userDetails.getUser().getId();
+        String email = userDetails.getUsername();
 
         try {
+            int userId = userService.findId(email);
             reportService.register(reportRequest, userId);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

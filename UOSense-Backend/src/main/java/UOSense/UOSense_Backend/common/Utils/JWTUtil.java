@@ -43,8 +43,8 @@ public class JWTUtil {
     /**
      * 권한 추출
      */
-    public Role getRole(String token) {
-        return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("role", Role.class);
+    public String getRole(String token) {
+        return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("role", String.class);
     }
 
     /**
@@ -64,7 +64,7 @@ public class JWTUtil {
     /**
      * JWT 발급
      */
-    public String createJwt(String category, String email, Role role, Long expiredMs) {
+    public String createJwt(String category, String email, String role, Long expiredMs) {
         return Jwts.builder()
                 .claim("category", category)
                 .claim("email", email)
@@ -123,7 +123,7 @@ public class JWTUtil {
     public Map<String, String> createTokens(String refresh) {
         // 새로운 Token을 만들기 위해 준비
         String email = getEmail(refresh);
-        Role role = getRole(refresh);
+        String role = getRole(refresh);
 
         // Redis내에 존재하는 refreshToken인지 확인
         if(!redisUtilForToken.checkExistsToken(email)) {
