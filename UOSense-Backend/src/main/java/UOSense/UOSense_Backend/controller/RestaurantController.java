@@ -1,6 +1,5 @@
 package UOSense.UOSense_Backend.controller;
 
-import UOSense.UOSense_Backend.common.enumClass.Category;
 import UOSense.UOSense_Backend.common.enumClass.DoorType;
 import UOSense.UOSense_Backend.dto.*;
 import UOSense.UOSense_Backend.entity.Restaurant;
@@ -8,6 +7,7 @@ import UOSense.UOSense_Backend.service.MenuService;
 import UOSense.UOSense_Backend.service.RestaurantImageService;
 import UOSense.UOSense_Backend.service.RestaurantService;
 
+import UOSense.UOSense_Backend.service.SearchService;
 import com.amazonaws.SdkClientException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -81,9 +81,9 @@ public class RestaurantController {
             @ApiResponse(responseCode = "404", description = "식당 리스트를 찾을 수 없습니다.")
     })
     public ResponseEntity<List<RestaurantListResponse>> getRestaurantList(@RequestParam(required = false) DoorType doorType,
-                                                                          @RequestParam(required = false) Category category) {
+                                                                          @RequestParam SearchService.sortFilter filter) {
         List<RestaurantListResponse> restaurantList;
-        boolean doorTypeFlag, categoryFlag;
+        boolean doorTypeFlag;
 
         if (Arrays.asList(DoorType.values()).contains(doorType)) {
             doorTypeFlag = true;
@@ -95,29 +95,12 @@ public class RestaurantController {
             return new ResponseEntity<>(Collections.emptyList(), HttpStatus.BAD_REQUEST);
         }
 
-
-        if (Arrays.asList(Category.values()).contains(category)) {
-            categoryFlag = true;
-        }
-        else if (category == null) {
-            categoryFlag = false;
-        }
-        else { // enum에 없는 element
-            return new ResponseEntity<>(Collections.emptyList(), HttpStatus.BAD_REQUEST);
-        }
-
         try {
-            if (doorTypeFlag && categoryFlag) {
-                restaurantList = restaurantService.getRestaurantsByFilter(doorType, category);
-            }
-            else if (doorTypeFlag) {
-                restaurantList = restaurantService.getRestaurantsByDoorType(doorType);
-            }
-            else if (categoryFlag) {
-                restaurantList = restaurantService.getRestaurantsByCategory(category);
+            if (doorTypeFlag) {
+                restaurantList = restaurantService.getRestaurantsByDoorType(doorType, filter);
             }
             else {
-                restaurantList = restaurantService.getAllRestaurants();
+                restaurantList = restaurantService.getAllRestaurants(filter);
             }
 
             return new ResponseEntity<>(restaurantList, HttpStatus.OK);
