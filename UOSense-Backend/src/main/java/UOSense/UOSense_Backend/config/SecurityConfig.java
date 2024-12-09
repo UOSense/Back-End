@@ -78,6 +78,8 @@ public class SecurityConfig {
         // API URI가 정리되면 추후 정리해서 추가할 예정, 아래 경로는 예시로 참고!
         http
                 .authorizeHttpRequests((auth) -> auth
+                        .requestMatchers("/swagger", "/swagger-ui.html", "/swagger-ui/**", "/api-docs", "/api-docs/**", "/v3/api-docs/**")
+                        .permitAll()
                         .requestMatchers("/api/v1/restaurant/get/**").permitAll()
                         .requestMatchers("/api/v1/restaurant/create/**").hasAuthority("ADMIN")
                         .requestMatchers("/api/v1/restaurant/update/**").hasAuthority("ADMIN")
@@ -96,6 +98,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/v1/webmail/authenticate-code").permitAll()
                         .requestMatchers("/api/v1/purpose/get/**").hasAuthority("ADMIN")
                         .requestMatchers("/api/v1/purpose/delete").hasAuthority("ADMIN")
+                        .requestMatchers("/api/v1/search/**").permitAll()
                         .anyRequest().authenticated());
 
         //세션 설정 : STATELESS
