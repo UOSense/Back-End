@@ -78,11 +78,25 @@ public class SecurityConfig {
         // API URI가 정리되면 추후 정리해서 추가할 예정, 아래 경로는 예시로 참고!
         http
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/reissue").permitAll()
-                        .requestMatchers("/signin").permitAll()
-                        .requestMatchers("/signout").permitAll()
-                        .requestMatchers("/api/v1/report/get/list").permitAll()
-                        .anyRequest().permitAll());
+                        .requestMatchers("/api/v1/restaurant/get/**").permitAll()
+                        .requestMatchers("/api/v1/restaurant/create/**").hasAuthority("ADMIN")
+                        .requestMatchers("/api/v1/restaurant/update/**").hasAuthority("ADMIN")
+                        .requestMatchers("/api/v1/restaurant/delete/**").hasAuthority("ADMIN")
+                        .requestMatchers("/api/v1/review/get/list").permitAll()
+                        .requestMatchers("/api/v1/review/get/user").permitAll()
+                        .requestMatchers("/api/v1/report/get/list").hasAuthority("ADMIN")
+                        .requestMatchers("/api/v1/bookmark/get/user").permitAll()
+                        .requestMatchers("/api/v1/user/signup").permitAll()
+                        .requestMatchers("/api/v1/user/signin").permitAll()
+                        .requestMatchers("/api/v1/user/signout").permitAll()
+                        .requestMatchers("/api/v1/user/reissue").permitAll()
+                        .requestMatchers("/api/v1/user/check-nickname").permitAll()
+                        .requestMatchers("/api/v1/webmail/check-format").permitAll()
+                        .requestMatchers("/api/v1/webmail/verify").permitAll()
+                        .requestMatchers("/api/v1/webmail/authenticate-code").permitAll()
+                        .requestMatchers("/api/v1/purpose/get/**").hasAuthority("ADMIN")
+                        .requestMatchers("/api/v1/purpose/delete").hasAuthority("ADMIN")
+                        .anyRequest().authenticated());
 
         //세션 설정 : STATELESS
         http
