@@ -160,7 +160,7 @@ public class RestaurantServiceImpl implements RestaurantService{
                 businessDayInfo.setBreakTime(null);
             }
 
-            if (!businessDayInfo.isHoliday()) {
+            if (businessDayInfo.isHoliday()) {
                 businessDayInfo.setTime(null);
             }
 
