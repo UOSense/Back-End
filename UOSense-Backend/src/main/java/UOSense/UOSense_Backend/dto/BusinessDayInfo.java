@@ -30,9 +30,16 @@ public class BusinessDayInfo {
 
     private boolean holiday;
 
-    public void setBreakTime(String startBreakTime, String stopBreakTime) {
-        this.startBreakTime = startBreakTime;
-        this.stopBreakTime = stopBreakTime;
+    public void setBreakTime(String time) {
+        this.startBreakTime = time;
+        this.stopBreakTime = time;
+    }
+
+    public void setTime(String time) {
+        this.startBreakTime = time;
+        this.stopBreakTime = time;
+        this.openingTime = time;
+        this.closingTime = time;
     }
 
     public static BusinessDayInfo from(BusinessDay businessDay) {
