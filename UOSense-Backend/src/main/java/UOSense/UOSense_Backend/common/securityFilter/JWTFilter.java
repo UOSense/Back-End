@@ -1,6 +1,7 @@
 package UOSense.UOSense_Backend.common.securityFilter;
 
 import UOSense.UOSense_Backend.common.Utils.JWTUtil;
+import UOSense.UOSense_Backend.common.enumClass.Role;
 import UOSense.UOSense_Backend.dto.CustomUserDetails;
 import UOSense.UOSense_Backend.entity.User;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -75,7 +76,7 @@ public class JWTFilter extends OncePerRequestFilter {
                 .password(null)
                 .nickname(null)
                 .imageUrl(null)
-                .role(jwtUtil.getRole(originToken))
+                .role(Role.getRole(jwtUtil.getRole(originToken)))
                 .build();
 
         CustomUserDetails customUser = new CustomUserDetails(user);

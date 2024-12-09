@@ -3,6 +3,7 @@ package UOSense.UOSense_Backend.controller;
 import UOSense.UOSense_Backend.dto.BookMarkResponse;
 import UOSense.UOSense_Backend.dto.CustomUserDetails;
 import UOSense.UOSense_Backend.service.BookMarkService;
+import UOSense.UOSense_Backend.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -22,6 +23,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BookMarkController {
     private final BookMarkService bookMarkService;
+    private final UserService userService;
 
     @PostMapping("/create")
     @Operation(summary = "특정 식당 즐겨찾기 등록", description = "즐겨찾기 목록에 식당을 추가합니다.")
@@ -32,9 +34,10 @@ public class BookMarkController {
     })
     public ResponseEntity<Void> create(@RequestParam int restaurantId, Authentication authentication) {
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
-        int userId = userDetails.getUser().getId();
+        String email = userDetails.getUsername();
 
         try {
+            int userId = userService.findId(email);
             bookMarkService.register(userId, restaurantId);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().build();
@@ -83,9 +86,10 @@ public class BookMarkController {
     })
     public ResponseEntity<List<BookMarkResponse>> get(Authentication authentication) {
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
-        int userId = userDetails.getUser().getId();
+        String email = userDetails.getUsername();
 
         try {
+            int userId = userService.findId(email);
             List<BookMarkResponse> bookMarkList = bookMarkService.find(userId);
             return new ResponseEntity<>(bookMarkList,HttpStatus.OK);
         } catch(IllegalArgumentException e) {

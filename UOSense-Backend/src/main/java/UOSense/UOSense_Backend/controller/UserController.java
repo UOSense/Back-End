@@ -106,8 +106,8 @@ public class UserController {
         Role role = user.getRole();
 
         // accessToken과 refreshToken 생성
-        String accessToken = jwtUtil.createJwt("access", username, role, accessDuration);
-        String refreshToken = jwtUtil.createJwt("refresh", username, role, refreshDuration);
+        String accessToken = jwtUtil.createJwt("access", username, role.getValue(), accessDuration);
+        String refreshToken = jwtUtil.createJwt("refresh", username, role.getValue(), refreshDuration);
 
         // redis에 insert (key = username / value = refreshToken)
         redisUtilForToken.setToken(username, refreshToken, Duration.ofMillis(refreshDuration));

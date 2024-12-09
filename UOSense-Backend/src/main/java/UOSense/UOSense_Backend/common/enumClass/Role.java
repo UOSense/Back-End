@@ -11,4 +11,13 @@ public enum Role implements BaseEnum {
     public String getValue() {
         return (this == USER) ? "USER" : "ADMIN";
     }
+
+    public static Role getRole(String value){
+        if (value.equals("USER")){
+            return Role.USER;
+        }
+        else {
+            return Role.ADMIN;
+        }
+    }
 }
