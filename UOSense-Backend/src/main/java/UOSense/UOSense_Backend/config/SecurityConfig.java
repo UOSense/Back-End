@@ -84,6 +84,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/v1/restaurant/create/**").hasAuthority("ADMIN")
                         .requestMatchers("/api/v1/restaurant/update/**").hasAuthority("ADMIN")
                         .requestMatchers("/api/v1/restaurant/delete/**").hasAuthority("ADMIN")
+                        .requestMatchers("/api/v1/review/get").permitAll()
                         .requestMatchers("/api/v1/review/get/list").permitAll()
                         .requestMatchers("/api/v1/review/get/user").permitAll()
                         .requestMatchers("/api/v1/report/get/list").hasAuthority("ADMIN")
