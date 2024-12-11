@@ -24,7 +24,7 @@ public class ReviewRequest {
 
     private LocalDateTime dateTime;
 
-    private boolean isReviewEventCheck;
+    private boolean reviewEventCheck;
 
     private Tag tag;
 
@@ -35,7 +35,7 @@ public class ReviewRequest {
                 .body(reviewRequest.getBody())
                 .rating(reviewRequest.getRating())
                 .dateTime(reviewRequest.getDateTime())
-                .isReviewEventCheck(reviewRequest.isReviewEventCheck())
+                .reviewEventCheck(reviewRequest.isReviewEventCheck())
                 .tag(reviewRequest.getTag())
                 .likeCount(0)
                 .build();

@@ -37,7 +37,7 @@ public class Review {
     private LocalDateTime dateTime;
 
     @Column(columnDefinition = "TINYINT(1)",name = "review_event_check")
-    private boolean isReviewEventCheck;
+    private boolean reviewEventCheck;
 
     @Convert(converter = TagConverter.class)
     private Tag tag;
