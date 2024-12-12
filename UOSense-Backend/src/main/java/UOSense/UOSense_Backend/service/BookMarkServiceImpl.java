@@ -41,11 +41,11 @@ public class BookMarkServiceImpl implements BookMarkService{
 
     @Override
     @Transactional
-    public void remove(int bookMarkId) {
-        if (!bookMarkRepository.existsById(bookMarkId)) {
+    public void remove(int userId, int restaurantId) {
+        if (!bookMarkRepository.existsByUserIdAndRestaurantId(userId, restaurantId)) {
             throw new IllegalArgumentException("삭제할 즐겨찾기가 존재하지 않습니다.");
         }
-        bookMarkRepository.deleteById(bookMarkId);
+        bookMarkRepository.deleteByUserIdAndRestaurantId(userId, restaurantId);
     }
 
     @Override

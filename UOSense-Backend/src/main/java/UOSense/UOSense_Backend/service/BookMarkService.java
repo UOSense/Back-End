@@ -14,9 +14,10 @@ public interface BookMarkService {
     void register(int userId, int restaurantId);
     /**
      * 즐겨찾기 삭제
-     * @param bookMarkId
+     * @param userId
+     * @param restaurantId
      * */
-    void remove(int bookMarkId);
+    void remove(int userId, int restaurantId);
     /**
      * 즐겨찾기 목록 조회
      * @param userId
