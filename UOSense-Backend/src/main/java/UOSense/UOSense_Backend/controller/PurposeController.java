@@ -1,9 +1,9 @@
 package UOSense.UOSense_Backend.controller;
 
-import UOSense.UOSense_Backend.dto.PurposeDayList;
-import UOSense.UOSense_Backend.dto.PurposeRestListResponse;
-import UOSense.UOSense_Backend.dto.PurposeRestResponse;
+import UOSense.UOSense_Backend.dto.*;
+import UOSense.UOSense_Backend.entity.User;
 import UOSense.UOSense_Backend.service.PurposeService;
+import UOSense.UOSense_Backend.service.UserService;
 import com.amazonaws.SdkClientException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,6 +24,46 @@ import java.util.NoSuchElementException;
 @RequiredArgsConstructor
 public class PurposeController {
     private final PurposeService purposeService;
+    private final UserService userService;
+
+    @PostMapping("/create/restaurant")
+    @Operation(summary = "식당 제안 생성", description = "식당 제안을 생성합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "식당 제안을 생성했습니다."),
+            @ApiResponse(responseCode = "400", description = "제안 정보가 올바르지 않습니다."),
+            @ApiResponse(responseCode = "404", description = "사용자 정보를 찾을 수 없습니다."),
+            @ApiResponse(responseCode = "500", description = "서버 오류입니다.")
+    })
+    public ResponseEntity<Void> createRestaurant(@RequestBody PurposeRestRequest request, Authentication authentication) {
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+        String email = userDetails.getUsername();
+
+        try {
+            int userId = userService.findId(email);
+            purposeService.register(request, userId);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PostMapping("/create/businessday")
+    @Operation(summary = "영업 정보 제안 생성", description = "영업 정보 제안을 생성합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "영업 정보 제안을 생성했습니다."),
+            @ApiResponse(responseCode = "400", description = "제안 정보가 올바르지 않습니다."),
+            @ApiResponse(responseCode = "500", description = "서버 오류입니다.")
+    })
+    public ResponseEntity<Void> createBusinessday(@RequestBody PurposeDayList purposeDayList) {
+        try {
+            purposeService.registerPurposeDay(purposeDayList);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (NoSuchElementException e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
 
     @GetMapping("/get/restaurant/list")
     @Operation(summary = "정보 수정 제안 일괄 조회", description = "모든 정보 수정 제안을 조회합니다.")
