@@ -97,9 +97,10 @@ public class SecurityConfig {
                         .requestMatchers("/api/v1/user/reissue").permitAll()
                         .requestMatchers("/api/v1/user/check-nickname").permitAll()
                         .requestMatchers("/api/v1/webmail/**").permitAll()
-                        .requestMatchers("/api/v1/purpose/get/**").hasAuthority("ADMIN")
-                        .requestMatchers("/api/v1/purpose/delete").hasAuthority("ADMIN")
                         .requestMatchers("/api/v1/search/**").permitAll()
+                        .requestMatchers("/api/v1/purpose/create/businessday").permitAll()
+                        .requestMatchers("/api/v1/purpose/get/**").permitAll()
+                        .requestMatchers("/api/v1/purpose/delete").permitAll()
                         .anyRequest().authenticated());
 
         //세션 설정 : STATELESS
