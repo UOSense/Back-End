@@ -1,5 +1,6 @@
 package UOSense.UOSense_Backend.controller;
 
+import UOSense.UOSense_Backend.dto.PurposeDayList;
 import UOSense.UOSense_Backend.dto.PurposeRestListResponse;
 import UOSense.UOSense_Backend.dto.PurposeRestResponse;
 import UOSense.UOSense_Backend.service.PurposeService;
@@ -52,6 +53,24 @@ public class PurposeController {
         try {
             PurposeRestResponse response = purposeService.find(restaurantId);
             return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/get/businessday")
+    @Operation(summary = "영업 정보 제안 조회", description = "영업 정보 제안을 조회합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "영업 정보 제안을 성공적으로 조회했습니다."),
+            @ApiResponse(responseCode = "404", description = "영업 정보 제안이 존재하지 않습니다."),
+            @ApiResponse(responseCode = "500", description = "서버 오류입니다.")
+    })
+    public ResponseEntity<PurposeDayList> getPurposeDayList(@RequestParam int restaurantId) {
+        try {
+            PurposeDayList purposeDayList = purposeService.findPurposeDay(restaurantId);
+            return new ResponseEntity<>(purposeDayList, HttpStatus.OK);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } catch (Exception e) {
