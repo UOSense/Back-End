@@ -92,7 +92,6 @@ public class SecurityConfig {
                         .requestMatchers("/api/v1/review/delete").permitAll()
                         .requestMatchers("/api/v1/report/get/list").hasAuthority("ADMIN")
                         .requestMatchers("/api/v1/bookmark/get/user").permitAll()
-                        .requestMatchers("/api/v1/bookmark/delete").permitAll()
                         .requestMatchers("/api/v1/user/signup").permitAll()
                         .requestMatchers("/api/v1/user/signout").permitAll()
                         .requestMatchers("/api/v1/user/reissue").permitAll()

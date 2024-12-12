@@ -52,9 +52,13 @@ public class BookMarkController {
             @ApiResponse(responseCode = "400", description = "삭제할 즐겨찾기가 존재하지 않습니다."),
             @ApiResponse(responseCode = "500", description = "서버 오류입니다.")
     })
-    public ResponseEntity<Void> delete(@RequestParam int bookMarkId) {
+    public ResponseEntity<Void> delete(@RequestParam int restaurantId, Authentication authentication) {
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+        String email = userDetails.getUsername();
+
         try {
-            bookMarkService.remove(bookMarkId);
+            int userId = userService.findId(email);
+            bookMarkService.remove(userId, restaurantId);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().build();
         }
