@@ -25,11 +25,10 @@ public class PurposeDay {
 
     @Column(name = "day_of_week", nullable = false)
     @Enumerated(EnumType.STRING)
-    private DayOfWeek dayOfWeek;
-    public enum DayOfWeek {Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday}
+    private BusinessDay.DayOfWeek dayOfWeek;
 
     @Column(name = "have_break_time", nullable = false)
-    private boolean haveBreakTime;
+    private boolean breakTime;
 
     @Column(name = "start_break_time")
     private LocalTime startBreakTime;
@@ -44,9 +43,13 @@ public class PurposeDay {
     private LocalTime closingTime;
 
     @Column(name = "is_holiday", nullable = false)
-    private boolean isHoliday;
+    private boolean holiday;
 
     @ManyToOne(fetch = FetchType.LAZY)  // User와 다대일 관계
     @JoinColumn(name = "user_id", nullable = false)  // 외래키 명시
     private User user;
+
+    public void setId(int id) {
+        this.id = id;
+    }
 }
