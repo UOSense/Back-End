@@ -21,8 +21,6 @@ public class PurposeRestRequest {
 
     private SubDescription subDescription;
 
-    private int userId;
-
     public static PurposeRest toEntity(PurposeRestRequest purposeRestRequest, User user) {
         return PurposeRest.builder()
                 .name(purposeRestRequest.getName())
