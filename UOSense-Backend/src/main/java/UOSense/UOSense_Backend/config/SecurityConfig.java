@@ -88,6 +88,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/v1/review/get").permitAll()
                         .requestMatchers("/api/v1/review/get/list").permitAll()
                         .requestMatchers("/api/v1/review/get/user").permitAll()
+                        .requestMatchers("/api/v1/review/create/images").permitAll()
                         .requestMatchers("/api/v1/report/get/list").hasAuthority("ADMIN")
                         .requestMatchers("/api/v1/bookmark/get/user").permitAll()
                         .requestMatchers("/api/v1/user/signup").permitAll()
