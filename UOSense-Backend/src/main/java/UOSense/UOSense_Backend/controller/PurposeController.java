@@ -1,7 +1,6 @@
 package UOSense.UOSense_Backend.controller;
 
 import UOSense.UOSense_Backend.dto.*;
-import UOSense.UOSense_Backend.entity.User;
 import UOSense.UOSense_Backend.service.PurposeService;
 import UOSense.UOSense_Backend.service.UserService;
 import com.amazonaws.SdkClientException;
