@@ -1,17 +1,9 @@
 package UOSense.UOSense_Backend.service;
 
 import UOSense.UOSense_Backend.common.Utils.ImageUtils;
-import UOSense.UOSense_Backend.dto.PurposeDayInfo;
-import UOSense.UOSense_Backend.dto.PurposeDayList;
-import UOSense.UOSense_Backend.dto.PurposeRestListResponse;
-import UOSense.UOSense_Backend.dto.PurposeRestResponse;
-import UOSense.UOSense_Backend.entity.PurposeDay;
-import UOSense.UOSense_Backend.entity.PurposeRest;
-import UOSense.UOSense_Backend.entity.PurposeRestImg;
-import UOSense.UOSense_Backend.repository.PurposeDayRepository;
-import UOSense.UOSense_Backend.repository.PurposeMenuRepository;
-import UOSense.UOSense_Backend.repository.PurposeRestImgRepository;
-import UOSense.UOSense_Backend.repository.PurposeRestRepository;
+import UOSense.UOSense_Backend.dto.*;
+import UOSense.UOSense_Backend.entity.*;
+import UOSense.UOSense_Backend.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -30,6 +23,7 @@ public class PurposeServiceImpl implements PurposeService {
     private final PurposeMenuRepository purposeMenuRepository;
     private final ImageUtils imageUtils;
     private final PurposeDayRepository purposeDayRepository;
+    private final UserRepository userRepository;
 
     @Override
     public void delete(int purposeRestId) {
@@ -86,5 +80,37 @@ public class PurposeServiceImpl implements PurposeService {
                 .map(PurposeDayInfo::from)
                 .toList();
         return new PurposeDayList(purposeRestId, infoList);
+    }
+
+    @Override
+    public void register(PurposeRestRequest request, int userId) {
+        Optional<User> user = userRepository.findById(userId);
+        if (user.isEmpty()) {
+            throw new IllegalArgumentException("사용자 정보가 없습니다.");
+        }
+        PurposeRest purposeRest = PurposeRestRequest.toEntity(request, user.get());
+        purposeRestRepository.save(purposeRest);
+    }
+
+    @Override
+    public void registerPurposeDay(PurposeDayList purposeDayList) {
+        PurposeRest purposeRest = purposeRestRepository.findById(purposeDayList.getPurposeRestId())
+                .orElseThrow(() -> new NoSuchElementException("존재하지 않는 식당 제안입니다."));
+
+        List<PurposeDayInfo> InfoList = purposeDayList.getPurposeDayInfoList();
+        for(PurposeDayInfo purposeDayInfo : InfoList) {
+            // breakTime이 없을 경우
+            if (!purposeDayInfo.isBreakTime()) {
+                purposeDayInfo.setBreakTime();
+            }
+
+            // 휴무일일 경우
+            if (purposeDayInfo.isHoliday()) {
+                purposeDayInfo.setTime();
+            }
+
+            PurposeDay purposeDay = PurposeDayInfo.toEntity(purposeDayInfo, purposeRest);
+            purposeDayRepository.save(purposeDay);
+        }
     }
 }

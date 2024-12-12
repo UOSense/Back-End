@@ -1,8 +1,6 @@
 package UOSense.UOSense_Backend.service;
 
-import UOSense.UOSense_Backend.dto.PurposeDayList;
-import UOSense.UOSense_Backend.dto.PurposeRestListResponse;
-import UOSense.UOSense_Backend.dto.PurposeRestResponse;
+import UOSense.UOSense_Backend.dto.*;
 
 import java.util.List;
 
@@ -11,4 +9,6 @@ public interface PurposeService {
     List<PurposeRestListResponse> findAll();
     PurposeRestResponse find(int purposeRestId);
     PurposeDayList findPurposeDay(int purposeRestId);
+    void register(PurposeRestRequest request, int userId);
+    void registerPurposeDay(PurposeDayList purposeDayList);
 }
