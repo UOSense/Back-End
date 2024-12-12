@@ -61,7 +61,7 @@ public class PurposeDayInfo {
         LocalTime stopBreakTime = (purposeDayInfo.getStopBreakTime() != null) ? LocalTime.parse(purposeDayInfo.getStopBreakTime()) : null;
         LocalTime openingTime = (purposeDayInfo.getOpeningTime() != null) ? LocalTime.parse(purposeDayInfo.getOpeningTime()) : null;
         LocalTime closingTime = (purposeDayInfo.getClosingTime() != null) ? LocalTime.parse(purposeDayInfo.getClosingTime()) : null;
-        PurposeDay purposeDay = PurposeDay.builder()
+        return PurposeDay.builder()
                 .purposeRest(purposeRest)
                 .dayOfWeek(purposeDayInfo.getDayOfWeek())
                 .breakTime(purposeDayInfo.isBreakTime())
@@ -70,14 +70,7 @@ public class PurposeDayInfo {
                 .openingTime(openingTime)
                 .closingTime(closingTime)
                 .holiday(purposeDayInfo.isHoliday())
+                .user(purposeRest.getUser())
                 .build();
-        if (purposeDayInfo.getId() == -1) {
-            // 신규 엔티티이므로 id 필드를 비워둠.
-            return purposeDay;
-        }
-        else {
-            purposeDay.setId(purposeDayInfo.getId());
-            return purposeDay;
-        }
     }
 }
