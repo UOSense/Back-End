@@ -160,6 +160,30 @@ public class ReviewController {
         }
     }
 
+    @GetMapping("/get/mine")
+    @Operation(summary = "자신 리뷰 조회", description = "자신의 리뷰 목록을 조회합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "성공적으로 리뷰 목록을 조회했습니다."),
+            @ApiResponse(responseCode = "404", description = "자신의 리뷰 정보가 없습니다."),
+            @ApiResponse(responseCode = "500", description = "서버 오류입니다.")
+    })
+    public ResponseEntity<List<ReviewResponse>> getMine(Authentication authentication) {
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+        String email = userDetails.getUsername();
+
+        try {
+            int userId = userService.findId(email);
+            List<ReviewResponse> reviewList = reviewService.findByUserId(userId);
+            for (ReviewResponse reviewResponse : reviewList) {
+                List<String> imageUrls = reviewImageService.find(reviewResponse.getId());
+                reviewResponse.setImageUrls(imageUrls);
+            }
+            return new ResponseEntity<>(reviewList, HttpStatus.OK);
+        } catch(IllegalArgumentException e) {
+            return new ResponseEntity<>(Collections.emptyList(), HttpStatus.NOT_FOUND);
+        }
+    }
+
     @GetMapping("/get")
     @Operation(summary = "단일 리뷰 조회", description = "단일 리뷰를 조회합니다.")
     @ApiResponses(value = {
