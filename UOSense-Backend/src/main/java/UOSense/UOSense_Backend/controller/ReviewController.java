@@ -12,8 +12,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -30,7 +28,6 @@ import java.util.List;
 @RequestMapping("/api/v1/review")
 @RequiredArgsConstructor
 public class ReviewController {
-    private static final Logger log = LoggerFactory.getLogger(ReviewController.class);
     private final ReviewService reviewService;
     private final ReviewImageService reviewImageService;
     private final UserService userService;
@@ -149,6 +146,30 @@ public class ReviewController {
     })
     public ResponseEntity<List<ReviewResponse>> getByUserId(@RequestParam int userId) {
         try {
+            List<ReviewResponse> reviewList = reviewService.findByUserId(userId);
+            for (ReviewResponse reviewResponse : reviewList) {
+                List<String> imageUrls = reviewImageService.find(reviewResponse.getId());
+                reviewResponse.setImageUrls(imageUrls);
+            }
+            return new ResponseEntity<>(reviewList, HttpStatus.OK);
+        } catch(IllegalArgumentException e) {
+            return new ResponseEntity<>(Collections.emptyList(), HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping("/get/mine")
+    @Operation(summary = "자신 리뷰 조회", description = "자신의 리뷰 목록을 조회합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "성공적으로 리뷰 목록을 조회했습니다."),
+            @ApiResponse(responseCode = "404", description = "자신의 리뷰 정보가 없습니다."),
+            @ApiResponse(responseCode = "500", description = "서버 오류입니다.")
+    })
+    public ResponseEntity<List<ReviewResponse>> getMine(Authentication authentication) {
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+        String email = userDetails.getUsername();
+
+        try {
+            int userId = userService.findId(email);
             List<ReviewResponse> reviewList = reviewService.findByUserId(userId);
             for (ReviewResponse reviewResponse : reviewList) {
                 List<String> imageUrls = reviewImageService.find(reviewResponse.getId());
