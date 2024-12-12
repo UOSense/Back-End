@@ -33,14 +33,14 @@ public class PurposeController {
             @ApiResponse(responseCode = "404", description = "사용자 정보를 찾을 수 없습니다."),
             @ApiResponse(responseCode = "500", description = "서버 오류입니다.")
     })
-    public ResponseEntity<Void> createRestaurant(@RequestBody PurposeRestRequest request, Authentication authentication) {
+    public ResponseEntity<Integer> createRestaurant(@RequestBody PurposeRestRequest request, Authentication authentication) {
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
         String email = userDetails.getUsername();
 
         try {
             int userId = userService.findId(email);
-            purposeService.register(request, userId);
-            return new ResponseEntity<>(HttpStatus.OK);
+            int purposeRestId = purposeService.register(request, userId);
+            return new ResponseEntity<>(purposeRestId, HttpStatus.OK);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } catch (Exception e) {

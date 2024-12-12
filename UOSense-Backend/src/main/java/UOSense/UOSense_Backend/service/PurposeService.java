@@ -9,6 +9,6 @@ public interface PurposeService {
     List<PurposeRestListResponse> findAll();
     PurposeRestResponse find(int purposeRestId);
     PurposeDayList findPurposeDay(int purposeRestId);
-    void register(PurposeRestRequest request, int userId);
+    int register(PurposeRestRequest request, int userId);
     void registerPurposeDay(PurposeDayList purposeDayList);
 }

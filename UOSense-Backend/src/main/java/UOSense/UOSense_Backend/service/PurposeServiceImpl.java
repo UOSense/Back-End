@@ -26,6 +26,7 @@ public class PurposeServiceImpl implements PurposeService {
     private final UserRepository userRepository;
 
     @Override
+    @Transactional
     public void delete(int purposeRestId) {
         if (!purposeRestRepository.existsById(purposeRestId)) {
             throw new IllegalArgumentException("존재하지 않는 식당 정보입니다");
@@ -83,16 +84,18 @@ public class PurposeServiceImpl implements PurposeService {
     }
 
     @Override
-    public void register(PurposeRestRequest request, int userId) {
+    @Transactional
+    public int register(PurposeRestRequest request, int userId) {
         Optional<User> user = userRepository.findById(userId);
         if (user.isEmpty()) {
             throw new IllegalArgumentException("사용자 정보가 없습니다.");
         }
         PurposeRest purposeRest = PurposeRestRequest.toEntity(request, user.get());
-        purposeRestRepository.save(purposeRest);
+        return purposeRestRepository.save(purposeRest).getId();
     }
 
     @Override
+    @Transactional
     public void registerPurposeDay(PurposeDayList purposeDayList) {
         PurposeRest purposeRest = purposeRestRepository.findById(purposeDayList.getPurposeRestId())
                 .orElseThrow(() -> new NoSuchElementException("존재하지 않는 식당 제안입니다."));
