@@ -119,11 +119,11 @@ public class RestaurantController {
             @ApiResponse(responseCode = "200", description = "식당 정보를 성공적으로 불러왔습니다."),
             @ApiResponse(responseCode = "404", description = "식당을 찾을 수 없습니다.")
     })
-    public ResponseEntity<RestaurantInfo> getRestaurant(@RequestParam int restaurantId) {
+    public ResponseEntity<RestaurantResponse> getRestaurant(@RequestParam int restaurantId) {
         try {
-            RestaurantInfo restaurantInfo = restaurantService.getRestaurantInfoById(restaurantId);
+            RestaurantResponse restaurantResponse = restaurantService.getRestaurantInfoById(restaurantId);
 
-            return new ResponseEntity<>(restaurantInfo, HttpStatus.OK);
+            return new ResponseEntity<>(restaurantResponse, HttpStatus.OK);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }

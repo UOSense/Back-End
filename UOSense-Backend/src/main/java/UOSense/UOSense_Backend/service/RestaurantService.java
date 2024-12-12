@@ -9,7 +9,7 @@ import java.util.List;
 public interface RestaurantService {
     List<RestaurantListResponse> getAllRestaurants(SearchService.sortFilter filter);
     List<RestaurantListResponse> getRestaurantsByDoorType(DoorType doorType, SearchService.sortFilter filter);
-    RestaurantInfo getRestaurantInfoById(int restaurantId);
+    RestaurantResponse getRestaurantInfoById(int restaurantId);
     Restaurant getRestaurantById(int restaurantId);
     List<MenuResponse> findMenuBy(int restaurantId);
     void registerMenu(NewMenuRequest menuRequest, String imageUrl);
