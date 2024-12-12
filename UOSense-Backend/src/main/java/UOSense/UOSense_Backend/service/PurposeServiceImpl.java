@@ -32,17 +32,17 @@ public class PurposeServiceImpl implements PurposeService {
     private final PurposeDayRepository purposeDayRepository;
 
     @Override
-    public void delete(int restaurantId) {
-        if (!purposeRestRepository.existsById(restaurantId)) {
+    public void delete(int purposeRestId) {
+        if (!purposeRestRepository.existsById(purposeRestId)) {
             throw new IllegalArgumentException("존재하지 않는 식당 정보입니다");
         }
-        List<String> restaurantImages = purposeRestImgRepository.findImageUrls(restaurantId);
-        List<String> menuImages = purposeMenuRepository.findImageUrls(restaurantId);
+        List<String> restaurantImages = purposeRestImgRepository.findImageUrls(purposeRestId);
+        List<String> menuImages = purposeMenuRepository.findImageUrls(purposeRestId);
 
         restaurantImages.forEach(imageUtils::deleteImageInS3);
         menuImages.forEach(imageUtils::deleteImageInS3);
 
-        purposeRestRepository.deleteById(restaurantId);
+        purposeRestRepository.deleteById(purposeRestId);
     }
 
     @Override
@@ -53,18 +53,18 @@ public class PurposeServiceImpl implements PurposeService {
     }
 
     @Override
-    public PurposeRestResponse find(int restaurantId) {
-        PurposeRest purposeRest = purposeRestRepository.findById(restaurantId)
+    public PurposeRestResponse find(int purposeRestId) {
+        PurposeRest purposeRest = purposeRestRepository.findById(purposeRestId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 식당 제안이 존재하지 않습니다."));
         return PurposeRestResponse.from(purposeRest);
     }
 
     private List<PurposeRestListResponse> convertToListDTO(List<PurposeRest> purposeRests) {
         List<Integer> purposeRestIds = purposeRests.stream().map(PurposeRest::getId).toList();
-        // restaurantId -> imageUrl 매핑 생성
+        // purposeRestId -> imageUrl 매핑 생성
         Map<Integer, String> imageList = purposeRestImgRepository.findAllFirstImageUrl(purposeRestIds)
                 .stream().collect(Collectors.toMap(
-                        image -> image.getPurposeRest().getId(), // Key: restaurantId
+                        image -> image.getPurposeRest().getId(), // Key: purposeRestId
                         PurposeRestImg::getImageUrl            // Value: imageUrl
                 ));
         // DTO 변환
@@ -77,14 +77,14 @@ public class PurposeServiceImpl implements PurposeService {
     }
 
     @Override
-    public PurposeDayList findPurposeDay(int restaurantId) {
-        List<PurposeDay> response = purposeDayRepository.findAllByRestaurantId(restaurantId);
+    public PurposeDayList findPurposeDay(int purposeRestId) {
+        List<PurposeDay> response = purposeDayRepository.findAllByRestaurantId(purposeRestId);
         if (response.isEmpty()) {
             throw new IllegalArgumentException("식당 제안에 대한 영업 정보가 존재하지 않습니다.");
         }
         List<PurposeDayInfo> infoList = response.stream()
                 .map(PurposeDayInfo::from)
                 .toList();
-        return new PurposeDayList(restaurantId, infoList);
+        return new PurposeDayList(purposeRestId, infoList);
     }
 }

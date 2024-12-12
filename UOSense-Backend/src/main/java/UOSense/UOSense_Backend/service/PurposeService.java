@@ -9,6 +9,6 @@ import java.util.List;
 public interface PurposeService {
     void delete(int restaurantId);
     List<PurposeRestListResponse> findAll();
-    PurposeRestResponse find(int restaurantId);
-    PurposeDayList findPurposeDay(int restaurantId);
+    PurposeRestResponse find(int purposeRestId);
+    PurposeDayList findPurposeDay(int purposeRestId);
 }

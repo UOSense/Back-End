@@ -49,9 +49,9 @@ public class PurposeController {
             @ApiResponse(responseCode = "404", description = "해당 정보 수정 제안이 존재하지 않습니다."),
             @ApiResponse(responseCode = "500", description = "서버 오류입니다.")
     })
-    public ResponseEntity<PurposeRestResponse> getPurposeRestaurant(@RequestParam int restaurantId) {
+    public ResponseEntity<PurposeRestResponse> getPurposeRestaurant(@RequestParam int purposeRestId) {
         try {
-            PurposeRestResponse response = purposeService.find(restaurantId);
+            PurposeRestResponse response = purposeService.find(purposeRestId);
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -67,9 +67,9 @@ public class PurposeController {
             @ApiResponse(responseCode = "404", description = "영업 정보 제안이 존재하지 않습니다."),
             @ApiResponse(responseCode = "500", description = "서버 오류입니다.")
     })
-    public ResponseEntity<PurposeDayList> getPurposeDayList(@RequestParam int restaurantId) {
+    public ResponseEntity<PurposeDayList> getPurposeDayList(@RequestParam int purposeRestId) {
         try {
-            PurposeDayList purposeDayList = purposeService.findPurposeDay(restaurantId);
+            PurposeDayList purposeDayList = purposeService.findPurposeDay(purposeRestId);
             return new ResponseEntity<>(purposeDayList, HttpStatus.OK);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -86,9 +86,9 @@ public class PurposeController {
             @ApiResponse(responseCode = "417", description = "AWS S3에서 삭제에 실패했습니다."),
             @ApiResponse(responseCode = "500", description = "서버 오류입니다.")
     })
-    public ResponseEntity<Void> delete(@RequestParam int restaurantId){
+    public ResponseEntity<Void> delete(@RequestParam int purposeRestId){
         try {
-            purposeService.delete(restaurantId);
+            purposeService.delete(purposeRestId);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.notFound().build();
         } catch (SdkClientException e) {
