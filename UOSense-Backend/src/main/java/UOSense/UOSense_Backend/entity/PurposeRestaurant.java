@@ -19,6 +19,10 @@ public class PurposeRestaurant {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @OneToOne(fetch = FetchType.LAZY)  // Restaurant와 일대일 관계
+    @JoinColumn(name = "restaurant_id")
+    private Restaurant restaurant;
+
     private String name;
 
     private String address;
