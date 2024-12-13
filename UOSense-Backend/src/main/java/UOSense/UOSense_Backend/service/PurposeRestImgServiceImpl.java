@@ -18,7 +18,7 @@ import java.util.NoSuchElementException;
 @Service
 @RequiredArgsConstructor
 @Transactional
-public class PurposeRestImgServiceImpl implements PurposeRestImgService{
+public class PurposeRestImgServiceImpl implements PurposeRestImgService {
     private final PurposeRestImgRepository purposeRestImgRepository;
     private final ImageUtils imageUtils;
     final String S3_FOLDER_NAME = "purpose";
