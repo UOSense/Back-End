@@ -17,4 +17,5 @@ public interface RestaurantImageRepository extends JpaRepository<RestaurantImage
             "ORDER BY ri.id ASC LIMIT 1", nativeQuery = true)
     List<RestaurantImage> findAllFirstImageUrl(@Param("restaurantIds") List<Integer> restaurantIds);
     List<RestaurantImage> findAllByRestaurantId(int restaurantId);
+    void deleteAllByRestaurantId(int restaurantId);
 }

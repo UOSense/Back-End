@@ -1,15 +1,12 @@
 package UOSense.UOSense_Backend.service;
 
+import UOSense.UOSense_Backend.common.Utils.ImageUtils;
 import UOSense.UOSense_Backend.common.enumClass.DoorType;
 import UOSense.UOSense_Backend.dto.*;
 
-import UOSense.UOSense_Backend.entity.BusinessDay;
-import UOSense.UOSense_Backend.entity.Menu;
-import UOSense.UOSense_Backend.entity.Restaurant;
+import UOSense.UOSense_Backend.entity.*;
 
-import UOSense.UOSense_Backend.repository.BusinessDayRepository;
-import UOSense.UOSense_Backend.repository.MenuRepository;
-import UOSense.UOSense_Backend.repository.RestaurantRepository;
+import UOSense.UOSense_Backend.repository.*;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -26,6 +23,10 @@ public class RestaurantServiceImpl implements RestaurantService{
     private final MenuRepository menuRepository;
     private final BusinessDayRepository businessDayRepository;
     private final SearchService searchService;
+    private final RestaurantImageRepository restaurantImageRepository;
+    private final ImageUtils imageUtils;
+    private final BookMarkRepository bookMarkRepository;
+    private final ReviewService reviewService;
 
     @Override
     public List<RestaurantListResponse> getAllRestaurants(SearchService.sortFilter filter) {
@@ -103,6 +104,24 @@ public class RestaurantServiceImpl implements RestaurantService{
         if (!restaurantRepository.existsById(restaurantId)) {
             throw new IllegalArgumentException("삭제할 식당이 존재하지 않습니다.");
         }
+        List<RestaurantImage> restaurantImages = restaurantImageRepository.findAllByRestaurantId(restaurantId);
+        if (!restaurantImages.isEmpty()) {
+            for (RestaurantImage restaurantImage : restaurantImages) {
+                if (restaurantImage.getImageUrl() != null)
+                    imageUtils.deleteImageInS3(restaurantImage.getImageUrl());
+            }
+        }
+        // 식당 이미지 삭제
+        restaurantImageRepository.deleteAllByRestaurantId(restaurantId);
+        // 메뉴 삭제
+        menuRepository.deleteAllByRestaurantId(restaurantId);
+        // 영업 정보 삭제
+        businessDayRepository.deleteAllByRestaurantId(restaurantId);
+        // 북마크 삭제
+        bookMarkRepository.deleteAllByRestaurantId(restaurantId);
+        // 리뷰 삭제
+        reviewService.deleteByRestaurantId(restaurantId);
+        // 식당 삭제
         restaurantRepository.deleteById(restaurantId);
     }
 

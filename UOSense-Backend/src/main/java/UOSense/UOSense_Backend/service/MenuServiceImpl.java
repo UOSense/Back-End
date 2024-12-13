@@ -34,13 +34,17 @@ public class MenuServiceImpl implements MenuService{
     public void edit(MenuRequest menuRequest, MultipartFile image, Restaurant restaurant) {
         Menu menu = menuRepository.findById(menuRequest.getId())
                 .orElseThrow(() -> new IllegalArgumentException("수정할 메뉴가 존재하지 않습니다."));
-        String path = "";
-        if (image!=null) {  // 수정할 사진이 있음
-            imageUtils.deleteImageInS3(menu.getImageUrl());
-            path = imageUtils.uploadImageToS3(image,S3_FOLDER_NAME);
+        String oldImageUrl = menu.getImageUrl();
+        String newImageUrl = "";
+        if (image != null) {  // 수정할 사진이 있음
+            // 기존 사진이 존재함
+            if (oldImageUrl != null) {
+                imageUtils.deleteImageInS3(oldImageUrl);
+            }
+            newImageUrl = imageUtils.uploadImageToS3(image,S3_FOLDER_NAME);
         }
 
-        menuRepository.save(menuRequest.toEntity(restaurant, path));
+        menuRepository.save(menuRequest.toEntity(restaurant, newImageUrl));
     }
 
     @Override
@@ -48,7 +52,10 @@ public class MenuServiceImpl implements MenuService{
     public void delete(int menuId) {
         Menu menu = menuRepository.findById(menuId)
                 .orElseThrow(() -> new IllegalArgumentException("삭제할 메뉴가 존재하지 않습니다."));
-        imageUtils.deleteImageInS3(menu.getImageUrl());
+        String oldImageUrl = menu.getImageUrl();
+        if (oldImageUrl != null) {
+            imageUtils.deleteImageInS3(oldImageUrl);
+        }
         menuRepository.deleteById(menuId);
     }
 }
