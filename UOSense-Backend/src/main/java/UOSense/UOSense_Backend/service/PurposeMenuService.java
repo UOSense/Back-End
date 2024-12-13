@@ -12,4 +12,5 @@ public interface PurposeMenuService {
     public
     void register(PurposeMenuRequest request, MultipartFile menuImage);
     String saveImage(MultipartFile menuImage);
+    void delete(int PurposeMenuId);
 }

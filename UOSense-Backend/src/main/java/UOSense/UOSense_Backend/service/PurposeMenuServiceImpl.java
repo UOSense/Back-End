@@ -61,4 +61,15 @@ public class PurposeMenuServiceImpl implements PurposeMenuService {
             throw new IllegalArgumentException(e.getMessage());
         }
     }
+
+    @Override
+    public void delete(int menuId) {
+        PurposeMenu menu = purposeMenuRepository.findById(menuId)
+                .orElseThrow(() -> new IllegalArgumentException("삭제할 메뉴 정보 수정 제안이 존재하지 않습니다."));
+        String oldImageUrl = menu.getImageUrl();
+        if (oldImageUrl != null) {
+            imageUtils.deleteImageInS3(oldImageUrl);
+        }
+        purposeMenuRepository.deleteById(menuId);
+    }
 }
