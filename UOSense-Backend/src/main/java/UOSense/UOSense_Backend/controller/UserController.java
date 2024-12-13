@@ -142,6 +142,13 @@ public class UserController {
     }
 
     @PutMapping("/update")
+    @Operation(summary = "사용자 마이페이지 정보 수정", description = "사용자 마이페이지 정보를 수정합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "성공적으로 마이페이지 정보를 수정했습니다."),
+            @ApiResponse(responseCode = "400", description = "중복되는 닉네임입니다."),
+            @ApiResponse(responseCode = "417", description = "AWS S3에서 사진 등록에 실패했습니다."),
+            @ApiResponse(responseCode = "500", description = "서버 오류입니다.")
+    })
     public ResponseEntity<UserResponse> update(@RequestPart(value = "image", required = false) MultipartFile image,
                                                @RequestParam(required = false) String nickname,
                                                Authentication authentication) {
@@ -151,7 +158,7 @@ public class UserController {
         try {
             UserResponse response = userService.update(email, image, nickname);
             return new ResponseEntity<>(response, HttpStatus.OK);
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException | DuplicateRequestException e) {
             return ResponseEntity.badRequest().build();
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).build();

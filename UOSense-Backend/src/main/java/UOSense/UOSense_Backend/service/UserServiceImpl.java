@@ -136,6 +136,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         }
 
         if (nickname != null) {
+            checkNickName(nickname);
             user.setNickname(nickname);
         }
 
