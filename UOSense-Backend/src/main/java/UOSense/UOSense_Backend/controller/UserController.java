@@ -160,7 +160,7 @@ public class UserController {
         }
     }
 
-    @PutMapping("/update")
+    @PutMapping(value = "/update", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(summary = "사용자 마이페이지 정보 수정", description = "사용자 마이페이지 정보를 수정합니다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "성공적으로 마이페이지 정보를 수정했습니다."),
