@@ -59,10 +59,10 @@ public class ReviewServiceImpl implements ReviewService{
 
     @Override
     public void deleteByRestaurantId(int restaurantId) {
-        if (!reviewRepository.existsByRestaurantId(restaurantId)) {
+        List<Review> reviewList = reviewRepository.findAllByRestaurantId(restaurantId);
+        if (reviewList.isEmpty()) {
             return;
         }
-        List<Review> reviewList = reviewRepository.findAllByRestaurantId(restaurantId);
         reviewList.forEach(review -> delete(review.getId()));
     }
 
