@@ -117,7 +117,6 @@ public class PurposeController {
     @Operation(summary = "메뉴 정보 수정 제안 삭제", description = "메뉴 정보 수정 제안을 삭제합니다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "메뉴 정보 수정 제안을 성공적으로 삭제했습니다."),
-            @ApiResponse(responseCode = "400", description = "잘못된 요청입니다."),
             @ApiResponse(responseCode = "404", description = "삭제할 메뉴를 찾을 수 없습니다."),
             @ApiResponse(responseCode = "417", description = "AWS S3에서 사진 삭제에 실패했습니다."),
             @ApiResponse(responseCode = "500", description = "서버 오류입니다.")
