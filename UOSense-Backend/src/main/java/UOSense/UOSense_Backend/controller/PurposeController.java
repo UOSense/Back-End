@@ -1,11 +1,9 @@
 package UOSense.UOSense_Backend.controller;
 
-import UOSense.UOSense_Backend.dto.NewMenuRequest;
 import UOSense.UOSense_Backend.dto.PurposeMenuRequest;
+import UOSense.UOSense_Backend.dto.PurposeMenuResponse;
 import UOSense.UOSense_Backend.dto.RestaurantImagesResponse;
-import UOSense.UOSense_Backend.entity.PurposeMenu;
 import UOSense.UOSense_Backend.entity.PurposeRestaurant;
-import UOSense.UOSense_Backend.entity.Restaurant;
 import UOSense.UOSense_Backend.service.PurposeMenuService;
 import UOSense.UOSense_Backend.service.PurposeRestImgServiceImpl;
 import UOSense.UOSense_Backend.service.PurposeService;
@@ -70,10 +68,25 @@ public class PurposeController {
         }
     }
 
+    @GetMapping("/get/menu")
+    @Operation(summary = "메뉴 정보 수정 제안 조회", description = "메뉴 정보 수정 제안을 조회합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "메뉴 정보 수정 제안을 성공적으로 불러왔습니다."),
+            @ApiResponse(responseCode = "400", description = "잘못된 요청입니다.")
+    })
+    public ResponseEntity<PurposeMenuResponse> getMenu(@RequestParam int menuId) {
+        try {
+            PurposeMenuResponse purposeMenuResponse = purposeMenuService.find(menuId);
+            return ResponseEntity.ok().body(purposeMenuResponse);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
     @PostMapping("/create/menu")
     @Operation(summary = "메뉴 정보 수정 제안 등록", description = "메뉴 정보 수정을 제안합니다.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "새로운 메뉴를 성공적으로 추가했습니다."),
+            @ApiResponse(responseCode = "200", description = "새로운 메뉴 정보 수정 제안을 성공적으로 추가했습니다."),
             @ApiResponse(responseCode = "400", description = "잘못된 요청입니다.")
     })
     public ResponseEntity<Void> createMenu(@RequestParam("menuId") int menuId,
