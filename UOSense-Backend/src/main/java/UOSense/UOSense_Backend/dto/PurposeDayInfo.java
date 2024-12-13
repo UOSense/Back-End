@@ -1,8 +1,6 @@
 package UOSense.UOSense_Backend.dto;
 
-import UOSense.UOSense_Backend.entity.BusinessDay;
-import UOSense.UOSense_Backend.entity.PurposeDay;
-import UOSense.UOSense_Backend.entity.PurposeRest;
+import UOSense.UOSense_Backend.entity.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -43,26 +41,26 @@ public class PurposeDayInfo {
         this.closingTime = null;
     }
 
-    public static PurposeDayInfo from(PurposeDay purposeDay) {
+    public static PurposeDayInfo from(PurposeBusinessDay purposeBusinessDay) {
         return PurposeDayInfo.builder()
-                .id(purposeDay.getId())
-                .dayOfWeek(purposeDay.getDayOfWeek())
-                .breakTime(purposeDay.isBreakTime())
-                .startBreakTime(String.valueOf(purposeDay.getStartBreakTime()))
-                .stopBreakTime(String.valueOf(purposeDay.getStopBreakTime()))
-                .openingTime(String.valueOf(purposeDay.getOpeningTime()))
-                .closingTime(String.valueOf(purposeDay.getClosingTime()))
-                .holiday(purposeDay.isHoliday())
+                .id(purposeBusinessDay.getId())
+                .dayOfWeek(purposeBusinessDay.getDayOfWeek())
+                .breakTime(purposeBusinessDay.isBreakTime())
+                .startBreakTime(String.valueOf(purposeBusinessDay.getStartBreakTime()))
+                .stopBreakTime(String.valueOf(purposeBusinessDay.getStopBreakTime()))
+                .openingTime(String.valueOf(purposeBusinessDay.getOpeningTime()))
+                .closingTime(String.valueOf(purposeBusinessDay.getClosingTime()))
+                .holiday(purposeBusinessDay.isHoliday())
                 .build();
     }
 
-    public static PurposeDay toEntity(PurposeDayInfo purposeDayInfo, PurposeRest purposeRest) {
+    public static PurposeBusinessDay toEntity(PurposeDayInfo purposeDayInfo, Restaurant restaurant, User user) {
         LocalTime startBreakTime = (purposeDayInfo.getStartBreakTime() != null) ? LocalTime.parse(purposeDayInfo.getStartBreakTime()) : null;
         LocalTime stopBreakTime = (purposeDayInfo.getStopBreakTime() != null) ? LocalTime.parse(purposeDayInfo.getStopBreakTime()) : null;
         LocalTime openingTime = (purposeDayInfo.getOpeningTime() != null) ? LocalTime.parse(purposeDayInfo.getOpeningTime()) : null;
         LocalTime closingTime = (purposeDayInfo.getClosingTime() != null) ? LocalTime.parse(purposeDayInfo.getClosingTime()) : null;
-        return PurposeDay.builder()
-                .purposeRest(purposeRest)
+        return PurposeBusinessDay.builder()
+                .restaurant(restaurant)
                 .dayOfWeek(purposeDayInfo.getDayOfWeek())
                 .breakTime(purposeDayInfo.isBreakTime())
                 .startBreakTime(startBreakTime)
@@ -70,7 +68,7 @@ public class PurposeDayInfo {
                 .openingTime(openingTime)
                 .closingTime(closingTime)
                 .holiday(purposeDayInfo.isHoliday())
-                .user(purposeRest.getUser())
+                .user(user)
                 .build();
     }
 }

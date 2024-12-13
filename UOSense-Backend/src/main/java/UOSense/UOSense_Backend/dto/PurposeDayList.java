@@ -12,7 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 public class PurposeDayList {
-    private int purposeRestId;
+    private int restaurantId;
 
     private List<PurposeDayInfo> purposeDayInfoList;
 
