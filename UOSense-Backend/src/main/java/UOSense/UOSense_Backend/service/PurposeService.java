@@ -10,3 +10,4 @@ public interface PurposeService {
     List<PurposeRestResponse> findList(int restaurantId);
     void delete(int purposeRestId);
     PurposeRestaurant getPurposeRestById(int restaurantId);
+}

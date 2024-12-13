@@ -138,7 +138,7 @@ public class PurposeController {
             @ApiResponse(responseCode = "404", description = "삭제할 영업 정보 수정 제안을 찾을 수 없습니다."),
             @ApiResponse(responseCode = "500", description = "서버 오류입니다.")
     })
-    public ResponseEntity<Void> deletePurposeDay(@RequestParam int purposeDayId){
+    public ResponseEntity<Void> deletePurposeDay(@RequestParam int purposeDayId) {
         try {
             purposeDayService.delete(purposeDayId);
         } catch (IllegalArgumentException e) {
@@ -147,6 +147,7 @@ public class PurposeController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return ResponseEntity.ok().build();
+    }
 
     @GetMapping("/get/images")
     @Operation(summary = "식당 정보 수정 제안 사진 조회", description = "사진을 조회합니다.")
