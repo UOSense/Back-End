@@ -75,9 +75,9 @@ public class PurposeController {
             @ApiResponse(responseCode = "200", description = "메뉴 정보 수정 제안을 성공적으로 불러왔습니다."),
             @ApiResponse(responseCode = "400", description = "잘못된 요청입니다.")
     })
-    public ResponseEntity<List<PurposeMenuResponse>> getListByRestaurantId(@RequestParam int menuId) {
+    public ResponseEntity<List<PurposeMenuResponse>> getMenuByRestaurantId(@RequestParam int restaurantId) {
         try {
-            List<PurposeMenuResponse> result = purposeMenuService.findListByRestaurantId(menuId);
+            List<PurposeMenuResponse> result = purposeMenuService.findListByRestaurantId(restaurantId);
             return ResponseEntity.ok().body(result);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().build();
