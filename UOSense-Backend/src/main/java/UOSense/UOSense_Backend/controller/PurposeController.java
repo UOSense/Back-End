@@ -73,7 +73,7 @@ public class PurposeController {
     @PostMapping("/create/menu")
     @Operation(summary = "메뉴 정보 수정 제안 등록", description = "메뉴 정보 수정을 제안합니다.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "새로운 식당을 성공적으로 추가했습니다."),
+            @ApiResponse(responseCode = "200", description = "새로운 메뉴를 성공적으로 추가했습니다."),
             @ApiResponse(responseCode = "400", description = "잘못된 요청입니다.")
     })
     public ResponseEntity<Void> createMenu(@RequestParam("menuId") int menuId,
