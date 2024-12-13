@@ -58,6 +58,15 @@ public class ReviewServiceImpl implements ReviewService{
     }
 
     @Override
+    public void deleteByRestaurantId(int restaurantId) {
+        if (!reviewRepository.existsByRestaurantId(restaurantId)) {
+            return;
+        }
+        List<Review> reviewList = reviewRepository.findAllByRestaurantId(restaurantId);
+        reviewList.forEach(review -> delete(review.getId()));
+    }
+
+    @Override
     public void addLike(int userId,int reviewId) {
         try {
             // 1. 좋아요 이력 저장 시도

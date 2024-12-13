@@ -9,4 +9,5 @@ import java.util.List;
 @Repository
 public interface BusinessDayRepository extends JpaRepository<BusinessDay, Integer> {
     List<BusinessDay> findAllByRestaurantId(int restaurantId);
+    void deleteAllByRestaurantId(int restaurantId);
 }
