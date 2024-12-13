@@ -141,6 +141,25 @@ public class UserController {
         }
     }
 
+    @PutMapping("/get")
+    @Operation(summary = "사용자 마이페이지 정보 조회", description = "사용자 마이페이지 정보를 조회합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "성공적으로 마이페이지 정보를 불러왔습니다."),
+            @ApiResponse(responseCode = "400", description = "잘못된 요청입니다."),
+            @ApiResponse(responseCode = "500", description = "서버 오류입니다.")
+    })
+    public ResponseEntity<UserResponse> get(Authentication authentication) {
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+        String email = userDetails.getUsername();
+
+        try {
+            UserResponse response = userService.find(email);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
     @PutMapping("/update")
     @Operation(summary = "사용자 마이페이지 정보 수정", description = "사용자 마이페이지 정보를 수정합니다.")
     @ApiResponses(value = {

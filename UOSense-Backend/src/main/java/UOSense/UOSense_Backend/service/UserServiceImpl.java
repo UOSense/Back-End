@@ -113,6 +113,13 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
+    public UserResponse find(String email) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(()-> new IllegalArgumentException("Invalid authentication!"));
+        return UserResponse.from(user);
+    }
+
+    @Override
     public UserResponse update(String email, MultipartFile image, String nickname) {
         Optional<User> optionalUser = userRepository.findByEmail(email);
         if (optionalUser.isEmpty()) {
