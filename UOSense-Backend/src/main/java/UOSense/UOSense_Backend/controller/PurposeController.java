@@ -64,8 +64,8 @@ public class PurposeController {
                                                                  Authentication authentication) {
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
         String email = userDetails.getUsername();
-        int userId = userService.findId(email);
         try {
+            int userId = userService.findId(email);
             PurposeRestaurant purpose = purposeService.getPurposeRestById(purposeRestId);
             RestaurantImagesResponse restaurantImages = purposeRestImgService.save(purpose, userId, images);
             return new ResponseEntity<>(restaurantImages, HttpStatus.OK);
@@ -105,7 +105,8 @@ public class PurposeController {
             CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
             String email = userDetails.getUsername();
         try {
-            PurposeMenuRequest dto = new PurposeMenuRequest(menuId, name, price, userService.findId(email));
+            int userId = userService.findId(email);
+            PurposeMenuRequest dto = new PurposeMenuRequest(menuId, name, price, userId);
             purposeMenuService.register(dto, image);
             return ResponseEntity.ok().build();
         } catch (IllegalArgumentException e) {
