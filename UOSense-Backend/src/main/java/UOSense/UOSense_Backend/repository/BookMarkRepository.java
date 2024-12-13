@@ -9,4 +9,5 @@ public interface BookMarkRepository extends JpaRepository<BookMark, Integer> {
     List<BookMark> findAllByUserId(int userId);
     boolean existsByUserIdAndRestaurantId(int userId, int restaurantId);
     void deleteByUserIdAndRestaurantId(int userId, int restaurantId);
+    void deleteAllByRestaurantId(int restaurantId);
 }

@@ -12,4 +12,5 @@ public interface ReviewService {
     int register(ReviewRequest reviewRequest, int userId);
     ReviewResponse find(int reviewId);
     List<ReviewResponse> findByUserId(int userId);
+    void deleteByRestaurantId(int restaurantId);
 }
