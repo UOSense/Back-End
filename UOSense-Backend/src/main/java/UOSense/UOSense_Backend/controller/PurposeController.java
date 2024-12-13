@@ -18,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 
 @Tag(name = "정보 수정 제안 관리")
@@ -74,10 +75,10 @@ public class PurposeController {
             @ApiResponse(responseCode = "200", description = "메뉴 정보 수정 제안을 성공적으로 불러왔습니다."),
             @ApiResponse(responseCode = "400", description = "잘못된 요청입니다.")
     })
-    public ResponseEntity<PurposeMenuResponse> getMenu(@RequestParam int menuId) {
+    public ResponseEntity<List<PurposeMenuResponse>> getListByRestaurantId(@RequestParam int menuId) {
         try {
-            PurposeMenuResponse purposeMenuResponse = purposeMenuService.find(menuId);
-            return ResponseEntity.ok().body(purposeMenuResponse);
+            List<PurposeMenuResponse> result = purposeMenuService.findListByRestaurantId(menuId);
+            return ResponseEntity.ok().body(result);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().build();
         }
