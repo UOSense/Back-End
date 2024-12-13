@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Getter
 public class PurposeMenuRequest {
-    private int menuId;
+    private int restaurantId;
 
     private String name;
 
@@ -19,9 +19,9 @@ public class PurposeMenuRequest {
 
     private int userId;
 
-    public PurposeMenu toEntity(Menu purposeMenu, User proposer, String url) {
+    public PurposeMenu toEntity(Restaurant purposeRest, User proposer, String url) {
         PurposeMenu.PurposeMenuBuilder builder = PurposeMenu.builder()
-                .menu(purposeMenu)
+                .restaurant(purposeRest)
                 .name(this.name)
                 .price(this.price)
                 .imageUrl(url)

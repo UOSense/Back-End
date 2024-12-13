@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 public class PurposeMenuResponse {
     private int id;
 
-    private int menuId;
+    private int restaurantId;
 
     private String name;
 
@@ -26,7 +26,7 @@ public class PurposeMenuResponse {
     public static PurposeMenuResponse from(PurposeMenu menu) {
         return new PurposeMenuResponse(
                 menu.getId(),
-                menu.getMenu().getId(),
+                menu.getRestaurant().getId(),
                 menu.getName(),
                 menu.getPrice(),
                 menu.getUser().getId(),
