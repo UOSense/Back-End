@@ -69,4 +69,24 @@ public class PurposeController {
             return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
         }
     }
+
+    @PostMapping("/create/menu")
+    @Operation(summary = "메뉴 정보 수정 제안 등록", description = "메뉴 정보 수정을 제안합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "새로운 식당을 성공적으로 추가했습니다."),
+            @ApiResponse(responseCode = "400", description = "잘못된 요청입니다.")
+    })
+    public ResponseEntity<Void> createMenu(@RequestParam("menuId") int menuId,
+                                        @RequestParam("name") String name,
+                                        @RequestParam("price") int price,
+                                        @RequestParam(value = "userId") int userId,
+                                        @RequestPart(value = "image", required = false) MultipartFile image) {
+        try {
+            PurposeMenuRequest dto = new PurposeMenuRequest(menuId, name, price, userId);
+            purposeMenuService.register(dto, image);
+            return ResponseEntity.ok().build();
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
 }
