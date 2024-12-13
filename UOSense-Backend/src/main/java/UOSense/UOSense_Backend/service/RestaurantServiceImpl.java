@@ -45,7 +45,7 @@ public class RestaurantServiceImpl implements RestaurantService{
     @Override
     public RestaurantInfo find(int restaurantId) {
         Restaurant restaurant = getRestaurantById(restaurantId);
-        return RestaurantInfo.from(restaurant);
+        return RestaurantResponse.from(restaurant);
     }
 
     @Override
