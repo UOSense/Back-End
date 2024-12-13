@@ -34,8 +34,11 @@ public class PurposeRestImgServiceImpl implements PurposeRestImgService {
     }
 
     @Override
-    public RestaurantImagesResponse save(PurposeRestaurant restaurant, MultipartFile[] images) {
+    public RestaurantImagesResponse save(PurposeRestaurant restaurant, int userId, MultipartFile[] images) {
         List<ImageInfo> imageList = new ArrayList<>();
+        if (userId != restaurant.getUser().getId()) {
+            throw new IllegalArgumentException("해당 식당 정보 수정 제안 등록자 사진 등록자가 일치하지 않습니다.");
+        }
 
         for (MultipartFile image : images) {
             /* 1. 이미지 스토리지에 저장 */
