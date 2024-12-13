@@ -82,9 +82,9 @@ public class SecurityConfig {
                         .requestMatchers("/swagger", "/swagger-ui.html", "/swagger-ui/**", "/api-docs", "/api-docs/**", "/v3/api-docs/**")
                         .permitAll()
                         .requestMatchers("/api/v1/restaurant/get/**").permitAll()
-                        .requestMatchers("/api/v1/restaurant/create/**").permitAll()
-                        .requestMatchers("/api/v1/restaurant/update/**").permitAll()
-                        .requestMatchers("/api/v1/restaurant/delete/**").permitAll()
+                        .requestMatchers("/api/v1/restaurant/create/**").hasAuthority("ADMIN")
+                        .requestMatchers("/api/v1/restaurant/update/**").hasAuthority("ADMIN")
+                        .requestMatchers("/api/v1/restaurant/delete/**").hasAuthority("ADMIN")
                         .requestMatchers("/api/v1/review/create/images").permitAll()
                         .requestMatchers("/api/v1/review/get").permitAll()
                         .requestMatchers("/api/v1/review/get/list").permitAll()
@@ -97,9 +97,9 @@ public class SecurityConfig {
                         .requestMatchers("/api/v1/user/reissue").permitAll()
                         .requestMatchers("/api/v1/user/check-nickname").permitAll()
                         .requestMatchers("/api/v1/webmail/**").permitAll()
-                        .requestMatchers("/api/v1/purpose/get/**").hasAuthority("ADMIN")
-                        .requestMatchers("/api/v1/purpose/delete").hasAuthority("ADMIN")
                         .requestMatchers("/api/v1/search/**").permitAll()
+                        .requestMatchers("/api/v1/purpose/get/**").hasAuthority("ADMIN")
+                        .requestMatchers("/api/v1/purpose/delete/**").hasAuthority("ADMIN")
                         .anyRequest().authenticated());
 
         //세션 설정 : STATELESS

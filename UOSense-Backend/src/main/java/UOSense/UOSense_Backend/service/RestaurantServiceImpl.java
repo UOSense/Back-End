@@ -29,23 +29,23 @@ public class RestaurantServiceImpl implements RestaurantService{
     private final ReviewService reviewService;
 
     @Override
-    public List<RestaurantListResponse> getAllRestaurants(SearchService.sortFilter filter) {
+    public List<RestaurantListResponse> findListByFilter(SearchService.sortFilter filter) {
         List<Restaurant> restaurants = restaurantRepository.findAll();
         if (restaurants.isEmpty()) throw new NoSuchElementException("식당 리스트가 존재하지 않습니다.");
         return searchService.sort(restaurants, filter);
     }
 
     @Override
-    public List<RestaurantListResponse> getRestaurantsByDoorType(DoorType doorType, SearchService.sortFilter filter) {
+    public List<RestaurantListResponse> findListByDoorType(DoorType doorType, SearchService.sortFilter filter) {
         List<Restaurant> restaurants = restaurantRepository.findByDoorType(doorType);
         if (restaurants.isEmpty()) throw new NoSuchElementException("식당 리스트가 존재하지 않습니다.");
         return searchService.sort(restaurants, filter);
     }
 
     @Override
-    public RestaurantInfo getRestaurantInfoById(int restaurantId) {
+    public RestaurantResponse find(int restaurantId) {
         Restaurant restaurant = getRestaurantById(restaurantId);
-        return RestaurantInfo.from(restaurant);
+        return RestaurantResponse.from(restaurant);
     }
 
     @Override
@@ -55,7 +55,7 @@ public class RestaurantServiceImpl implements RestaurantService{
     }
 
     @Override
-    public List<MenuResponse> findMenuBy(int restaurantId) {
+    public List<MenuResponse> findMenu(int restaurantId) {
         List<Menu> menuBoard = menuRepository.findAllByRestaurantId((restaurantId));
 
         if (menuBoard.isEmpty())

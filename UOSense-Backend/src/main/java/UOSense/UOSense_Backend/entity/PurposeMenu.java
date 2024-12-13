@@ -18,8 +18,8 @@ public class PurposeMenu {
     private int id;
 
     @ManyToOne(fetch = FetchType.LAZY)  // Restaurant와 다대일 관계
-    @JoinColumn(name = "restaurant_id", nullable = false)  // 외래키 명시
-    private PurposeRestaurant purposeRestaurant;
+    @JoinColumn(name = "restaurant_id", nullable = false)
+    private Restaurant restaurant;
 
     private String name;
 
