@@ -17,9 +17,9 @@ public class PurposeMenu {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @ManyToOne(fetch = FetchType.LAZY)  // Restaurant와 다대일 관계
-    @JoinColumn(name = "restaurant_id", nullable = false)  // 외래키 명시
-    private PurposeRestaurant purposeRestaurant;
+    @OneToOne(fetch = FetchType.LAZY)  // Menu와 다대일 관계
+    @JoinColumn(name = "menu_id")
+    private Menu menu;
 
     private String name;
 
