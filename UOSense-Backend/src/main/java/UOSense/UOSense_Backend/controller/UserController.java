@@ -2,6 +2,8 @@ package UOSense.UOSense_Backend.controller;
 
 import UOSense.UOSense_Backend.common.Utils.RedisUtilForToken;
 import UOSense.UOSense_Backend.common.enumClass.Role;
+import UOSense.UOSense_Backend.dto.CustomUserDetails;
+import UOSense.UOSense_Backend.dto.UserResponse;
 import UOSense.UOSense_Backend.entity.User;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -24,7 +26,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @Tag(name = "회원 관리")
 @RestController
@@ -134,6 +138,49 @@ public class UserController {
             return ResponseEntity.ok().body(isValidated);
         } catch (DuplicateRequestException e) {
             return ResponseEntity.badRequest().body(false);
+        }
+    }
+
+    @PutMapping("/get")
+    @Operation(summary = "사용자 마이페이지 정보 조회", description = "사용자 마이페이지 정보를 조회합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "성공적으로 마이페이지 정보를 불러왔습니다."),
+            @ApiResponse(responseCode = "400", description = "잘못된 요청입니다."),
+            @ApiResponse(responseCode = "500", description = "서버 오류입니다.")
+    })
+    public ResponseEntity<UserResponse> get(Authentication authentication) {
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+        String email = userDetails.getUsername();
+
+        try {
+            UserResponse response = userService.find(email);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @PutMapping("/update")
+    @Operation(summary = "사용자 마이페이지 정보 수정", description = "사용자 마이페이지 정보를 수정합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "성공적으로 마이페이지 정보를 수정했습니다."),
+            @ApiResponse(responseCode = "400", description = "중복되는 닉네임입니다."),
+            @ApiResponse(responseCode = "417", description = "AWS S3에서 사진 등록에 실패했습니다."),
+            @ApiResponse(responseCode = "500", description = "서버 오류입니다.")
+    })
+    public ResponseEntity<UserResponse> update(@RequestPart(value = "image", required = false) MultipartFile image,
+                                               @RequestParam(required = false) String nickname,
+                                               Authentication authentication) {
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+        String email = userDetails.getUsername();
+
+        try {
+            UserResponse response = userService.update(email, image, nickname);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (IllegalArgumentException | DuplicateRequestException e) {
+            return ResponseEntity.badRequest().build();
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).build();
         }
     }
 }

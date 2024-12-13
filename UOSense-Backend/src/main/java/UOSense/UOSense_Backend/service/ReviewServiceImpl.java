@@ -1,15 +1,10 @@
 package UOSense.UOSense_Backend.service;
 
+import UOSense.UOSense_Backend.common.Utils.ImageUtils;
 import UOSense.UOSense_Backend.dto.ReviewRequest;
 import UOSense.UOSense_Backend.dto.ReviewResponse;
-import UOSense.UOSense_Backend.entity.ReviewLike;
-import UOSense.UOSense_Backend.entity.Restaurant;
-import UOSense.UOSense_Backend.entity.Review;
-import UOSense.UOSense_Backend.entity.User;
-import UOSense.UOSense_Backend.repository.RestaurantRepository;
-import UOSense.UOSense_Backend.repository.ReviewRepository;
-import UOSense.UOSense_Backend.repository.ReviewLikeRepository;
-import UOSense.UOSense_Backend.repository.UserRepository;
+import UOSense.UOSense_Backend.entity.*;
+import UOSense.UOSense_Backend.repository.*;
 
 import lombok.RequiredArgsConstructor;
 import jakarta.persistence.EntityNotFoundException;
@@ -29,6 +24,9 @@ public class ReviewServiceImpl implements ReviewService{
     private final ReviewLikeRepository reviewLikeRepository;
     private final UserRepository userRepository;
     private final RestaurantRepository restaurantRepository;
+    private final ReviewImageRepository reviewImageRepository;
+    private final ImageUtils imageUtils;
+    private final ReportRepository reportRepository;
 
     @Override
     @Transactional(readOnly = true)
@@ -47,7 +45,25 @@ public class ReviewServiceImpl implements ReviewService{
         if (!reviewRepository.existsById(reviewId)) {
             throw new IllegalArgumentException("삭제할 리뷰가 존재하지 않습니다.");
         }
+        List<ReviewImage> reviewImages = reviewImageRepository.findAllByReviewId(reviewId);
+        if (!reviewImages.isEmpty()) {
+            for (ReviewImage reviewImage : reviewImages) {
+                imageUtils.deleteImageInS3(reviewImage.getImageUrl());
+            }
+        }
+        reviewImageRepository.deleteAllByReviewId(reviewId);
+        reviewLikeRepository.deleteAllByReviewId(reviewId);
+        reportRepository.deleteAllByReviewId(reviewId);
         reviewRepository.deleteById(reviewId);
+    }
+
+    @Override
+    public void deleteByRestaurantId(int restaurantId) {
+        List<Review> reviewList = reviewRepository.findAllByRestaurantId(restaurantId);
+        if (reviewList.isEmpty()) {
+            return;
+        }
+        reviewList.forEach(review -> delete(review.getId()));
     }
 
     @Override

@@ -14,4 +14,9 @@ public interface PurposeRestImgRepository extends JpaRepository<PurposeRestImg, 
             "FROM Purpose_Restaurant_Image ri " +
             "WHERE ri.restaurant_id = :restaurantId " , nativeQuery = true)
     List<String> findImageUrls(@Param("restaurantId") int restaurantId);
+    
+    @Query(value = "SELECT p.* " +
+            "FROM Purpose_Restaurant_Image p " +
+            "WHERE p.restaurant_id = :restaurantId", nativeQuery = true)
+    List<PurposeRestImg> findAllByRestaurantId(@Param("restaurantId") int restaurantId);
 }

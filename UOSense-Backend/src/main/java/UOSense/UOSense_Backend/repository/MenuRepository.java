@@ -15,4 +15,5 @@ public interface MenuRepository extends JpaRepository<Menu, Integer> {
 
     @Query("SELECT m.restaurant FROM Menu m WHERE m.name LIKE %:keyword%")
     List<Restaurant> findByNameContains(@Param("keyword") String keyword);
+    void deleteAllByRestaurantId(int restaurantId);
 }

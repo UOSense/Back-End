@@ -58,4 +58,10 @@ public class PurposeServiceImpl implements PurposeService {
         PurposeRestaurant purposeRestaurant = PurposeRestRequest.toEntity(request, restaurant.get(), user.get());
         purposeRestaurantRepository.save(purposeRestaurant);
     }
+  
+    @Override
+    public PurposeRestaurant getPurposeRestById(int purposeRestId) {
+        return purposeRestaurantRepository.findById(purposeRestId)
+                .orElseThrow(() -> new IllegalArgumentException("정보 수정 제안 이력이 존재하지 않습니다."));
+    }
 }

@@ -36,8 +36,8 @@ public class ReviewController {
     @Operation(summary = "리뷰 삭제", description = "리뷰를 삭제합니다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "리뷰를 성공적으로 삭제했습니다."),
-            @ApiResponse(responseCode = "400", description = "잘못된 요청입니다."),
             @ApiResponse(responseCode = "404", description = "삭제할 리뷰를 찾을 수 없습니다."),
+            @ApiResponse(responseCode = "417", description = "AWS S3에서 사진 삭제에 실패했습니다."),
             @ApiResponse(responseCode = "500", description = "서버 오류입니다.")
     })
     public ResponseEntity<Void> delete(@RequestParam int reviewId) {
@@ -46,8 +46,8 @@ public class ReviewController {
             return ResponseEntity.ok().build();
         } catch (IllegalArgumentException e) {
             return ResponseEntity.notFound().build();
-        } catch (Exception e) {
-          return ResponseEntity.badRequest().build();
+        } catch (RuntimeException e) {
+          return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).build();
         }
     }
 
@@ -123,6 +123,7 @@ public class ReviewController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "리뷰 이미지를 성공적으로 등록했습니다."),
             @ApiResponse(responseCode = "400", description = "잘못된 요청입니다."),
+            @ApiResponse(responseCode = "417", description = "AWS S3에서 사진 등록에 실패했습니다."),
             @ApiResponse(responseCode = "500", description = "서버 오류입니다.")
     })
     public ResponseEntity<Void> createImages(@RequestPart List<MultipartFile> images,
@@ -131,8 +132,8 @@ public class ReviewController {
             reviewImageService.register(reviewId, images);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().build();
-        } catch (Exception e) {
-            return ResponseEntity.internalServerError().build();
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).build();
         }
         return ResponseEntity.ok().build();
     }

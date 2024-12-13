@@ -30,4 +30,12 @@ public class User {
 
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
 }
