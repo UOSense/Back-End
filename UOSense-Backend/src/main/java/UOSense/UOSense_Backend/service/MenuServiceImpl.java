@@ -35,7 +35,7 @@ public class MenuServiceImpl implements MenuService{
         Menu menu = menuRepository.findById(menuRequest.getId())
                 .orElseThrow(() -> new IllegalArgumentException("수정할 메뉴가 존재하지 않습니다."));
         String oldImageUrl = menu.getImageUrl();
-        String newImageUrl = null;
+        String newImageUrl = "";
         if (image != null) {  // 수정할 사진이 있음
             // 기존 사진이 존재함
             if (oldImageUrl != null) {
