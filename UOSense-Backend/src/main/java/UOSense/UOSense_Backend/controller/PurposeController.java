@@ -37,9 +37,9 @@ public class PurposeController {
             @ApiResponse(responseCode = "404", description = "사진을 찾을 수 없습니다."),
             @ApiResponse(responseCode = "500", description = "잘못된 요청입니다.")
     })
-    public ResponseEntity<RestaurantImagesResponse> getImages(@RequestParam int restaurantId) {
+    public ResponseEntity<RestaurantImagesResponse> getImages(@RequestParam int purposeRestId) {
         try {
-            RestaurantImagesResponse restaurantImages = purposeRestImgService.showImageList(restaurantId);
+            RestaurantImagesResponse restaurantImages = purposeRestImgService.showImageList(purposeRestId);
             return new ResponseEntity<>(restaurantImages, HttpStatus.OK);
         } catch (NoSuchElementException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -56,10 +56,10 @@ public class PurposeController {
             @ApiResponse(responseCode = "500", description = "서버 오류입니다.")
     })
     public ResponseEntity<RestaurantImagesResponse> createImages(
-            @RequestParam int restaurantId,
+            @RequestParam int purposeRestId,
             @RequestPart MultipartFile[] images) {
         try {
-            PurposeRestaurant purpose = purposeService.getPurposeRestById(restaurantId);
+            PurposeRestaurant purpose = purposeService.getPurposeRestById(purposeRestId);
             RestaurantImagesResponse restaurantImages = purposeRestImgService.save(purpose,images);
             return new ResponseEntity<>(restaurantImages, HttpStatus.OK);
         } catch (IllegalArgumentException e) {

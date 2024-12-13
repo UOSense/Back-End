@@ -5,7 +5,6 @@ import UOSense.UOSense_Backend.dto.ImageInfo;
 import UOSense.UOSense_Backend.dto.RestaurantImagesResponse;
 import UOSense.UOSense_Backend.entity.PurposeRestImg;
 import UOSense.UOSense_Backend.entity.PurposeRestaurant;
-import UOSense.UOSense_Backend.entity.User;
 import UOSense.UOSense_Backend.repository.PurposeRestImgRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

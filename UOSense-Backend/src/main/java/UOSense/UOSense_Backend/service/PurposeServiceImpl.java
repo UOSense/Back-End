@@ -13,8 +13,8 @@ public class PurposeServiceImpl implements  PurposeService{
     private final PurposeRestRepository purposeRestRepository;
 
     @Override
-    public PurposeRestaurant getPurposeRestById(int restaurantId) {
-        return purposeRestRepository.findById(restaurantId)
+    public PurposeRestaurant getPurposeRestById(int purposeRestId) {
+        return purposeRestRepository.findById(purposeRestId)
                 .orElseThrow(() -> new IllegalArgumentException("정보 수정 제안 이력이 존재하지 않습니다."));
     }
 
