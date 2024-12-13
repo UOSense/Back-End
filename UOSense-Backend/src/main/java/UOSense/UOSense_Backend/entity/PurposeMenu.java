@@ -19,7 +19,7 @@ public class PurposeMenu {
 
     @ManyToOne(fetch = FetchType.LAZY)  // Restaurant와 다대일 관계
     @JoinColumn(name = "restaurant_id", nullable = false)  // 외래키 명시
-    private PurposeRest purposeRest;
+    private Restaurant restaurant;
 
     private String name;
 
