@@ -17,5 +17,4 @@ public interface ReviewRepository extends JpaRepository<Review, Integer> {
     @Query("UPDATE Review r SET r.likeCount = r.likeCount + 1 WHERE r.id = :reviewId")
     int increaseLikeCount(@Param("reviewId") int reviewId);
     List<Review> findAllByUserId(int userId);
-    boolean existsByRestaurantId(int restaurantId);
 }
