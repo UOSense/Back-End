@@ -19,8 +19,6 @@ public class PurposeMenuResponse {
 
     private int price;
 
-    private int userId;
-
     private String imageUrl;
 
     public static PurposeMenuResponse from(PurposeMenu menu) {
@@ -29,7 +27,6 @@ public class PurposeMenuResponse {
                 menu.getRestaurant().getId(),
                 menu.getName(),
                 menu.getPrice(),
-                menu.getUser().getId(),
                 menu.getImageUrl()
         );
     }
