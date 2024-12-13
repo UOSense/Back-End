@@ -123,6 +123,7 @@ public class ReviewController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "리뷰 이미지를 성공적으로 등록했습니다."),
             @ApiResponse(responseCode = "400", description = "잘못된 요청입니다."),
+            @ApiResponse(responseCode = "417", description = "AWS S3에서 사진 등록에 실패했습니다."),
             @ApiResponse(responseCode = "500", description = "서버 오류입니다.")
     })
     public ResponseEntity<Void> createImages(@RequestPart List<MultipartFile> images,
@@ -131,8 +132,8 @@ public class ReviewController {
             reviewImageService.register(reviewId, images);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().build();
-        } catch (Exception e) {
-            return ResponseEntity.internalServerError().build();
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).build();
         }
         return ResponseEntity.ok().build();
     }
