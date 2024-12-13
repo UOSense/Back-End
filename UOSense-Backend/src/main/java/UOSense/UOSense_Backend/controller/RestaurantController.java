@@ -98,10 +98,10 @@ public class RestaurantController {
 
         try {
             if (doorTypeFlag) {
-                restaurantList = restaurantService.getRestaurantsByDoorType(doorType, filter);
+                restaurantList = restaurantService.findListByDoorType(doorType, filter);
             }
             else {
-                restaurantList = restaurantService.getAllRestaurants(filter);
+                restaurantList = restaurantService.findListByFilter(filter);
             }
 
             return new ResponseEntity<>(restaurantList, HttpStatus.OK);
@@ -118,7 +118,7 @@ public class RestaurantController {
     })
     public ResponseEntity<RestaurantInfo> getRestaurant(@RequestParam int restaurantId) {
         try {
-            RestaurantInfo restaurantInfo = restaurantService.getRestaurantInfoById(restaurantId);
+            RestaurantInfo restaurantInfo = restaurantService.find(restaurantId);
 
             return new ResponseEntity<>(restaurantInfo, HttpStatus.OK);
         } catch (IllegalArgumentException e) {
@@ -210,7 +210,7 @@ public class RestaurantController {
     })
     public ResponseEntity<List<MenuResponse>> getMenuList(@RequestParam int restaurantId) {
         try {
-            List<MenuResponse> result = restaurantService.findMenuBy(restaurantId);
+            List<MenuResponse> result = restaurantService.findMenu(restaurantId);
             return new ResponseEntity<>(result, HttpStatus.OK);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(Collections.emptyList(), HttpStatus.NOT_FOUND);
