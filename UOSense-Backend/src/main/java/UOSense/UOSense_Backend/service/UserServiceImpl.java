@@ -1,7 +1,9 @@
 package UOSense.UOSense_Backend.service;
 
+import UOSense.UOSense_Backend.common.Utils.ImageUtils;
 import UOSense.UOSense_Backend.dto.CustomUserDetails;
 import UOSense.UOSense_Backend.dto.NewUserRequest;
+import UOSense.UOSense_Backend.dto.UserResponse;
 import UOSense.UOSense_Backend.repository.UserRepository;
 import UOSense.UOSense_Backend.entity.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,6 +14,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -20,15 +25,17 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     private final UserRepository userRepository;
     private final MailService mailService;
     private final PasswordEncoder passwordEncoder;
+    private final ImageUtils imageUtils;
+    final String S3_FOLDER_NAME = "user";
     
     @Override
     public UserDetails loadUserByUsername(String email) {
-        User user = userRepository.findByEmail(email);
-        if (user == null) {
+        Optional<User> user = userRepository.findByEmail(email);
+        if (user.isEmpty()) {
             throw new UsernameNotFoundException("Invalid authentication!");
         }
 
-        return new CustomUserDetails(user);
+        return new CustomUserDetails(user.get());
     }
     
     @Override
@@ -98,10 +105,41 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public int findId(String email) {
-        User user = userRepository.findByEmail(email);
-        if (user == null) {
-            throw new UsernameNotFoundException("Invalid authentication!");
+        Optional<User> user = userRepository.findByEmail(email);
+        if (user.isEmpty()) {
+            throw new IllegalArgumentException("Invalid authentication!");
         }
-        return user.getId();
+        return user.get().getId();
+    }
+
+    @Override
+    public UserResponse update(String email, MultipartFile image, String nickname) {
+        Optional<User> optionalUser = userRepository.findByEmail(email);
+        if (optionalUser.isEmpty()) {
+            throw new IllegalArgumentException("Invalid authentication!");
+        }
+        User user = optionalUser.get();
+        String oldImageUrl = user.getImageUrl();
+        String newimageUrl = null;
+
+        // 변경할 이미지가 있을 경우
+        if (!image.isEmpty()) {
+            // 기존 이미지가 있을 경우 삭제
+            if (oldImageUrl != null) {
+                imageUtils.deleteImageInS3(oldImageUrl);
+            }
+            newimageUrl = imageUtils.uploadImageToS3(image, S3_FOLDER_NAME);
+        }
+
+        if (newimageUrl != null) {
+            user.setImageUrl(newimageUrl);
+        }
+
+        if (nickname != null) {
+            user.setNickname(nickname);
+        }
+
+        user = userRepository.saveAndFlush(user);
+        return UserResponse.from(user);
     }
 }
