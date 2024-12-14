@@ -212,7 +212,7 @@ public class PurposeController {
             @ApiResponse(responseCode = "200", description = "새로운 메뉴 정보 수정 제안을 성공적으로 추가했습니다."),
             @ApiResponse(responseCode = "400", description = "잘못된 요청입니다.")
     })
-    public ResponseEntity<Void> createMenu(@RequestParam("menuId") int menuId,
+    public ResponseEntity<Void> createMenu(@RequestParam("restaurantId") int restaurantId,
                                             @RequestParam("name") String name,
                                             @RequestParam("price") int price,
                                             @RequestPart(value = "image", required = false) MultipartFile image,
@@ -221,7 +221,7 @@ public class PurposeController {
             String email = userDetails.getUsername();
         try {
             int userId = userService.findId(email);
-            PurposeMenuRequest dto = new PurposeMenuRequest(menuId, name, price, userId);
+            PurposeMenuRequest dto = new PurposeMenuRequest(restaurantId, name, price, userId);
             purposeMenuService.register(dto, image);
             return ResponseEntity.ok().build();
         } catch (IllegalArgumentException e) {
