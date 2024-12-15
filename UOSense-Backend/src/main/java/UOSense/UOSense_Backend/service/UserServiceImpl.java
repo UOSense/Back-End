@@ -130,7 +130,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         String newimageUrl = null;
 
         // 변경할 이미지가 있을 경우
-        if (!image.isEmpty()) {
+        if (image != null) {
             // 기존 이미지가 있을 경우 삭제
             if (oldImageUrl != null) {
                 imageUtils.deleteImageInS3(oldImageUrl);
